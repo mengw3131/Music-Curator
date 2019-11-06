@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.curator.controllers.HomeController">
+   <children>
+      <AnchorPane prefWidth="200.0" HBox.hgrow="ALWAYS" />
+      <ScrollPane fx:id="mainScrollPane" maxHeight="1.7976931348623157E308" maxWidth="1500.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1.0" prefWidth="1000.0" style="-fx-background-color: #ffffff;" HBox.hgrow="ALWAYS">
+         <content>
+            <VBox fx:id="mainVBox" alignment="TOP_CENTER">
+               <children>
+                  <VBox fx:id="topRecommendationVBox" alignment="TOP_CENTER" prefWidth="100.0" />
+                  <VBox fx:id="topRecommendationVBox1" alignment="TOP_CENTER" prefWidth="100.0" />
+               </children>
+            </VBox>
+         </content>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+      </ScrollPane>
+      <AnchorPane prefWidth="200.0" HBox.hgrow="ALWAYS">
+         <children>
+            <FlowPane prefHeight="200.0" prefWidth="200.0" />
+         </children></AnchorPane>
+   </children>
+</HBox>
