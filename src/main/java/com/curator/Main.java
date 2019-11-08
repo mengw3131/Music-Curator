@@ -1,62 +1,53 @@
 package com.curator;
 
-import com.wrapper.spotify.*;
-import com.curator.controllers.MainController;
-import com.wrapper.spotify.exceptions.SpotifyWebApiException;
-
-import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
-import com.wrapper.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.io.IOException;
 
+import static com.wrapper.spotify.SpotifyApi.getAccessToken;
+import com.wrapper.spotify.*;
+
+import java.util.logging.Logger;
+
+//TODO: /lib almost 200MB, need to audit and reduce dependencies, remove unused file/classes
+//TODO: create sqlite database to keep user usage data, e.g. favorites etc
+//TODO: add clear cache feature in settings menu bar, to remove downloaded mp3 files
+
+/**
+ * Entry to the app.
+ */
 public class Main extends Application {
-    static String clientId = "f9c190003d09495d9915681495281934";
-    static String clientSecret = "e254b4a83ce949a0b235ff45601ae6fc";
-    static String accessToken = "QAJck-yRaqAqLTA-mlkLiQ5CkgJ8grYNxwTPnXyBGzIegJa_IiWbIUvLJ0ukclzX6Cpq3tseTQP-HYUHGU";
-    public static SpotifyApi api =  new SpotifyApi.Builder()
-            .setAccessToken(getAccessToken(clientId, clientSecret))
-//            .setAccessToken(accessToken)
-            .build();
+    //TODO: secure spotify API keys, store in config file OR prompt login
+    private static String clientId = "f9c190003d09495d9915681495281934";
+    private static String clientSecret = "520b7eee145049cc8d655ad5b3df668f";
 
+    //Resources variables to be passed to children
+    //TODO: find a better architecture, e.g. dependency injection
+    public static SpotifyApi api = new SpotifyApi.Builder().setAccessToken(getAccessToken(clientId, clientSecret)).build();
+
+    //TODO: set logger + log files
+    //private static Logger logger = new Logger();
+
+
+    /**
+     * Initialize GUI app
+     *
+     * @param stage - the main stage of the app
+     * @throws Exception
+     */
     @java.lang.Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main.fxml"));
-        Parent root = loader.load();
-        MainController mainController = loader.getController();
-        mainController.setApi(api);
+        Parent root = FXMLLoader.load(getClass().getResource("/views/main.fxml"));
+        stage.setScene(new Scene(root, 300, 300));
 
-        Scene scene = new Scene(root, 300, 300);
-        stage.setScene(scene);
-        stage.show();
-
-        //prevent window becoming too small
+        //prevent window from becoming too small
         stage.setMinHeight(600);
         stage.setMinWidth(1200);
+
+        stage.show();
     }
 
-    private static String getAccessToken(String clientId, String clientSecret){
-        SpotifyApi spotifyApi = new SpotifyApi.Builder()
-                .setClientId(clientId)
-                .setClientSecret(clientSecret)
-                .build();
-        ClientCredentialsRequest clientCredentialsRequest = spotifyApi.clientCredentials() .build();
-
-        try{
-            final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
-            return clientCredentials.getAccessToken();
-        } catch (SpotifyWebApiException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static void main(String[] args) {
-        launch();
-    }
+    public static void main(String[] args) { launch(); }
 }

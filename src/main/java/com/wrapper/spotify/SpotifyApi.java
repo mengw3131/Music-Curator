@@ -3,6 +3,10 @@ package com.wrapper.spotify;
 import com.google.gson.JsonArray;
 import com.neovisionaries.i18n.CountryCode;
 import com.wrapper.spotify.enums.ModelObjectType;
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
+import com.wrapper.spotify.model_objects.specification.Paging;
+import com.wrapper.spotify.model_objects.specification.Track;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRefreshRequest;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
@@ -28,6 +32,7 @@ import com.wrapper.spotify.requests.data.tracks.*;
 import com.wrapper.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
 import com.wrapper.spotify.requests.data.users_profile.GetUsersProfileRequest;
 
+import java.io.IOException;
 import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -1827,6 +1832,56 @@ public class SpotifyApi {
     public SpotifyApi build() {
       return new SpotifyApi(this);
     }
+  }
+
+
+
+  // --------------------------------------------------------------------------------
+  // CUSTOM FUNCTIONS FOLLOW
+  // --------------------------------------------------------------------------------
+
+  /**
+   * Get access token given clientId and clientSecret
+   * @param clientId
+   * @param clientSecret
+   * @return access token
+   */
+  public static String getAccessToken(String clientId, String clientSecret){
+    SpotifyApi spotifyApi = new SpotifyApi.Builder()
+            .setClientId(clientId)
+            .setClientSecret(clientSecret)
+            .build();
+    ClientCredentialsRequest clientCredentialsRequest = spotifyApi.clientCredentials() .build();
+
+    try{
+      final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
+      return clientCredentials.getAccessToken();
+    } catch (SpotifyWebApiException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+
+  /**
+   * Get arrays of tracks given query and limit (max 50)
+   * @param query
+   * @param limit
+   * @return track arrays
+   */
+  public Track[] searchTracks(String query, int limit){
+    try {
+      Paging<Track> tracks_paging = this.searchTracks(query).limit(limit).build().execute();
+      return tracks_paging.getItems();
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (SpotifyWebApiException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 }
 

@@ -12,8 +12,8 @@
    <children>
       <AnchorPane fx:id="nowPlayingPane" minWidth="200.0" prefWidth="200.0" style="-fx-background-color: #DDDDDD;" HBox.hgrow="ALWAYS">
          <children>
-            <Label fx:id="songNameLabel" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="10.0" />
-            <Label fx:id="artistNameLabel" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="30.0" />
+            <Label fx:id="songNameLabel" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="10.0" />
+            <Label fx:id="artistNameLabel" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="30.0" />
             <ImageView fx:id="songCoverImageView" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="10.0" />
          </children></AnchorPane>
       <AnchorPane minWidth="700.0" prefHeight="200.0" prefWidth="700.0" style="-fx-background-color: #EEEEEE;">

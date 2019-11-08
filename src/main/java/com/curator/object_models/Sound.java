@@ -1,66 +1,82 @@
 package com.curator.object_models;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import java.io.File;
 
+/**
+ * Interface class for audio file.
+ *
+ */
 public class Sound {
-    private Clip clip;
-    private int currentFramePosition = 0;
+    private Media media;
+    private MediaPlayer mediaPlayer;
+    private String path;
 
-    public Sound(String fileName) {
-        try {
-            File file = new File(fileName);
-            if (file.exists()) {
-                clip = AudioSystem.getClip();
-                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
-                clip.open(audioInputStream);
-            }
-
-        } catch (Exception e) {
-        }
-    }
-    public Sound(File file) {
-        try {
-            if (file.exists()) {
-                clip = AudioSystem.getClip();
-                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
-                clip.open(audioInputStream);
-            }
-
-        } catch (Exception e) {
-        }
+    /**
+     * Constructor to Sound object
+     * @param path
+     */
+    public Sound(String path){
+        this.path = path;
+        media = new Media(new File(path).toURI().toString());
+        mediaPlayer = new MediaPlayer(media);
     }
 
+    /**
+     * Play audio file
+     */
     public void play(){
-        clip.setFramePosition(currentFramePosition);
-        clip.loop(0);
-        clip.start();
+        mediaPlayer.play();
     }
 
+    /**
+     * Stop audio file
+     */
     public void stop(){
-        clip.stop()
-        ;
+        mediaPlayer.stop();
     }
 
+    /**
+     * Pause audio file
+     */
     public void pause(){
-        currentFramePosition = clip.getFramePosition();
-        stop();
+        mediaPlayer.pause();
     }
 
+    /**
+     * Return length of audio file in seconds
+     * @return length of audio file in seconds
+     */
     public int length(){
-        return (int)clip.getMicrosecondLength() / 1000000;
+        return (int) mediaPlayer.getTotalDuration().toSeconds();
     }
 
-    public float getVolume() {
-        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        return (float) Math.pow(10f, gainControl.getValue() / 20f);
+
+
+
+    //TODO: fix volume slider in player + check logic/math
+    /**
+     * Set volume to be input volume. Volume range 0.0 - 1.0
+     * @param volume
+     */
+    public void setVolume(float volume){
+        mediaPlayer.setVolume(volume);
     }
 
-    public void setVolume(float volume) {
-        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(20f * (float) Math.log10(volume));
+    /**
+     * Return current volume, range 0.0 - 1.0
+     * @return current volume
+     */
+    public float getVolume(){
+        return (float) mediaPlayer.getVolume();
+    }
+
+    /**
+     * Return audio file path associated with Sound object
+     * @return audio file path
+     */
+    public String getPath() {
+        return path;
     }
 }

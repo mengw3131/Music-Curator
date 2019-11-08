@@ -15,7 +15,20 @@ import javafx.scene.layout.HBox;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+//TODO:
+//Current track playing position slider
+//Fix duration e.g. 6:7 vs 6:07
+//Next, prev, shuffle functionality
+//Volume slider starting point
+//When music finishes playing, change play button image back
+
+/**
+ * Controller to player.fxml
+ */
 public class PlayerController implements Initializable {
+    Song currentSong;
+    boolean isPlaying;
+    MainController mainController;
 
     @FXML
     HBox player;
@@ -47,77 +60,91 @@ public class PlayerController implements Initializable {
     @FXML
     Label endDurationLabel;
 
-
-    Song currentSong;
-    boolean playState;
-    MainController mainController;
-
+    /**
+     * Triggered when Play button in the player is clicked
+     *
+     * @param event - Mouse click event
+     */
     @FXML
     public void handlePlayButtonAction(ActionEvent event) {
         if (currentSong != null) {
-            playState = !playState;
+            isPlaying = !isPlaying;
 
-            if (playState) {
-                Image pause = new Image(getClass().getResourceAsStream("/icons/other/pause.png"));
-                ImageView imageView = new ImageView(pause);
-                imageView.setPreserveRatio(true);
-                imageView.setFitHeight(30);
-                imageView.setFitWidth(30);
-                playButton.setGraphic(imageView);
-
+            if (isPlaying) {
+                setPlayButtonImage(new Image("/icons/other/pause.png"));
                 currentSong.getSound().play();
                 setNowPlayingPane();
             } else {
-                Image play = new Image(getClass().getResourceAsStream("/icons/other/play.png"));
-                ImageView imageView = new ImageView(play);
-                imageView.setPreserveRatio(true);
-                imageView.setFitHeight(30);
-                imageView.setFitWidth(30);
-                playButton.setGraphic(imageView);
-
+                setPlayButtonImage(new Image("/icons/other/play.png"));
                 currentSong.getSound().pause();
             }
         }
     }
 
+    /**
+     * Initialize PlayerController
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        //TODO: get system volume level at start instead of using dummy number
+        //volume slider config
         volumeSlider.setMin(0.0);
         volumeSlider.setMax(1.0);
         volumeSlider.setValue(0.5); //set starting point
     }
 
+
+    /**
+     * Inject parent/container controller
+     *
+     * @param mainController
+     */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
-
+    /**
+     * TODO: change params to wrapper.Track instead of Song object
+     * TODO: double check the logic + corner cases
+     *
+     * Set current song to be the new song
+     * @param song
+     */
     public void setCurrentSong(Song song) {
-        this.playState = false;
+        this.isPlaying = false;
 
-        if (this.currentSong != null) {
-            this.currentSong.getSound().stop();
-            this.currentSong = song;
-            this.playButton.fire();
-        } else {
-            this.currentSong = song;
-            this.playButton.fire();
-        }
+        //stop previous song
+        if (this.currentSong != null) { this.currentSong.getSound().stop(); }
 
-        this.endDurationLabel.setText(
-                currentSong.getLength() / 60 + ":" + currentSong.getLength() % 60);
+        this.currentSong = song;
+        this.playButton.fire(); //play music
+
+        this.endDurationLabel.setText( currentSong.getLength() / 60 + ":" + currentSong.getLength() % 60);
 
         setNowPlayingPane();
-        System.out.println(song.getLength());
     }
 
+    /**
+     * TODO: make long song/artist name automatically scroll right to left OR use ellipsis
+     *
+     * Updates Now Playing pane with current information (on bottom right corner of the app)
+     *
+     */
     public void setNowPlayingPane() {
         songCoverImageView.setImage(currentSong.getCover());
-
         songNameLabel.setText(currentSong.getName());
         artistNameLabel.setText(currentSong.getArtist());
     }
 
+    /**
+     * TODO: testing + smoothing
+     *
+     * Trigerred when the volume slider position is changed
+     */
     @FXML
     public void changeVolume() {
         volumeSlider.valueProperty().addListener(
@@ -125,5 +152,21 @@ public class PlayerController implements Initializable {
                     currentSong.getSound().setVolume(newVal.floatValue());
                 }
         );
+    }
+
+
+    /**
+     * Change the play button image, e.g. play to pause
+     *
+     * @param image - new image
+     */
+    private void setPlayButtonImage(Image image) {
+        //change play button to image in filename
+        ImageView imageView = new ImageView(image);
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(30);
+        imageView.setFitWidth(30);
+
+        playButton.setGraphic(imageView);
     }
 }

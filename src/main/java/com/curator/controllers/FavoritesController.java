@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller to favorites.fxml
+ */
 public class FavoritesController implements Initializable {
     SpotifyApi api = Main.api;
 
@@ -28,21 +31,17 @@ public class FavoritesController implements Initializable {
        fillColumn();
     }
 
+    /**
+     * Get random
+     * @return
+     */
     public ObservableList<Track> getTracks(){
         ObservableList<Track> track_list = FXCollections.observableArrayList();
-        Paging<Track> tracks = null;
 
-        try {
-            tracks = api.searchTracks("Classical").limit(50).build().execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
-            e.printStackTrace();
-        }
-
-        for (Track track : tracks.getItems()){
+        for (Track track : api.searchTracks("Jazz", 10)){
             track_list.add(track);
         }
+
         return track_list;
     }
 

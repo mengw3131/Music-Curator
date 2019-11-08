@@ -3,6 +3,12 @@ package com.wrapper.spotify.model_objects.specification;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.gson.JsonObject;
 import com.wrapper.spotify.model_objects.AbstractModelObject;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.ImageView;
+
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * Retrieve information about
@@ -127,4 +133,20 @@ public class Image extends AbstractModelObject {
         .build();
     }
   }
+
+  // --------------------------------------------------------------------------------
+  // CUSTOM FUNCTIONS FOLLOW
+  // --------------------------------------------------------------------------------
+
+  public javafx.scene.image.Image getImage(){
+    try {
+      return SwingFXUtils.toFXImage(ImageIO.read(new URL(url)), null);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return null;
+
+  }
+
 }

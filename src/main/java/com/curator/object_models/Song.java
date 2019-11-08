@@ -3,8 +3,16 @@ package com.curator.object_models;
 
 import javafx.scene.image.Image;
 
+//TODO: deprecate in favor of Track
+//TODO: else, use builder pattern
+
+/**
+ * Song object with attributes. Song has reference to its audio file through Sound object.
+ *
+ */
 public class Song {
 
+    //attributes
     private String name;
     private String time;
     private String artist;
@@ -16,6 +24,15 @@ public class Song {
     private String filename;
     private Image cover;
 
+    /**
+     * Song object constructor
+     * @param filename
+     * @param name
+     * @param time
+     * @param artist
+     * @param album
+     * @param genre
+     */
     public Song(String filename, String name, String time, String artist, String album, String genre){
         this.filename = filename;
         this.cover = new Image(getClass().getResourceAsStream("/icons/musical-note.png"));

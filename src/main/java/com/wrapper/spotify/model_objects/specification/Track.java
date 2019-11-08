@@ -75,9 +75,9 @@ public class Track extends AbstractModelObject implements IArtistTrackModelObjec
     this.albumString = album.getName();
 
     System.out.println(name + " created");
-    System.out.println("durms" + durationMs + "dursec" + durSecond);
-    System.out.println("albumStr" + albumString);
-    System.out.println("artistStr" + artists);
+//    System.out.println("durms" + durationMs + "dursec" + durSecond);
+//    System.out.println("albumStr" + albumString);
+//    System.out.println("artistStr" + artists);
 
 
   }
