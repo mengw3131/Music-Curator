@@ -18,7 +18,7 @@ public class YoutubeTools {
 
     //Pattern matches /watch?v=[video id], compile once only, for performance
     //Design note: avoid using doc based selector(e.g. JSoup) for matching,
-    //  since they won't work if youtube changes the structure
+    //since they won't work if youtube changes the structure
     private static Pattern p = Pattern.compile("(/watch\\?v=|\\.be/)([\\w\\-_]*)(&(amp;)?\u200C\u200B[\\w?\u200C\u200B=]*)?");
 
     /**
@@ -66,15 +66,29 @@ public class YoutubeTools {
     public static Sound getMusicFileFromYoutubeId(String id){
 
         //TODO: optimize
-        PythonInterpreter i = new PythonInterpreter();
+        //TODO: suppress python output
+
+        //sys.path contains current working directory of Jython, which is in the same dir with youtube-dl/.
+        //e.g.print(sys.path) prints
+        //      ['/home/username/MusicCurator/lib/Lib',
+        //      '/home/username/MusicCurator/lib/jython-standalone-2.7.2b2.jar/Lib',
+        //      '__classpath__', '__pyclasspath__/']
         i.exec("import sys");
-        i.exec("sys.path.append('../youtube-dl-master')");
+
+        //add to path '/home/username/Documents/MusicCurator/lib/youtube-dl-master'
+        i.exec("sys.path.append(sys.path[0][:-4] + '/youtube-dl-master')");
+
+        // now can import youtube_dl
         i.exec("import youtube_dl");
+
+        //outtmpl: set output dir and filename.
+        //For more see https://github.com/ytdl-org/youtube-dl#output-template-and-windows-batch-files
         i.exec("ydl_opts = {" +
                 "'outtmpl' : 'src/main/res/music/" + id + ".%(ext)s', " +
                 "'format':'bestaudio/best', " +
                 "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
         );
+
         i.exec("with youtube_dl.YoutubeDL(ydl_opts) as ydl: ydl.download(['https://www.youtube.com/watch?v=" + id + "'])");
 
         return new Sound( "src/main/res/music/" + id + ".mp3");
@@ -105,10 +119,5 @@ public class YoutubeTools {
             s.append(keyword.replace(" ", "+")).append("+");
         }
         return s.toString();
-    }
-
-    public static void main(String[] args) {
-//        System.out.println(getBestMatchYoutubeVideoId("Ninth Symphony Beethoven"));
-//        getMusicFileFromYoutubeId("http://www.youtube.com/watch?v=rtOvBOTyX00");
     }
 }
