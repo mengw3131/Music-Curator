@@ -16,7 +16,28 @@ The music recommender will be a program with a user GUI that takes in a user’s
 * Removes suggestions they don’t like and any other artists who are too similar
 If a user likes a suggestion, the recommendation list will update with more artists similar to the liked suggestion
 
+### Running on Eclipse:
+##### Cloning Repository
+1. File -> Import... -> Git -> Projects from Git (with smart import) -> Clone URI
+2. Under "Location" fields, set "URI": https://github.com/UPenn-CIT599/final-project-music-curator. Set "Host": github.com. Set "Repository Path": /UPenn-CIT599/final-project-music-curator. 
+3. Under "Connection", set "Protocol": https. Under "Authentication", fill your github username and password. Click Next.
+4. Select "master" branch. Next, select desired directory or leave the default setting. 
+5. Next, cloning begins. Once finished, click "Finish".
 
+##### Set Run Configuration
+6. From menu bar, "Run" -> "Run Configuration".
+7. On the left, select "Java Application", then click "New launch coniguration" on top left corner (blank paper icon).
+8. On the newly created configuration select "Main" tab, set "Name" to "Main". On the "Main class" path, click "Search..." and select "Main - com.curator" under "Matching items". Press OK.
+9. On the same run configuration select "Arguments" tab, set "VM arguments" as 
+"--module-path <FULL_PATH_TO_LIB_FOLDER> --add-modules javafx.controls,javafx.base,javafx.graphics,javafx.fxml". 
+10. Change FULL_PATH_TO_LIB_FOLDER to full path to "final-project-music-curator/lib", e.g. /home/username/eclipse-workspace/final-project-music-curator/lib. Then click "Apply" and "Close".
+
+##### Set Resource Folder
+11. From the menu bar click "Project -> "Properties".
+12. Choose "Java Build Path". Select "Source" tab.
+13. Select "Add Folder...", and select "res" folder under "src/main". Press OK. Press "Apply and Close".
+
+Project is ready to run. Go to "Run" -> "Run".
 
 #### Team 71
 * Isaac Longkutoy ([islong@seas.upenn.edu](mailto:islong@seas.upenn.edu)) 
