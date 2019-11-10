@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="220.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <HBox alignment="CENTER" prefHeight="200.0">
+         <children>
+            <Pane prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fx:id="trackImage" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/musical-note.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="trackLabel" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="trackArtist" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="46.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/other/play.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="90.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/heart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/copy.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fx:id="trackImage1" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/musical-note.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="trackLabel1" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="trackArtist1" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="46.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/other/play.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="90.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/heart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/copy.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fx:id="trackImage2" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/musical-note.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="trackLabel2" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="trackArtist2" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="46.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/other/play.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="90.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/heart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/copy.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fx:id="trackImage3" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/musical-note.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="trackLabel3" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="trackArtist3" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="46.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/other/play.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="90.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/heart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/copy.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fx:id="trackImage4" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/musical-note.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="trackLabel4" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="trackArtist4" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="46.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/other/play.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="90.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/heart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/copy.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fx:id="trackImage5" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/musical-note.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="trackLabel5" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="trackArtist5" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="46.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/other/play.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="90.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/heart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/copy.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fx:id="trackImage6" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/musical-note.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="trackLabel6" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="trackArtist6" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="46.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/other/play.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="90.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/heart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/copy.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fx:id="trackImage7" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/musical-note.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="trackLabel7" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="trackArtist7" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="46.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/other/play.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="90.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/heart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/copy.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </HBox>
+   </content>
+</ScrollPane>

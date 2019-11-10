@@ -2,22 +2,20 @@ package com.curator.controllers;
 
 import com.curator.Main;
 import com.curator.YoutubeTools;
-import com.curator.object_models.Song;
-import com.curator.object_models.Sound;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.model_objects.specification.Track;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.media.Media;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -44,76 +42,119 @@ public class HomeController implements Initializable {
     VBox topRecommendationVBox;
 
 
-    //TODO: home page loads too slow: for performance, create 6-pane HBox instead creating one by one
-
-
     //TODO: on mouse hover, dim background, show play button
-    /**
-     * Create a track pane from Track object. Plays music on click.
-     * @param track
-     * @return
-     */
-    public AnchorPane createTrackPane(Track track) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/songpane.fxml"));
-        AnchorPane pane = null;
-
-        try {
-            pane = loader.load();
-
-            //set track cover image
-            ImageView imageView = (ImageView) pane.getChildren().get(0);
-            imageView.setImage(track.getAlbum().getImages()[0].getImage());
-
-            //set track name and artist name labels
-            Label trackName = (Label)pane.getChildren().get(1);
-            Label trackArtist = (Label)pane.getChildren().get(2);
-            trackName.setText(track.getName());
-            trackArtist.setText(track.getArtistsString());
-
-            //handle image on click
-            imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    Sound sound = YoutubeTools.getMusicFileFromQuery(
-                            YoutubeTools.createYoutubeQuery(track.getName(), track.getArtistsString())
-                    );
-                    Song song = new Song(sound.getPath(),
-                            track.getName(), String.valueOf(sound.length()),track.getArtistsString(),
-                            track.getAlbumString(),"");
-                    playerController.setCurrentSong(song);
-
-                    event.consume();
-                }
-            });
-
-            pane.getChildren().set(0, imageView);
-            pane.getChildren().set(1, trackName);
-            pane.getChildren().set(2, trackArtist);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return pane;
-    }
+    //TODO: OPTIMIZE performance
 
     /**
-     * Creates a horizontal box of track panes. Default of 6 tracks.
+     * Creates a horizontal box of track panes. Default of 8 tracks.
      *
      * @param tracks
      * @return HBox of track panes in tracks
      */
-    public HBox createRecommendationBox(Track[] tracks){
-        HBox hBox = new HBox();
-        hBox.prefWidthProperty().bind(mainScrollPane.widthProperty());
-        hBox.minHeight(150);
-        hBox.setPrefHeight(150);
-        hBox.setAlignment(Pos.TOP_CENTER);
+    public ScrollPane createRecommendationBox(Track[] tracks){
 
-        for (Track track:tracks) {
-            hBox.getChildren().add(createTrackPane(track));
+        /*
+          Nodes Hierarchy:
+
+          ScrollPane (isPannable true (can drag horizontally by mouse), hbarPolicy NEVER (hide scrollbar))
+             HBox
+                Pane (one for each track, default 8 panes)
+                  ImageView (for track image)
+                  Label (track name)
+                  Label (track artist)
+                  ImageView (for in-pane play button)
+                  ImageView (for in-pane heart button)
+                  ImageView (for in-pane addToPlaylist button)
+        */
+        ScrollPane pane = null;
+
+        try {
+            pane = new FXMLLoader(getClass().getResource("/views/tracks_hbox.fxml")).load();
+            pane.prefWidthProperty().bind(mainScrollPane.widthProperty());
+
+            HBox box = (HBox)pane.getContent();
+
+            //loop on each music pane in HBox
+            for (int i = 0; i < ((HBox)pane.getContent()).getChildren().size(); i++) {
+                Track track = tracks[i];
+                Pane subPane = (Pane)box.getChildren().get(i);
+                ImageView trackImage = (ImageView) subPane.getChildren().get(0);
+                Label trackName = (Label)subPane.getChildren().get(1);
+                Label trackArtist = (Label)subPane.getChildren().get(2);
+                ImageView inPanePlayButton = (ImageView) subPane.getChildren().get(3);
+                ImageView inPaneHeartButton = (ImageView) subPane.getChildren().get(4);
+                ImageView inPaneAddToPlaylistButton = (ImageView) subPane.getChildren().get(5);
+
+                trackImage.setImage(track.getAlbum().getImages()[0].getImage());
+                trackName.setText(track.getName());
+                trackArtist.setText(track.getArtistsString());
+
+
+                //when mouse enter the pane
+                subPane.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        trackImage.setOpacity(0.2);
+                        inPanePlayButton.setOpacity(1);
+                        inPaneHeartButton.setOpacity(1);
+                        inPaneAddToPlaylistButton.setOpacity(1);
+
+                        inPanePlayButton.setDisable(false);
+                        inPaneHeartButton.setDisable(false);
+                        inPaneAddToPlaylistButton.setDisable(false);
+                    }
+                });
+
+                //when mouse exit the pane
+                subPane.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        trackImage.setOpacity(1);
+                        inPanePlayButton.setOpacity(0);
+                        inPaneHeartButton.setOpacity(0);
+                        inPaneAddToPlaylistButton.setOpacity(0);
+
+                        inPanePlayButton.setDisable(true);
+                        inPaneHeartButton.setDisable(true);
+                        inPaneAddToPlaylistButton.setDisable(true);
+                    }
+                });
+
+                //when play button inside pane is clicked
+                inPanePlayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        Media media = YoutubeTools.getMusicFileFromQuery(
+                                YoutubeTools.createYoutubeQuery(track.getName(), track.getArtistsString())
+                        );
+                        track.setMediaFile(media);
+                        playerController.setCurrentTrack(track);
+                        event.consume();
+                    }
+                });
+
+                //when addToPlaylist button inside pane is clicked
+                inPaneAddToPlaylistButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        //TODO: IMPLEMENT
+                        System.out.println("playlist clicked");
+                    }
+                });
+
+                //when addToPlaylist button inside pane is clicked
+                inPaneHeartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        //TODO: IMPLEMENT
+                        System.out.println("heart clicked");
+                    }
+                });
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        return hBox;
+        return pane;
     }
 
 
@@ -128,29 +169,18 @@ public class HomeController implements Initializable {
         //this method currently contains placeholder values
         //this is supposed to be the receiver of the recommendation model
 
-
-
-        //set background color
-        mainScrollPane.setBackground(new Background(new BackgroundFill(Color.rgb(255, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
-
-        //hide horizontal & vertical scroll bar
-        mainScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        mainScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
-        //set top recommendation container height's to follow mainScrollPane's
-        topRecommendationVBox.prefWidthProperty().bind(mainScrollPane.widthProperty());
-
-
         //Set placeholder values
         Label label = new Label("Top Recommendation");
         label.setFont(Font.font("Calibri", FontWeight.EXTRA_LIGHT, 35));
         label.setAlignment(Pos.TOP_LEFT);
         topRecommendationVBox.getChildren().add(label);
 
-        Track[] tracks =  api.searchTracks("Ella Fitzgerald", 6);
+        System.out.print("Getting 8 tracks... ");
+        Track[] tracks =  api.searchTracks("Claude Debussy", 8);
+        System.out.println("Done");
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
 
-        tracks = api.searchTracks("Louis Armstrong", 6);
+//        tracks = api.searchTracks("Louis Armstrong", 6);
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
 
         Label label2 = new Label("Hot This Week");
@@ -158,7 +188,7 @@ public class HomeController implements Initializable {
         label2.setAlignment(Pos.TOP_LEFT);
         topRecommendationVBox.getChildren().add(label2);
 
-        tracks = api.searchTracks("Al Bowlly", 6);
+//        tracks = api.searchTracks("Al Bowlly", 6);
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
 
         Label label3 = new Label("Mood");
@@ -166,19 +196,12 @@ public class HomeController implements Initializable {
         label3.setAlignment(Pos.TOP_LEFT);
         topRecommendationVBox.getChildren().add(label3);
 
-        tracks = api.searchTracks("Calm", 6);
+//        tracks = api.searchTracks("Calm", 6);
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
-
-
-
-
-        //TODO: Fix scroll to the bottom issues
-        mainScrollPane.setContent(topRecommendationVBox);
-        mainScrollPane.setMaxHeight(500);
     }
 
     /**
@@ -202,7 +225,5 @@ public class HomeController implements Initializable {
      * @param api
      */
     public void setApi(SpotifyApi api) { this.api = api; }
-
-
 
 }

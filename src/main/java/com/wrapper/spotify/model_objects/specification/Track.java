@@ -9,6 +9,9 @@ import com.wrapper.spotify.model_objects.AbstractModelObject;
 import com.wrapper.spotify.model_objects.miscellaneous.Restrictions;
 import com.wrapper.spotify.requests.data.personalization.interfaces.IArtistTrackModelObject;
 import com.wrapper.spotify.requests.data.search.interfaces.ISearchModelObject;
+import javafx.scene.media.Media;
+
+import java.io.File;
 
 /**
  * Retrieve information about <a href="https://developer.spotify.com/web-api/object-model/#track-object-full">
@@ -36,7 +39,9 @@ public class Track extends AbstractModelObject implements IArtistTrackModelObjec
   private final ModelObjectType type;
   private final String uri;
 
-  //My variables
+  private Media mediaFile;
+
+  //Custom variables
   private final String albumString;
   private final String artistsString;
   private final String durationString;
@@ -63,22 +68,17 @@ public class Track extends AbstractModelObject implements IArtistTrackModelObjec
     this.trackNumber = builder.trackNumber;
     this.type = builder.type;
     this.uri = builder.uri;
+    this.mediaFile = builder.mediaFile;
 
     //------------------------------------
     StringBuilder sb = new StringBuilder();
     for (ArtistSimplified as: artists) { sb.append(as.getName()).append(", "); }
-    this.artistsString = sb.toString().substring(0, sb.toString().length() - 1);
+    this.artistsString = sb.toString().substring(0, sb.toString().length() - 2);
 
     int durSecond = durationMs / 1000;
     this.durationString = durSecond / 60 + ":" + durSecond % 60;
 
     this.albumString = album.getName();
-
-    System.out.println(name + " created");
-//    System.out.println("durms" + durationMs + "dursec" + durSecond);
-//    System.out.println("albumStr" + albumString);
-//    System.out.println("artistStr" + artists);
-
 
   }
 
@@ -281,7 +281,7 @@ public class Track extends AbstractModelObject implements IArtistTrackModelObjec
     return uri;
   }
 
-
+  public Media getMediaFile(){ return mediaFile; }
 
 
   //------------------------------------------
@@ -320,6 +320,8 @@ public class Track extends AbstractModelObject implements IArtistTrackModelObjec
     private Integer trackNumber;
     private ModelObjectType type;
     private String uri;
+
+    private Media mediaFile;
 
     /**
      * Set the album of the track to be built.
@@ -536,11 +538,25 @@ public class Track extends AbstractModelObject implements IArtistTrackModelObjec
       return this;
     }
 
+
+
+
     @Override
     public Track build() {
       return new Track(this);
     }
   }
+
+
+  //CUSTOM SETTERS
+
+  /**
+   * Set media file associated with the track to be built
+   * @param media The JavaFX Media object for the track
+   * @return A {@link Builder}
+   */
+  public void setMediaFile(Media media){ this.mediaFile = media; }
+
 
   /**
    * JsonUtil class for building {@link Track} instances.

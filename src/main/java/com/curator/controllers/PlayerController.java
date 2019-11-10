@@ -1,6 +1,6 @@
 package com.curator.controllers;
 
-import com.curator.object_models.Song;
+import com.wrapper.spotify.model_objects.specification.Track;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.MediaPlayer;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -26,9 +27,11 @@ import java.util.ResourceBundle;
  * Controller to player.fxml
  */
 public class PlayerController implements Initializable {
-    Song currentSong;
+//    Song currentSong;
     boolean isPlaying;
     MainController mainController;
+    MediaPlayer mediaPlayer;
+    Track currentTrack;
 
     @FXML
     HBox player;
@@ -67,16 +70,15 @@ public class PlayerController implements Initializable {
      */
     @FXML
     public void handlePlayButtonAction(ActionEvent event) {
-        if (currentSong != null) {
+        if (currentTrack != null){
             isPlaying = !isPlaying;
-
-            if (isPlaying) {
+            if (isPlaying){
                 setPlayButtonImage(new Image("/icons/other/pause.png"));
-                currentSong.getSound().play();
+                mediaPlayer.play();
                 setNowPlayingPane();
             } else {
                 setPlayButtonImage(new Image("/icons/other/play.png"));
-                currentSong.getSound().pause();
+                mediaPlayer.pause();
             }
         }
     }
@@ -90,11 +92,10 @@ public class PlayerController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //TODO: get system volume level at start instead of using dummy number
         //volume slider config
         volumeSlider.setMin(0.0);
         volumeSlider.setMax(1.0);
-        volumeSlider.setValue(0.5); //set starting point
+        volumeSlider.setValue(0.5); //set dummy, getting current system volume is complicated
     }
 
 
@@ -112,18 +113,17 @@ public class PlayerController implements Initializable {
      * TODO: double check the logic + corner cases
      *
      * Set current song to be the new song
-     * @param song
+     * @param track
      */
-    public void setCurrentSong(Song song) {
+    public void setCurrentTrack(Track track) {
+
         this.isPlaying = false;
+        if (this.currentTrack != null){ mediaPlayer.stop();}
 
-        //stop previous song
-        if (this.currentSong != null) { this.currentSong.getSound().stop(); }
-
-        this.currentSong = song;
-        this.playButton.fire(); //play music
-
-        this.endDurationLabel.setText( currentSong.getLength() / 60 + ":" + currentSong.getLength() % 60);
+        currentTrack =  track;
+        mediaPlayer = new MediaPlayer(track.getMediaFile());
+        this.playButton.fire();
+        this.endDurationLabel.setText(track.getDurationString());
 
         setNowPlayingPane();
     }
@@ -135,9 +135,9 @@ public class PlayerController implements Initializable {
      *
      */
     public void setNowPlayingPane() {
-        songCoverImageView.setImage(currentSong.getCover());
-        songNameLabel.setText(currentSong.getName());
-        artistNameLabel.setText(currentSong.getArtist());
+        songCoverImageView.setImage(currentTrack.getAlbum().getImages()[0].getImage());
+        songNameLabel.setText(currentTrack.getName());
+        artistNameLabel.setText(currentTrack.getArtistsString());
     }
 
     /**
@@ -149,7 +149,7 @@ public class PlayerController implements Initializable {
     public void changeVolume() {
         volumeSlider.valueProperty().addListener(
                 (observable, oldVal, newVal) -> {
-                    currentSong.getSound().setVolume(newVal.floatValue());
+                    mediaPlayer.setVolume(newVal.doubleValue());
                 }
         );
     }

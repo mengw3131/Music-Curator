@@ -25,6 +25,9 @@ public class MainController implements Initializable {
     private PlayerController playerController;
     private HomeController homeController;
 
+    //set reuseable loader to improve performance
+    FXMLLoader loader;
+
     @FXML
     AnchorPane mainPane;
 
@@ -58,20 +61,28 @@ public class MainController implements Initializable {
     private void handleHomeButtonAction(ActionEvent event) throws IOException {
         mainPane.getChildren().clear();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/home.fxml"));
-        HBox home = loader.load();
+        loader = new FXMLLoader(getClass().getResource("/views/home.fxml"));
 
-        //set width and height to follow container pane (for resizing)
+        BorderPane home = loader.load();
+        ScrollPane scrollPane = (ScrollPane) home.getChildren().get(0);
+
+        //set BorderPane to follow mainpane's dimension (for resizing)
+        home.prefHeightProperty().bind(mainPane.heightProperty());
         home.prefWidthProperty().bind(mainPane.widthProperty());
-        home.prefHeightProperty().bind(mainPane.widthProperty());
 
-        //set mainpane to be HBox from home.fxml
+        //hide horizontal and vertical scrollbar
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        //
+        scrollPane.setMinWidth(800);
+        scrollPane.setMaxWidth(1000);
+
+        //set mainpane to be BorderPane from home.fxml
         mainPane.getChildren().setAll(home);
 
-        //get controller of home.fxml
-        homeController = loader.getController();
-
         //pass parent controller to child
+        homeController = loader.getController(); //get controller of home.fxml
         homeController.setMainController(this);
         homeController.setPlayerController(playerController);
     }
@@ -104,7 +115,7 @@ public class MainController implements Initializable {
     private void handleFavoritesButtonAction(ActionEvent event) throws IOException {
         mainPane.getChildren().clear();
 
-        TableView tableView = FXMLLoader.load(getClass().getResource("/views/favorites.fxml"));
+        TableView tableView = loader.load(getClass().getResource("/views/favorites.fxml"));
 
         //set tableview to fill the whole container upon resize
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -176,7 +187,7 @@ public class MainController implements Initializable {
      */
     private void loadPlayer() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/player.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/views/player.fxml"));
 
             HBox player = loader.load();
 
