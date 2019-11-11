@@ -12,35 +12,47 @@ import java.util.HashMap;
  *         user-provided songs are used to narrow down the Spotify song
  *         database. Then, each of the songs in the narrowed down pool are given
  *         a similarity score. Lastly, the songs with the highest similarity
- *         score are placed in the recommendation list.
+ *         score are placed in the recommendation playlist.
  */
 public class SongRecommender {
-	ArrayList<Song> userLikes;
-	ArrayList<Song> recommendationPool;
-	HashMap<Song, Double> userRecs;
-	ArrayList<Song> songPool;
+	ArrayList<Song> userLikes; // stores the user provided songs
+	HashMap<Song, Double> userRecs; // stores songs from the Spotify database
+									// and their similarity scores
+	ArrayList<Song> songPool; // stores the narrowed-down pool of songs from
+								// Spotify from the same genre as the
+								// user-provided songs
 
 	// Constructor
-	SongRecommender(ArrayList<Song> song_inputs) {
+	public SongRecommender(ArrayList<Song> song_inputs) {
 		this.userLikes = song_inputs;
 	}
 
 	// Methods
 
+	/**
+	 * 
+	 * @return userLikes The ArrayList of Songs that the user has provided
+	 */
 	public ArrayList<Song> getUserLikes() {
 		return userLikes;
 	}
 
+	/**
+	 * 
+	 * @return songPool The ArrayList of Songs from which recommendations will
+	 *         be pulled
+	 */
 	public ArrayList<Song> getSongPool() {
 		return songPool;
 	}
 
+	/**
+	 * 
+	 * @return userRecs The HashMap of containing the songs from songPool and
+	 *         their similarity scores
+	 */
 	public HashMap<Song, Double> getUserRecs() {
 		return userRecs;
-	}
-
-	public ArrayList<Song> getRecommendationPool() {
-		return recommendationPool;
 	}
 
 	/**
