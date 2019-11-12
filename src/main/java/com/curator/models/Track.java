@@ -1,6 +1,6 @@
 package com.curator.models;
 
-import com.curator.SpotifyTools;
+import com.curator.tools.SpotifyTools;
 import com.wrapper.spotify.model_objects.specification.AudioFeatures;
 
 import java.util.ArrayList;

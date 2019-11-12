@@ -1,4 +1,4 @@
-package com.curator;
+package com.curator.tools;
 
 import com.curator.models.Album;
 import com.curator.models.Artist;

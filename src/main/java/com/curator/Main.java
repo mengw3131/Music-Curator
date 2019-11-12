@@ -1,5 +1,7 @@
 package com.curator;
 
+import com.curator.tools.SpotifyTools;
+import com.curator.tools.YoutubeTools;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

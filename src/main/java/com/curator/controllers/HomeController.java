@@ -1,10 +1,9 @@
 package com.curator.controllers;
 
 import com.curator.Main;
-import com.curator.YoutubeTools;
+import com.curator.tools.YoutubeTools;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.model_objects.specification.Track;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
