@@ -31,6 +31,7 @@ public class HomeController implements Initializable {
     SpotifyApi api = Main.api;
     MainController mainController;
     PlayerController playerController;
+    FXMLLoader loader = new FXMLLoader();
 
     @FXML
     ScrollPane mainScrollPane;
@@ -44,6 +45,9 @@ public class HomeController implements Initializable {
 
     //TODO: on mouse hover, dim background, show play button
     //TODO: OPTIMIZE performance
+
+
+
 
     /**
      * Creates a horizontal box of track panes. Default of 8 tracks.
@@ -175,6 +179,7 @@ public class HomeController implements Initializable {
         label.setAlignment(Pos.TOP_LEFT);
         topRecommendationVBox.getChildren().add(label);
 
+
         System.out.print("Getting 8 tracks... ");
         Track[] tracks =  api.searchTracks("Claude Debussy", 8);
         System.out.println("Done");
@@ -197,10 +202,6 @@ public class HomeController implements Initializable {
         topRecommendationVBox.getChildren().add(label3);
 
 //        tracks = api.searchTracks("Calm", 6);
-        topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
-        topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
-        topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
-        topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
     }
 

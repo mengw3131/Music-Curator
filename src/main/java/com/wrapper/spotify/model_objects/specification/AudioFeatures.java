@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.wrapper.spotify.enums.Modality;
 import com.wrapper.spotify.enums.ModelObjectType;
 import com.wrapper.spotify.model_objects.AbstractModelObject;
+import com.wrapper.spotify.requests.data.tracks.GetAudioFeaturesForTrackRequest;
 
 /**
  * Retrieve information about <a href="https://developer.spotify.com/web-api/object-model/#audio-features-object">
@@ -556,4 +557,5 @@ public class AudioFeatures extends AbstractModelObject {
         .build();
     }
   }
+
 }

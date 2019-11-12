@@ -24,6 +24,13 @@ public class MainController implements Initializable {
     SpotifyApi api = Main.api;
     private PlayerController playerController;
     private HomeController homeController;
+    private DiscoverController discoverController;
+
+    private BorderPane homePane;
+    private BorderPane discoverPane;
+    private TableView favoritesTable;
+
+
 
     //set reuseable loader to improve performance
     FXMLLoader loader;
@@ -33,6 +40,9 @@ public class MainController implements Initializable {
 
     @FXML
     Button homeButton;
+
+    @FXML
+    Button discoverButton;
 
     @FXML
     Button myMusicButton;
@@ -52,6 +62,32 @@ public class MainController implements Initializable {
     @FXML
     HBox playerContainer;
 
+    private void hideAllMainPane(){
+        if (homePane != null) {
+            homePane.setVisible(false);
+        }
+
+        if (favoritesTable != null) {
+            favoritesTable.setVisible(false);
+        }
+
+        if (discoverPane != null){
+            discoverPane.setVisible(false);
+        }
+    }
+
+    private void untoggleAllButton(){
+           homeButton.setStyle("-fx-background-color: none;");
+           discoverButton.setStyle("-fx-background-color: none;");
+           favoritesButton.setStyle("-fx-background-color: none;");
+           madeForYouButton.setStyle("-fx-background-color: none;");
+           myMusicButton.setStyle("-fx-background-color: none;");
+           playlistsButton.setStyle("-fx-background-color: none;");
+           profileButton.setStyle("-fx-background-color: none;");
+    }
+
+
+
     /**
      * Triggered when home button in the left bar is clicked
      *
@@ -59,32 +95,86 @@ public class MainController implements Initializable {
      */
     @FXML
     private void handleHomeButtonAction(ActionEvent event) throws IOException {
-        mainPane.getChildren().clear();
+        hideAllMainPane();
+        untoggleAllButton();
+        homeButton.setStyle("-fx-background-color: lightgrey;");
 
-        loader = new FXMLLoader(getClass().getResource("/views/home.fxml"));
+        if (homePane == null){
+            loader = new FXMLLoader(getClass().getResource("/views/home.fxml"));
 
-        BorderPane home = loader.load();
-        ScrollPane scrollPane = (ScrollPane) home.getChildren().get(0);
+            homePane = loader.load();
+            ScrollPane scrollPane = (ScrollPane) homePane.getChildren().get(0);
 
-        //set BorderPane to follow mainpane's dimension (for resizing)
-        home.prefHeightProperty().bind(mainPane.heightProperty());
-        home.prefWidthProperty().bind(mainPane.widthProperty());
+            //set BorderPane to follow mainpane's dimension (for resizing)
+            homePane.prefHeightProperty().bind(mainPane.heightProperty());
+            homePane.prefWidthProperty().bind(mainPane.widthProperty());
 
-        //hide horizontal and vertical scrollbar
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            //hide horizontal and vertical scrollbar
+            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        //
-        scrollPane.setMinWidth(800);
-        scrollPane.setMaxWidth(1000);
+            //
+            scrollPane.setMinWidth(800);
+            scrollPane.setMaxWidth(1000);
 
-        //set mainpane to be BorderPane from home.fxml
-        mainPane.getChildren().setAll(home);
+            //set mainpane to be BorderPane from home.fxml
+            mainPane.getChildren().add(homePane);
 
-        //pass parent controller to child
-        homeController = loader.getController(); //get controller of home.fxml
-        homeController.setMainController(this);
-        homeController.setPlayerController(playerController);
+            //pass parent controller to child
+            homeController = loader.getController(); //get controller of home.fxml
+            homeController.setMainController(this);
+            homeController.setPlayerController(playerController);
+        }
+
+        homePane.setVisible(true);
+    }
+
+    @FXML
+    private void handleDiscoverButtonAction(ActionEvent event){
+        hideAllMainPane();
+        untoggleAllButton();
+        discoverButton.setStyle("-fx-background-color: lightgrey;");
+
+        if (discoverPane == null){
+            loader = new FXMLLoader(getClass().getResource("/views/discover.fxml"));
+            try {
+                discoverPane = loader.load();
+                /*
+                   Hierarchy
+                   BorderPane
+                      ScrollPane
+                      AnchorPane
+                      AnchorPane
+                      SearchBar
+                 */
+                ScrollPane scrollPane = (ScrollPane) discoverPane.getChildren().get(0);
+                VBox discoverVBox = (VBox) scrollPane.getContent();
+
+                //set BorderPane to follow mainpane's dimension (for resizing)
+                discoverPane.prefHeightProperty().bind(mainPane.heightProperty());
+                discoverPane.prefWidthProperty().bind(mainPane.widthProperty());
+
+                //set mainpane to be BorderPane from home.fxml
+                mainPane.getChildren().add(discoverPane);
+
+                //hide horizontal and vertical scrollbar
+                scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+                scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+                scrollPane.setMinWidth(800);
+                scrollPane.setMaxWidth(1000);
+
+                //center the vbox and its children (incl. search bar
+                discoverVBox.prefWidthProperty().bind(scrollPane.widthProperty());
+
+                discoverController = loader.getController(); //get controller of discover.fxml
+                discoverController.setMainController(this);
+                discoverController.setPlayerController(playerController);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        discoverPane.setVisible(true);
     }
 
     /**
@@ -94,7 +184,9 @@ public class MainController implements Initializable {
      */
     @FXML
     private void handleMyMusicButtonAction(ActionEvent event) {
-        mainPane.getChildren().clear();
+        hideAllMainPane();
+        untoggleAllButton();
+        myMusicButton.setStyle("-fx-background-color: lightgrey;");
 
         //TODO: TO BE IMPLEMENTED
 
@@ -102,7 +194,7 @@ public class MainController implements Initializable {
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.getChildren().add(new Label("My Music page"));
         mainPane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
-        mainPane.getChildren().setAll(anchorPane);
+        mainPane.getChildren().add(anchorPane);
     }
 
     /**
@@ -113,19 +205,25 @@ public class MainController implements Initializable {
      */
     @FXML
     private void handleFavoritesButtonAction(ActionEvent event) throws IOException {
-        mainPane.getChildren().clear();
+        hideAllMainPane();
+        untoggleAllButton();
+        favoritesButton.setStyle("-fx-background-color: lightgrey;");
 
-        TableView tableView = loader.load(getClass().getResource("/views/favorites.fxml"));
 
-        //set tableview to fill the whole container upon resize
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        if (favoritesTable == null) {
+            favoritesTable = loader.load(getClass().getResource("/views/favorites.fxml"));
 
-        //set tableview to follow container's width and height (for resizing)
-        tableView.prefWidthProperty().bind(mainPane.widthProperty());
-        tableView.prefHeightProperty().bind(mainPane.heightProperty());
+            //set tableview to fill the whole container upon resize
+            favoritesTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        //set mainpane to be tableview from favorites.fxml
-        mainPane.getChildren().setAll(tableView);
+            //set tableview to follow container's width and height (for resizing)
+            favoritesTable.prefWidthProperty().bind(mainPane.widthProperty());
+            favoritesTable.prefHeightProperty().bind(mainPane.heightProperty());
+
+            //set mainpane to be tableview from favorites.fxml
+            mainPane.getChildren().add(favoritesTable);
+        }
+        favoritesTable.setVisible(true);
     }
 
     /**
@@ -135,7 +233,10 @@ public class MainController implements Initializable {
      */
     @FXML
     private void handleMadeForYouButtonAction(ActionEvent event) {
-        mainPane.getChildren().clear();
+        hideAllMainPane();
+        untoggleAllButton();
+        madeForYouButton.setStyle("-fx-background-color: lightgrey;");
+
 
         //TODO: TO BE IMPLEMENTED
 
@@ -153,7 +254,10 @@ public class MainController implements Initializable {
      */
     @FXML
     private void handlePlaylistsButtonAction(ActionEvent event) {
-        mainPane.getChildren().clear();
+        hideAllMainPane();
+        untoggleAllButton();
+        playlistsButton.setStyle("-fx-background-color: lightgrey;");
+
 
         //TODO: TO BE IMPLEMENTED
 
@@ -161,7 +265,7 @@ public class MainController implements Initializable {
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.getChildren().add(new Label("Playlist page"));
         mainPane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
-        mainPane.getChildren().setAll(anchorPane);
+        mainPane.getChildren().add(anchorPane);
     }
 
     /**
@@ -171,7 +275,11 @@ public class MainController implements Initializable {
      */
     @FXML
     private void handleProfileButtonAction(ActionEvent event) {
-        mainPane.getChildren().clear();
+        hideAllMainPane();
+        untoggleAllButton();
+        profileButton.setStyle("-fx-background-color: lightgrey;");
+
+
 
         //TODO: TO BE IMPLEMENTED
 
@@ -179,7 +287,7 @@ public class MainController implements Initializable {
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.getChildren().add(new Label("Profile page"));
         mainPane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
-        mainPane.getChildren().setAll(anchorPane);
+        mainPane.getChildren().add(anchorPane);
     }
 
     /**
@@ -210,6 +318,11 @@ public class MainController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println("Loading player ... ");
         loadPlayer();
+        System.out.println("Loading panes... ");
+        favoritesButton.fire();
+        discoverButton.fire();
+        homeButton.fire();
     }
 }

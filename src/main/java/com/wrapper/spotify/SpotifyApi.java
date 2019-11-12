@@ -5,8 +5,7 @@ import com.neovisionaries.i18n.CountryCode;
 import com.wrapper.spotify.enums.ModelObjectType;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
-import com.wrapper.spotify.model_objects.specification.Paging;
-import com.wrapper.spotify.model_objects.specification.Track;
+import com.wrapper.spotify.model_objects.specification.*;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRefreshRequest;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
@@ -1881,6 +1880,32 @@ public class SpotifyApi {
     } catch (SpotifyWebApiException e) {
       e.printStackTrace();
     }
+    return null;
+  }
+
+  public Artist[] searchArtists(String query, int limit){
+    try {
+      Paging<Artist> artists_paging = this.searchArtists(query).limit(limit).build().execute();
+      return artists_paging.getItems();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (SpotifyWebApiException e) {
+      e.printStackTrace();
+    }
+
+    return null;
+  }
+
+  public AlbumSimplified[] searchAlbums(String query, int limit){
+    try {
+      Paging<AlbumSimplified> albumsSimplified_paging = this.searchAlbums(query).limit(limit).build().execute();
+      return albumsSimplified_paging.getItems();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (SpotifyWebApiException e) {
+      e.printStackTrace();
+    }
+
     return null;
   }
 }

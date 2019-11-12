@@ -33,6 +33,10 @@ public class AlbumSimplified extends AbstractModelObject implements ISearchModel
   private final ModelObjectType type;
   private final String uri;
 
+  //------------------
+  private final String artistsString;
+
+
   private AlbumSimplified(final Builder builder) {
     super(builder);
 
@@ -50,6 +54,13 @@ public class AlbumSimplified extends AbstractModelObject implements ISearchModel
     this.restrictions = builder.restrictions;
     this.type = builder.type;
     this.uri = builder.uri;
+
+
+    //---------------------
+    StringBuilder sb = new StringBuilder();
+    for (ArtistSimplified as: artists) { sb.append(as.getName()).append(", "); }
+    this.artistsString = sb.toString().substring(0, sb.toString().length() - 2);
+
   }
 
   /**
@@ -179,6 +190,12 @@ public class AlbumSimplified extends AbstractModelObject implements ISearchModel
   public String getUri() {
     return uri;
   }
+
+
+
+  //-----------------------------
+
+  public String getArtistsString(){ return artistsString; }
 
   @Override
   public Builder builder() {
