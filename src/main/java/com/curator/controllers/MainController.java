@@ -322,7 +322,7 @@ public class MainController implements Initializable {
         loadPlayer();
         System.out.println("Loading panes... ");
         favoritesButton.fire();
-        discoverButton.fire();
+//        discoverButton.fire();
         homeButton.fire();
     }
 }
