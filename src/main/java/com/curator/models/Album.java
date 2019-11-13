@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * This class stores the features of albums and allows the features to
  * be accessed by other classes.
  *
+ *
  */
 public class Album {
 	private String albumType;              // album, single, or compilation
@@ -19,10 +20,10 @@ public class Album {
 	private int popularity;                // popularity of the album (0-100) calculated with the the
 					                       // popularity of the album's songs
 	ArrayList<Artist> artists;             // the list of artists on the album
-	ArrayList<Track> tracks;               // the list of tracks on the album
+	ArrayList<TrackSimple> tracks;               // the list of tracks on the album
 
 	/**
-	 * Constructor for com.curator.modles.Album object from wrapper's Album object
+	 * Constructor for com.curator.models.Album object from wrapper's Album object
 	 * @param sAlbum wrapper's Album object
 	 */
 	public Album(com.wrapper.spotify.model_objects.specification.Album sAlbum) {
@@ -30,8 +31,9 @@ public class Album {
 		this.albumID = sAlbum.getId();
 		this.name = sAlbum.getName();
 		this.popularity = sAlbum.getPopularity();
-		this.artists = SpotifyTools.toArtists(sAlbum.getArtists());
-		this.tracks = SpotifyTools.toTracks(sAlbum.getTracks().getItems());
+
+		this.artists = SpotifyTools.toArtist(sAlbum.getArtists());
+		this.tracks = SpotifyTools.toTrackSimple(sAlbum.getTracks().getItems());
 	}
 
 	/**
@@ -79,7 +81,7 @@ public class Album {
 	 * 
 	 * @return tracks The list of song objects on the album
 	 */
-	public ArrayList<Track> getTracks() {
+	public ArrayList<TrackSimple> getTracks() {
 		return tracks;
 	}
 

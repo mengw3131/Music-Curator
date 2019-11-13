@@ -14,21 +14,22 @@ import java.util.ArrayList;
  *
  */
 public class Track {
-	private String trackID;              // Spotify track ID
-	private String name;                 // name of the song
-	ArrayList<Artist> artists; // the list of artists on the album
-	private Album album;                 // the album of the song
-	private int popularity;              // the popularity of a song (0 - 100)
+	private String trackID;                     // Spotify track ID
+	private String name;                        // name of the song
+
+	private ArrayList<Artist> artists;    // the list of artists on the album
+	private AlbumSimple album;                  // the album of the song
+
+	private int popularity;                     // the popularity of a song (0 - 100)
 
 	private AudioFeatures features;
-	private double acousticness;         // confidence measure (0.0 - 1.0) of whether the song is acoustic
-	private double danceability;         // 0.0 - 1.0 how danceable the song is
-	private double energy;               // 0.0 - 1.0 measure of how fast/loud/noisy the song is
-	private double instrumentalness;     // 0.0 - 1.0 confidence measure of whether a track
-	private double loudness;             // overall loudness of the track in decibels
-	private double tempo;                // tempo of the track (Beats per minute)
-	private double valence;              // 0.0 - 1.0 describing the musical positiveness
-
+	private double acousticness;                // confidence measure (0.0 - 1.0) of whether the song is acoustic
+	private double danceability;                // 0.0 - 1.0 how danceable the song is
+	private double energy;                      // 0.0 - 1.0 measure of how fast/loud/noisy the song is
+	private double instrumentalness;            // 0.0 - 1.0 confidence measure of whether a track
+	private double loudness;                    // overall loudness of the track in decibels
+	private double tempo;                       // tempo of the track (Beats per minute)
+	private double valence;                     // 0.0 - 1.0 describing the musical positiveness
 
 	/**
 	 * Construct Track object from wrapper's Track object
@@ -37,9 +38,10 @@ public class Track {
 	public Track(com.wrapper.spotify.model_objects.specification.Track sTrack) {
 		this.trackID = sTrack.getId();
 		this.name = sTrack.getName();
-		this.artists = SpotifyTools.toArtists(sTrack.getArtists());
-		this.album = SpotifyTools.toAlbum(sTrack.getAlbum());
 		this.popularity = sTrack.getPopularity();
+
+		this.album = SpotifyTools.toAlbumSimple(sTrack.getAlbum());
+		this.artists = SpotifyTools.toArtist(sTrack.getArtists());
 
 		this.features = SpotifyTools.getAudioFeatures(sTrack);
 		this.acousticness = features.getAcousticness();
@@ -133,7 +135,7 @@ public class Track {
 	 * 
 	 * @return album The object for the album that the song is on
 	 */
-	public Album getAlbum() {
+	public AlbumSimple getAlbum() {
 		return album;
 	}
 
