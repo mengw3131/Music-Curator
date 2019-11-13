@@ -69,30 +69,34 @@ public class YoutubeTools {
      * TODO: if possible find a way to stream instead of download
      * TODO: hide python outputs
      *
-     * Given youtube video id, download music file to /music (named as videoid.mp3), then return Sound object
+     * Given youtube video id, download music file to
+     * default folder src/main/res/music (named as videoid.mp3), then return Media object
      *
      * @return Sound object
      */
     public static Media getMediaFileFromYoutubeId(String id) {
+        return getMediaFileFromYoutubeId(id, "src/main/res/music/");
+    }
+
+
+    public static Media getMediaFileFromYoutubeId(String id, String outputFolder) {
         //if music file was downloaded before and has the same id,
         //   skip downloading, return Sound obj using existing file
-        if (isMediaFileExists(id)) {
-            return new Media(new File("src/main/res/music/" + id + ".mp3").toURI().toString());
+        if (isMediaFileExists(id, outputFolder)) {
+            return new Media(new File(outputFolder + id + ".mp3").toURI().toString());
         }
 
         //ydl configs. 'outtmpl': sets output dir and filename.
         i.exec("ydl_opts = {" +
-                "'outtmpl':'src/main/res/music/" + id + ".%(ext)s'," +
+                "'outtmpl':'" + outputFolder + id + ".%(ext)s'," +
                 "'format':'bestaudio/best', " +
                 "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
         );
 
-//        i.exec("ydl_opts['outtmpl'] = 'src/main/res/music/" + id + ".%(ext)s'");
         i.exec("with youtube_dl.YoutubeDL(ydl_opts) as ydl: ydl.download(['https://www.youtube.com/watch?v=" + id + "'])");
 
         return new Media(new File("src/main/res/music/" + id + ".mp3").toURI().toString());
     }
-
 
     /**
      * Given '+'-separated keywords, get best matching video from youtube and download as .mp3,
@@ -113,7 +117,6 @@ public class YoutubeTools {
             }
             System.out.println(link + " is too long! Checking next best");
         }
-
         return getMediaFileFromYoutubeId(getIDsOfBestMatchVideos(query).get(0));
     }
 
@@ -128,7 +131,18 @@ public class YoutubeTools {
         for (String keyword : keywords) {
             s.append(keyword.replace(" ", "+")).append("+");
         }
-        return s.toString();
+        String res = s.toString();
+        return res.substring(0, res.length() - 1);
+    }
+
+    /**
+     * Checks if [id].mp3 exists in default local location
+     *
+     * @param id - youtube video id
+     * @return true if exists in local
+     */
+    public static boolean isMediaFileExists(String id) {
+        return isMediaFileExists(id, "src/main/res/music/");
     }
 
     /**
@@ -137,18 +151,21 @@ public class YoutubeTools {
      * @param id - youtube video id
      * @return true if exists in local
      */
-    private static boolean isMediaFileExists(String id) {
-        return new File("src/main/res/music/" + id + ".mp3").exists();
+    public static boolean isMediaFileExists(String id, String folderPath) {
+        return new File(folderPath + id + ".mp3").exists();
     }
 
     /**
      * Initialize python interpreter and import necessary modules.
      * Called before app launches to eliminate first load wait time during use.
+     *
+     * Returns true if interpreter is initialized successfully
      */
-    public static void initializeInterpreter() {
+    public static boolean initializeInterpreter() {
         System.out.print("Initializing interpreter... ");
-        if (i == null) {
-            i = new PythonInterpreter();
+        try {
+            if (i == null) {
+                i = new PythonInterpreter();
 
             /*
             sys.path contains current working directory of Jython, which is in the same dir with youtube-dl/.
@@ -158,21 +175,25 @@ public class YoutubeTools {
                   '/home/username/MusicCurator/lib/jython-standalone-2.7.2b2.jar/Lib',
                   '__classpath__', '__pyclasspath__/']
              */
-            i.exec("import sys");
+                i.exec("import sys");
 
-            //add to path '/home/username/Documents/MusicCurator/lib/youtube-dl-master'
-            i.exec("sys.path.append(sys.path[0][:-4] + '/youtube-dl-master')");
+                //add to path '/home/username/Documents/MusicCurator/lib/youtube-dl-master'
+                i.exec("sys.path.append(sys.path[0][:-4] + '/youtube-dl-master')");
 
-            // now can import youtube_dl
-            i.exec("import youtube_dl");
+                // now can import youtube_dl
+                i.exec("import youtube_dl");
 
-            i.exec("ydl_opts = {" +
-                    "'format':'bestaudio/best', " +
-                    "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
-            );
+                i.exec("ydl_opts = {" +
+                        "'format':'bestaudio/best', " +
+                        "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
+                );
 
+            }
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
         }
-        System.out.println("Done");
+        return false;
     }
 
     /**
@@ -180,16 +201,15 @@ public class YoutubeTools {
      * @param id
      * @return PyDictionary containing meta data
      */
-    private static PyDictionary getVideoMeta(String id){
+    public static PyDictionary getVideoMeta(String id){
         i.exec("with youtube_dl.YoutubeDL(ydl_opts) as ydl: " +
                 "meta = ydl.extract_info('https://www.youtube.com/watch?v="+ id + "', download=False)");
+
+//        System.out.println(i.get("meta").toString()); //uncomment to print the whole meta
         return (PyDictionary) i.get("meta");
     }
 
-//test
-//    public static void main(String[] args) {
-////        initializeInterpreter();
-////        System.out.println(getVideoMeta("KkQbuvULHhM").get("duration"));;
-//    }
-
+    public static PythonInterpreter getInterpreter(){
+        return i;
+    }
 }

@@ -20,7 +20,6 @@ public class SpotifyTools {
     private static String clientSecret = "520b7eee145049cc8d655ad5b3df668f";
     public static SpotifyApi api = new SpotifyApi.Builder().setAccessToken(getAccessToken(clientId, clientSecret)).build();
 
-
     /**
      * Prevent instance creation
      */
