@@ -1,5 +1,7 @@
-import com.wrapper.spotify.SpotifyApi;
-import com.wrapper.spotify.model_objects.specification.Track;
+package com.curator.controllers;
+
+import com.curator.tools.SpotifyTools;
+import com.curator.models.Track;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,13 +11,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
  * Controller to favorites.fxml
  */
 public class FavoritesController implements Initializable {
-    SpotifyApi api = Main.api;
+//    SpotifyApi api = SpotifyTools.getApi();
 
     @FXML
     TableView mainTable;
@@ -31,11 +34,7 @@ public class FavoritesController implements Initializable {
      */
     public ObservableList<Track> getTracks(){
         ObservableList<Track> track_list = FXCollections.observableArrayList();
-
-        for (Track track : api.searchTracks("Jazz", 10)){
-            track_list.add(track);
-        }
-
+        track_list.addAll(Objects.requireNonNull(SpotifyTools.searchTracks("Jazz", 10)));
         return track_list;
     }
 
@@ -55,9 +54,5 @@ public class FavoritesController implements Initializable {
 
         mainTable.setItems(getTracks());
         mainTable.getColumns().addAll(nameColumn, timeColumn, artistColumn, albumColumn);
-    }
-
-    public void setApi(SpotifyApi api) {
-        this.api = api;
     }
 }

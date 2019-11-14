@@ -1,7 +1,9 @@
-import com.Main;
+package com.curator.controllers;
+
+import com.curator.tools.SpotifyTools;
 import com.curator.tools.YoutubeTools;
-import com.wrapper.spotify.SpotifyApi;
-import com.wrapper.spotify.model_objects.specification.Track;
+import com.curator.models.*;
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +20,7 @@ import javafx.scene.text.FontWeight;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
@@ -25,7 +28,6 @@ import java.util.ResourceBundle;
  * Controller to home.fxml
  */
 public class HomeController implements Initializable {
-    SpotifyApi api = Main.api;
     MainController mainController;
     PlayerController playerController;
     FXMLLoader loader = new FXMLLoader();
@@ -52,7 +54,7 @@ public class HomeController implements Initializable {
      * @param tracks
      * @return HBox of track panes in tracks
      */
-    public ScrollPane createRecommendationBox(Track[] tracks){
+    public ScrollPane createRecommendationBox(ArrayList<Track> tracks){
 
         /*
           Nodes Hierarchy:
@@ -77,7 +79,7 @@ public class HomeController implements Initializable {
 
             //loop on each music pane in HBox
             for (int i = 0; i < ((HBox)pane.getContent()).getChildren().size(); i++) {
-                Track track = tracks[i];
+                Track track = tracks.get(i);
                 Pane subPane = (Pane)box.getChildren().get(i);
                 ImageView trackImage = (ImageView) subPane.getChildren().get(0);
                 Label trackName = (Label)subPane.getChildren().get(1);
@@ -86,7 +88,7 @@ public class HomeController implements Initializable {
                 ImageView inPaneHeartButton = (ImageView) subPane.getChildren().get(4);
                 ImageView inPaneAddToPlaylistButton = (ImageView) subPane.getChildren().get(5);
 
-                trackImage.setImage(track.getAlbum().getImages()[0].getImage());
+                trackImage.setImage(track.getImage());
                 trackName.setText(track.getName());
                 trackArtist.setText(track.getArtistsString());
 
@@ -128,7 +130,7 @@ public class HomeController implements Initializable {
                         Media media = YoutubeTools.getMusicFileFromQuery(
                                 YoutubeTools.createYoutubeQuery(track.getName(), track.getArtistsString())
                         );
-                        track.setMediaFile(media);
+                        track.setMedia(media);
                         playerController.setCurrentTrack(track);
                         event.consume();
                     }
@@ -160,7 +162,7 @@ public class HomeController implements Initializable {
 
 
     /**
-     * Initialize HomeController
+     * Initialize com.curator.controllers.HomeController
      *
      * @param url
      * @param resourceBundle
@@ -178,7 +180,7 @@ public class HomeController implements Initializable {
 
 
         System.out.print("Getting 8 tracks... ");
-        Track[] tracks =  api.searchTracks("Claude Debussy", 8);
+        ArrayList<Track> tracks =  SpotifyTools.searchTracks("Claude Debussy", 8);
         System.out.println("Done");
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
 
@@ -217,11 +219,4 @@ public class HomeController implements Initializable {
     public void setPlayerController(PlayerController playerController) {
         this.playerController = playerController;
     }
-
-    /**
-     * Injects api object
-     * @param api
-     */
-    public void setApi(SpotifyApi api) { this.api = api; }
-
 }

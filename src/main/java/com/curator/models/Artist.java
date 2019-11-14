@@ -1,5 +1,8 @@
 package com.curator.models;
 
+import com.curator.tools.SpotifyTools;
+import javafx.scene.image.Image;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,15 +19,18 @@ public class Artist {
 	private int popularity;                // popularity of the artist (0-100) calculated from the
 					                       // popularity of all the artist's songs
 
+	private ArrayList<Image> images;
+
 	/**
-	 * Construct Artist object from wrapper's Artist object
-	 * @param sArtist spotify wrapper's Artist object
+	 * Construct com.curator.models.Artist object from wrapper's com.curator.models.Artist object
+	 * @param sArtist spotify wrapper's com.curator.models.Artist object
 	 */
 	public Artist(com.wrapper.spotify.model_objects.specification.Artist sArtist) {
 		this.genres = new ArrayList<String>(Arrays.asList(sArtist.getGenres()));
 		this.artistID = sArtist.getId();
 		this.name = sArtist.getName();
 		this.popularity = sArtist.getPopularity();
+		this.images = SpotifyTools.toImage(sArtist.getImages());
 	}
 
 	/**
@@ -58,4 +64,7 @@ public class Artist {
 	public int getPopularity() {
 		return popularity;
 	}
+
+
+	public ArrayList<Image> getImages() { return images; }
 }

@@ -1,5 +1,7 @@
+
 import com.curator.tools.SpotifyTools;
 import com.wrapper.spotify.SpotifyApi;
+import com.curator.models.*;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.specification.AlbumSimplified;
 import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
@@ -22,17 +24,17 @@ public class SpotifyToolsTest {
         String albumID = "4sSXylKcBB3p47VfrBJlfK";
 
         com.wrapper.spotify.model_objects.specification.TrackSimplified[] sTrackSimplifiedArr;
-        ArrayList<com.curator.models.TrackSimple> trackSimpleArr;
+        ArrayList<TrackSimple> trackSimpleArr;
 
         try {
             sTrackSimplifiedArr = api.getAlbumsTracks(albumID).build().execute().getItems();
 
-            //convert to TrackSimple
+            //convert to com.curator.models.TrackSimple
             trackSimpleArr = SpotifyTools.toTrackSimple(sTrackSimplifiedArr);
 
             for (int i = 0; i < sTrackSimplifiedArr.length; i++) {
                 TrackSimplified sTrack = sTrackSimplifiedArr[i];
-                com.curator.models.TrackSimple trackSimple = trackSimpleArr.get(i);
+                TrackSimple trackSimple = trackSimpleArr.get(i);
 
                 Assertions.assertEquals(sTrack.getId(), trackSimple.getTrackID());
                 Assertions.assertEquals(sTrack.getName(), trackSimple.getName());
@@ -54,7 +56,7 @@ public class SpotifyToolsTest {
         try {
             sArtistSimplifiedArr = api.getAlbum(albumID).build().execute().getArtists();
 
-            //convert to com.curator.models.Artist
+            //convert to com.com.curator.models.Artist
             artistArr = SpotifyTools.toArtist(sArtistSimplifiedArr);
 
             for (int i = 0; i < sArtistSimplifiedArr.length; i++) {
@@ -81,7 +83,7 @@ public class SpotifyToolsTest {
         try {
             sAlbumSimplifiedArr = api.getArtistsAlbums(artistID).build().execute().getItems();
 
-            //convert to com.curator.models.AlbumSimple
+            //convert to com.com.curator.models.AlbumSimple
             albumSimpleArr = SpotifyTools.toAlbumSimple(sAlbumSimplifiedArr);
 
             for (int i = 0; i < sAlbumSimplifiedArr.length; i++) {
@@ -104,8 +106,8 @@ public class SpotifyToolsTest {
         try {
             AudioFeatures audioFeatures = api.getAudioFeaturesForTrack(trackID).build().execute();
 
-            //Track constructor contains calls to getAudioFeatures()
-            com.curator.models.Track track = new com.curator.models.Track(api.getTrack(trackID).build().execute());
+            //com.curator.models.Track constructor contains calls to getAudioFeatures()
+            Track track = new Track(api.getTrack(trackID).build().execute());
 
             Assertions.assertEquals(audioFeatures.getAcousticness(), track.getAcousticness(),1);
             Assertions.assertEquals(audioFeatures.getDanceability(), track.getDanceability(),1);

@@ -1,4 +1,7 @@
-import com.wrapper.spotify.model_objects.specification.Track;
+package com.curator.controllers;
+
+import com.curator.models.*;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -82,7 +85,7 @@ public class PlayerController implements Initializable {
     }
 
     /**
-     * Initialize PlayerController
+     * Initialize com.curator.controllers.PlayerController
      *
      * @param location
      * @param resources
@@ -118,10 +121,10 @@ public class PlayerController implements Initializable {
         this.isPlaying = false;
         if (this.currentTrack != null){ mediaPlayer.stop();}
 
-        currentTrack =  track;
-        mediaPlayer = new MediaPlayer(track.getMediaFile());
+        currentTrack = track;
+        mediaPlayer = new MediaPlayer(track.getMedia());
         this.playButton.fire();
-        this.endDurationLabel.setText(track.getDurationString());
+        this.endDurationLabel.setText(String.valueOf(track.getDuration()));
 
         setNowPlayingPane();
     }
@@ -133,7 +136,7 @@ public class PlayerController implements Initializable {
      *
      */
     public void setNowPlayingPane() {
-        songCoverImageView.setImage(currentTrack.getAlbum().getImages()[0].getImage());
+        songCoverImageView.setImage(currentTrack.getImage());
         songNameLabel.setText(currentTrack.getName());
         artistNameLabel.setText(currentTrack.getArtistsString());
     }
@@ -151,7 +154,6 @@ public class PlayerController implements Initializable {
                 }
         );
     }
-
 
     /**
      * Change the play button image, e.g. play to pause

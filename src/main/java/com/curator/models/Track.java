@@ -1,5 +1,9 @@
+package com.curator.models;
+
 import com.curator.tools.SpotifyTools;
 import com.wrapper.spotify.model_objects.specification.AudioFeatures;
+import javafx.scene.image.Image;
+import javafx.scene.media.Media;
 
 import java.util.ArrayList;
 
@@ -16,7 +20,11 @@ public class Track {
 	private String name;                        // name of the song
 
 	private ArrayList<Artist> artists;    // the list of artists on the album
+	private String artistsString;    // the list of artists on the album
 	private AlbumSimple album;                  // the album of the song
+
+	private Image image;
+	private Media media;
 
 	private int popularity;                     // the popularity of a song (0 - 100)
 
@@ -30,8 +38,8 @@ public class Track {
 	private double valence;                     // 0.0 - 1.0 describing the musical positiveness
 
 	/**
-	 * Construct Track object from wrapper's Track object
-	 * @param sTrack spotify wrapper's Track object
+	 * Construct com.curator.models.Track object from wrapper's com.curator.models.Track object
+	 * @param sTrack spotify wrapper's com.curator.models.Track object
 	 */
 	public Track(com.wrapper.spotify.model_objects.specification.Track sTrack) {
 		this.trackID = sTrack.getId();
@@ -40,6 +48,8 @@ public class Track {
 
 		this.album = SpotifyTools.toAlbumSimple(sTrack.getAlbum());
 		this.artists = SpotifyTools.toArtist(sTrack.getArtists());
+		this.artistsString = SpotifyTools.toString(this.artists);
+		this.image = this.album.getImages().get(0);
 
 		this.features = SpotifyTools.getAudioFeatures(sTrack);
 		this.acousticness = features.getAcousticness();
@@ -49,6 +59,7 @@ public class Track {
 		this.loudness = features.getLoudness();
 		this.tempo = features.getTempo();
 		this.valence = features.getValence();
+
 	}
 
 	/**
@@ -125,7 +136,7 @@ public class Track {
 
 	/**
 	 * 
-	 * @return artists com.com.curator.Artist of the track
+	 * @return artists com.com.curator.com.curator.models.Artist of the track
 	 */
 	public ArrayList<Artist> getArtists() { return artists; }
 
@@ -144,5 +155,18 @@ public class Track {
 	public int getPopularity() {
 		return popularity;
 	}
+
+	public Image getImage() { return image; }
+
+
+
+	public Media getMedia() { return media; }
+
+	public int getDuration(){ return (int) media.getDuration().toSeconds(); }
+
+	public String getArtistsString() { return artistsString; }
+
+	public void setMedia(Media media) { this.media = media; }
+
 
 }

@@ -1,4 +1,5 @@
-import com.wrapper.spotify.SpotifyApi;
+package com.curator.controllers;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +19,6 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
 
     //TODO: change to dependency injection to make api variable private
-    SpotifyApi api = Main.api;
     private PlayerController playerController;
     private HomeController homeController;
     private DiscoverController discoverController;
@@ -318,8 +318,10 @@ public class MainController implements Initializable {
         System.out.println("Loading player ... ");
         loadPlayer();
         System.out.println("Loading panes... ");
-        favoritesButton.fire();
+//        favoritesButton.fire();
+        System.out.println("favorites button loaded");
 //        discoverButton.fire();
-        homeButton.fire();
+//        homeButton.fire();
+//        System.out.println("home button loaded");
     }
 }

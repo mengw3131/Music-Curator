@@ -1,4 +1,8 @@
+package com.curator.models;
+
 import java.util.ArrayList;
+import com.curator.tools.SpotifyTools;
+import javafx.scene.image.Image;
 
 /**
  * 
@@ -14,27 +18,36 @@ public class Album {
 	private String albumID;                // The Spotify ID of the album
 	private String name;                   // The name of the album
 	private int popularity;                // popularity of the album (0-100) calculated with the the
+	private String artistsString;    // the list of artists on the album
 					                       // popularity of the album's songs
 	ArrayList<Artist> artists;             // the list of artists on the album
+
+
 	ArrayList<TrackSimple> tracks;               // the list of tracks on the album
 
+	private ArrayList<Image> images;
+
 	/**
-	 * Constructor for Album object from wrapper's Album object
-	 * @param sAlbum wrapper's Album object
+	 * Constructor for com.curator.models.Album object from wrapper's com.curator.models.Album object
+	 * @param sAlbum wrapper's com.curator.models.Album object
 	 */
 	public Album(com.wrapper.spotify.model_objects.specification.Album sAlbum) {
 		this.albumType = sAlbum.getAlbumType().getType();
 		this.albumID = sAlbum.getId();
 		this.name = sAlbum.getName();
+
 		this.popularity = sAlbum.getPopularity();
 
 		this.artists = SpotifyTools.toArtist(sAlbum.getArtists());
+		this.artistsString = SpotifyTools.toString(this.artists);
 		this.tracks = SpotifyTools.toTrackSimple(sAlbum.getTracks().getItems());
+
+		this.images = SpotifyTools.toImage(sAlbum.getImages());
 	}
 
 	/**
 	 * 
-	 * @return albumType Album, single, or compilation
+	 * @return albumType com.curator.models.Album, single, or compilation
 	 */
 	public String getAlbumType() {
 		return albumType;
@@ -81,4 +94,8 @@ public class Album {
 		return tracks;
 	}
 
+
+	public ArrayList<Image> getImages() { return images; }
+
+	public String getArtistsString() { return artistsString; }
 }

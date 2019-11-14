@@ -1,6 +1,11 @@
+package com.curator.tools;
+
 import javafx.scene.media.Media;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.HttpClients;
 import org.python.core.PyDictionary;
 import org.python.util.PythonInterpreter;
 
@@ -16,6 +21,7 @@ import java.util.regex.Pattern;
  */
 public class YoutubeTools {
     private static final int MAX_AUDIO_LENGTH_SECOND = 600;  //10 minutes
+    private static final String DEFAULT_OUT_PATH = "src/main/resources/music/";  //10 minutes
 
     //Pattern matches /watch?v=[video id], compile once only, for performance
     //Design note: avoid using doc based selector(e.g. JSoup) for matching,
@@ -44,8 +50,10 @@ public class YoutubeTools {
 
         try {
             //Get html of the query
-            Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0").get();
-            Matcher m = p.matcher(doc.body().toString());
+            HttpClient client = HttpClients.createDefault();
+            HttpResponse response = client.execute(new HttpGet(url));
+            String doc = new BasicResponseHandler().handleResponse(response);
+            Matcher m = p.matcher(doc);
 
             //for every /watch?v=id urls
             while (m.find()) {
@@ -68,12 +76,12 @@ public class YoutubeTools {
      * TODO: hide python outputs
      *
      * Given youtube video id, download music file to
-     * default folder src/main/res/music (named as videoid.mp3), then return Media object
+     * default folder (named as videoid.mp3), then return Media object
      *
      * @return Sound object
      */
     public static Media getMediaFileFromYoutubeId(String id) {
-        return getMediaFileFromYoutubeId(id, "src/main/res/music/");
+        return getMediaFileFromYoutubeId(id, DEFAULT_OUT_PATH);
     }
 
 
@@ -93,7 +101,7 @@ public class YoutubeTools {
 
         i.exec("with youtube_dl.YoutubeDL(ydl_opts) as ydl: ydl.download(['https://www.youtube.com/watch?v=" + id + "'])");
 
-        return new Media(new File("src/main/res/music/" + id + ".mp3").toURI().toString());
+        return new Media(new File(outputFolder + id + ".mp3").toURI().toString());
     }
 
     /**
@@ -140,7 +148,7 @@ public class YoutubeTools {
      * @return true if exists in local
      */
     public static boolean isMediaFileExists(String id) {
-        return isMediaFileExists(id, "src/main/res/music/");
+        return isMediaFileExists(id, DEFAULT_OUT_PATH);
     }
 
     /**
@@ -187,6 +195,7 @@ public class YoutubeTools {
                 );
 
             }
+            System.out.println("Done");
             return true;
         } catch (Exception e){
             e.printStackTrace();

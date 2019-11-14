@@ -1,16 +1,19 @@
+package com.curator.models;
+
 import com.curator.tools.SpotifyTools;
 import com.wrapper.spotify.model_objects.specification.AudioFeatures;
 
 import java.util.ArrayList;
 
 /**
- * Simplified Track object with no reference to album objects (to avoid circularity)
+ * Simplified com.curator.models.Track object with no reference to album objects (to avoid circularity)
  */
 public class TrackSimple {
     private String trackID;                     // Spotify track ID
     private String name;                        // name of the song
     private int popularity;                     // the popularity of a song (0 - 100)
     private ArrayList<Artist> artists;          // the list of artists on the album
+    private String artistsString;    // the list of artists on the album
 
     private AudioFeatures features;
     private double acousticness;                // confidence measure (0.0 - 1.0) of whether the song is acoustic
@@ -27,6 +30,7 @@ public class TrackSimple {
         this.popularity =  sTrack.getPopularity();
 
 		this.artists = SpotifyTools.toArtist(sTrack.getArtists());
+        this.artistsString = SpotifyTools.toString(this.artists);
 
         this.features = SpotifyTools.getAudioFeatures(sTrack);
         this.acousticness = features.getAcousticness();
@@ -54,6 +58,8 @@ public class TrackSimple {
     public ArrayList<Artist> getArtists() {
         return artists;
     }
+
+    public String getArtistsString() { return artistsString; }
 
     public double getAcousticness() {
         return acousticness;

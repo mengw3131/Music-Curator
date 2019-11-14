@@ -1,8 +1,8 @@
+package com.curator.controllers;
+
+import com.curator.tools.SpotifyTools;
 import com.curator.tools.YoutubeTools;
-import com.wrapper.spotify.SpotifyApi;
-import com.wrapper.spotify.model_objects.specification.AlbumSimplified;
-import com.wrapper.spotify.model_objects.specification.Artist;
-import com.wrapper.spotify.model_objects.specification.Track;
+import com.curator.models.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,10 +21,10 @@ import javafx.scene.media.Media;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class DiscoverController implements Initializable {
-    SpotifyApi api = Main.api;
     MainController mainController;
     PlayerController playerController;
 
@@ -74,40 +74,40 @@ public class DiscoverController implements Initializable {
             toggleChildrenVisibility(true);
 
             //set matching tracks
-            Track[] tracks = api.searchTracks(query, 8);
-            if (tracks.length == 0) {
+            ArrayList<Track> tracks = SpotifyTools.searchTracks(query, 8);
+            if (tracks.size() == 0) {
                 tracksLabel.setText("No tracks found");
 //                discoverVBox.getChildren().set(2, new Label("No tracks found"));
             } else {
                 tracksLabel.setText("Tracks");
 //                discoverVBox.getChildren().set(2, tracksLabel);
-                tracksScrollPane = createRecommendationBox(tracks);
+                tracksScrollPane = createTracksRecommendationBox(tracks);
 //                discoverVBox.getChildren().set(2, tracksScrollPane);
             }
 
             //set matching artists
-            Artist[] artists = api.searchArtists(query, 8);
-            if (artists.length == 0) {
+            ArrayList<Artist> artists = SpotifyTools.searchArtists(query, 8);
+            if (artists.size() == 0) {
                 artistsLabel.setText("No artists found");
                 discoverVBox.getChildren().set(4, new Label("No artists found"));
             } else {
                 artistsLabel.setText("Artists");
 
 //                discoverVBox.getChildren().get(3).setVisible(true);
-                artistsScrollPane = createRecommendationBox(artists);
+                artistsScrollPane = createArtistsRecommendationBox(artists);
 //                discoverVBox.getChildren().set(4, artistsScrollPane);
             }
 
             //set matching albums
-            AlbumSimplified[] albums = api.searchAlbums(query, 8);
-            if (albums.length == 0) {
+            ArrayList<AlbumSimple> albums = SpotifyTools.searchAlbums(query, 8);
+            if (albums.size() == 0) {
 
                 albumsLabel.setText("No albums found");
                 discoverVBox.getChildren().set(6, new Label("No albums found"));
             } else {
                 albumsLabel.setText("Albums");
 //                discoverVBox.getChildren().get(5).setVisible(true);
-                albumsScrollPane = createRecommendationBox(albums);
+                albumsScrollPane = createAlbumsRecommendationBox(albums);
 //                discoverVBox.getChildren().set(6, albumsScrollPane);
 //                discoverVBox.getChildren().get(6).setVisible(true);
             }
@@ -144,7 +144,7 @@ public class DiscoverController implements Initializable {
      * @param artists
      * @return HBox of track panes in tracks
      */
-    public ScrollPane createRecommendationBox(Artist[] artists) {
+    public ScrollPane createArtistsRecommendationBox(ArrayList<Artist> artists) {
         /*
           Nodes Hierarchy:
 
@@ -167,7 +167,7 @@ public class DiscoverController implements Initializable {
 
             //loop on each music pane in HBox
             for (int i = 0; i < ((HBox) pane.getContent()).getChildren().size(); i++) {
-                Artist artist = artists[i];
+                Artist artist = artists.get(i);
                 Pane subPane = (Pane) box.getChildren().get(i);
                 ImageView trackImage = (ImageView) subPane.getChildren().get(0);
                 Label artistName = (Label) subPane.getChildren().get(1);
@@ -175,8 +175,8 @@ public class DiscoverController implements Initializable {
                 ImageView inPaneHeartButton = (ImageView) subPane.getChildren().get(3);
                 ImageView inPaneAddToPlaylistButton = (ImageView) subPane.getChildren().get(4);
 
-                if (artist.getImages().length != 0) {
-                    trackImage.setImage(artist.getImages()[0].getImage());
+                if (artist.getImages().size() != 0) {
+                    trackImage.setImage(artist.getImages().get(0));
                 }
                 artistName.setText(artist.getName());
 
@@ -250,7 +250,7 @@ public class DiscoverController implements Initializable {
         return pane;
     }
 
-    public ScrollPane createRecommendationBox(AlbumSimplified[] albumSimplifieds) {
+    public ScrollPane createAlbumsRecommendationBox(ArrayList<AlbumSimple> albumSimpleArr) {
         /*
           Nodes Hierarchy:
 
@@ -274,7 +274,7 @@ public class DiscoverController implements Initializable {
 
             //loop on each music pane in HBox
             for (int i = 0; i < ((HBox) pane.getContent()).getChildren().size(); i++) {
-                AlbumSimplified album = albumSimplifieds[i];
+                AlbumSimple album = albumSimpleArr.get(i);
 
                 Pane subPane = (Pane) box.getChildren().get(i);
                 ImageView trackImage = (ImageView) subPane.getChildren().get(0);
@@ -284,7 +284,7 @@ public class DiscoverController implements Initializable {
                 ImageView inPaneHeartButton = (ImageView) subPane.getChildren().get(4);
                 ImageView inPaneAddToPlaylistButton = (ImageView) subPane.getChildren().get(5);
 
-                trackImage.setImage(album.getImages()[0].getImage());
+                trackImage.setImage(album.getImages().get(0));
                 trackName.setText(album.getName());
                 trackArtist.setText(album.getArtistsString());
 
@@ -364,7 +364,7 @@ public class DiscoverController implements Initializable {
      * @param tracks
      * @return HBox of track panes in tracks
      */
-    public ScrollPane createRecommendationBox(Track[] tracks) {
+    public ScrollPane createTracksRecommendationBox(ArrayList<Track> tracks) {
         /*
           Nodes Hierarchy:
 
@@ -388,7 +388,7 @@ public class DiscoverController implements Initializable {
 
             //loop on each music pane in HBox
             for (int i = 0; i < ((HBox) pane.getContent()).getChildren().size(); i++) {
-                Track track = tracks[i];
+                Track track = tracks.get(i);
                 Pane subPane = (Pane) box.getChildren().get(i);
                 ImageView trackImage = (ImageView) subPane.getChildren().get(0);
                 Label trackName = (Label) subPane.getChildren().get(1);
@@ -397,7 +397,7 @@ public class DiscoverController implements Initializable {
                 ImageView inPaneHeartButton = (ImageView) subPane.getChildren().get(4);
                 ImageView inPaneAddToPlaylistButton = (ImageView) subPane.getChildren().get(5);
 
-                trackImage.setImage(track.getAlbum().getImages()[0].getImage());
+                trackImage.setImage(track.getImage());
                 trackName.setText(track.getName());
                 trackArtist.setText(track.getArtistsString());
 
@@ -439,7 +439,7 @@ public class DiscoverController implements Initializable {
                         Media media = YoutubeTools.getMusicFileFromQuery(
                                 YoutubeTools.createYoutubeQuery(track.getName(), track.getArtistsString())
                         );
-                        track.setMediaFile(media);
+                        track.setMedia(media);
                         playerController.setCurrentTrack(track);
                         event.consume();
                     }

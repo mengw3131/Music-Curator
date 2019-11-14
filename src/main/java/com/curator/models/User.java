@@ -1,3 +1,5 @@
+package com.curator.models;
+
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;

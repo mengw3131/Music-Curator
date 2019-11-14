@@ -1,5 +1,3 @@
-package com.curator.main;
-
 import com.curator.tools.SpotifyTools;
 import com.curator.tools.YoutubeTools;
 import javafx.application.Application;
@@ -8,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 //TODO: create sqlite database to keep user usage data, e.g. favorites etc
 //TODO: add clear cache feature in settings menu bar, to remove downloaded mp3 files
 
@@ -15,8 +15,6 @@ import javafx.stage.Stage;
  * Entry to the app.
  */
 public class Main extends Application {
-    public static com.wrapper.spotify.SpotifyApi api = SpotifyTools.getApi();
-
     /**
      * Initialize GUI app
      *
@@ -27,6 +25,8 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = new FXMLLoader(getClass().getResource("/views/main.fxml")).load();
 
+        System.out.println("loaded fxml");
+
         stage.setScene(new Scene(root, 300, 300));
         stage.setHeight(600);
         stage.setWidth(1200);
@@ -34,8 +34,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        System.out.println("hello world");
-//        YoutubeTools.initializeInterpreter();
-//        launch();
+        YoutubeTools.initializeInterpreter();
+        launch();
     }
 }

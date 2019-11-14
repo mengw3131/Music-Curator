@@ -1,7 +1,11 @@
+package com.curator.models;
+
 import java.util.ArrayList;
+import com.curator.tools.SpotifyTools;
+import javafx.scene.image.Image;
 
 /**
- * Simplified Album object with no reference to tracks objects (to avoid circularity)
+ * Simplified com.curator.models.Album object with no reference to tracks objects (to avoid circularity)
  */
 public class AlbumSimple {
 
@@ -9,7 +13,9 @@ public class AlbumSimple {
     private String name;                   // The name of the album
     private int popularity;                // popularity of the album (0-100) calculated with the the
     private String albumType;              // album, single, or compilation
-    ArrayList<Artist> artists;             // the list of artists on the album
+    private ArrayList<Artist> artists;             // the list of artists on the album
+    private String artistsString;    // the list of artists on the album
+    private ArrayList<Image> images;
 
     public AlbumSimple(com.wrapper.spotify.model_objects.specification.Album sAlbum) {
         this.albumType = sAlbum.getAlbumType().getType();
@@ -18,6 +24,10 @@ public class AlbumSimple {
         this.popularity = sAlbum.getPopularity();
 
         this.artists = SpotifyTools.toArtist(sAlbum.getArtists());
+        this.artistsString = SpotifyTools.toString(this.artists);
+        this.images = SpotifyTools.toImage(sAlbum.getImages());
+
+
     }
 
     public String getAlbumID() {
@@ -39,4 +49,9 @@ public class AlbumSimple {
     public ArrayList<Artist> getArtists() {
         return artists;
     }
+
+    public String getArtistsString() { return artistsString; }
+
+    public ArrayList<Image> getImages() { return images; }
+
 }

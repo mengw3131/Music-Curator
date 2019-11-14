@@ -1,3 +1,5 @@
+package com.curator.models;
+
 import com.curator.models.Track;
 
 import java.util.ArrayList;
