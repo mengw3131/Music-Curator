@@ -4,3 +4,10 @@
 *.ipr
 *.iws
 /build
+/bin/
+.idea/
+.settings/
+.classpath
+.project
+.gradle/
+

@@ -24,21 +24,13 @@ If a user likes a suggestion, the recommendation list will update with more arti
 4. Select "master" branch. Next, select desired directory or use the default setting. 
 5. Next, cloning begins and click "Finish" once completed.
 
-##### Set Run Configuration
-6. From menu bar, "Run" -> "Run Configurations".
-7. On the left, select "Java Application", then click "New launch configuration" on top left corner (blank paper icon).
-8. On the newly created configuration select "Main" tab, set "Name" to `Main`. Under "Project", click "Browse..." and select `final-project-music-com.curator`. On the "Main class" path, click "Search..." and select `Main - com.com.curator` under "Matching items". Press OK.
-9. On the same run configuration select "Arguments" tab, set "**VM arguments**" as `--module-path full/path/to/lib --add-modules javafx.controls,javafx.base,javafx.graphics,javafx.fxml,javafx.media`
+##### Import Downloaded Project as Gradle Project
+6. File -> Import... -> Gradle -> Existing Gradle Project -> Next
+7. Select project root directory to be the path to final-project-music-curator folder. e.g. `/home/username/eclipse-workspace/final-project-music-curator` or `C:\Users\User\Documents\eclipse-workspace\final-project-music-curator`. Next.
+8. Leave as default, i.e. Gradle Distribution set to Gradle wrapper, and leave other fields blank. Click Finish.
 
-Example path: `/home/username/eclipse-workspace/final-project-music-com.curator/lib`; or on Windows: `C:/com.curator.models.User/eclipse-workspace/final-project-music-com.curator/lib`.
-10. "Apply" and "Close".
-
-##### Set Resource Folder
-11. Select top directory of `final-project-music-com.curator` on Project Explorer, then on the menu bar click "Project -> "Properties".
-12. Choose "Java Build Path". Select "Source" tab.
-13. Select "Add Folder...", and select "res" folder under "src/main". Press OK then "Apply and Close".
-
-Project is ready to run. Go to "Run" -> "Run".
+##### Run Task 
+9. On Gradle Tasks bar at the bottom, MusicCurator -> application -> double-click on "run"
 
 #### Team 71
 * Isaac Longkutoy ([islong@seas.upenn.edu](mailto:islong@seas.upenn.edu)) 
