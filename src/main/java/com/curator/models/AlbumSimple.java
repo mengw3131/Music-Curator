@@ -1,7 +1,3 @@
-package com.curator.models;
-
-import com.curator.tools.SpotifyTools;
-
 import java.util.ArrayList;
 
 /**

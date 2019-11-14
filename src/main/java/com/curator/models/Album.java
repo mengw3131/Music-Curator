@@ -1,7 +1,3 @@
-package com.curator.models;
-
-import com.curator.tools.SpotifyTools;
-
 import java.util.ArrayList;
 
 /**
@@ -23,7 +19,7 @@ public class Album {
 	ArrayList<TrackSimple> tracks;               // the list of tracks on the album
 
 	/**
-	 * Constructor for com.curator.models.Album object from wrapper's Album object
+	 * Constructor for Album object from wrapper's Album object
 	 * @param sAlbum wrapper's Album object
 	 */
 	public Album(com.wrapper.spotify.model_objects.specification.Album sAlbum) {

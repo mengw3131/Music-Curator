@@ -1,9 +1,6 @@
-package com.curator.models;
-
 import com.curator.models.Album;
 import com.curator.models.Artist;
 import com.curator.models.Track;
-import com.curator.models.RecPlaylist;
 
 import java.util.ArrayList;
 

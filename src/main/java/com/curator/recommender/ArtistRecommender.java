@@ -1,8 +1,3 @@
-package com.curator.recommender;
-
-import com.curator.models.Artist;
-import com.curator.models.Track;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 

@@ -1,15 +1,16 @@
-package com.curator.tools;
-
 import com.curator.models.AlbumSimple;
 import com.curator.models.Artist;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.specification.*;
+import com.wrapper.spotify.model_objects.specification.Artist;
+import com.wrapper.spotify.model_objects.specification.Track;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.wrapper.spotify.SpotifyApi.getAccessToken;
+//import static com.wrapper.spotify.SpotifyApi.getAccessToken;
+
 
 /**
  * Class containing static utility methods for interfacing with Spotify wrapper's objects
@@ -37,13 +38,13 @@ public class SpotifyTools {
     }
 
     /**
-     * Given array of wrapper's object TrackSimplified, convert to ArrayList of com.curator.TrackSimple objects
+     * Given array of wrapper's object TrackSimplified, convert to ArrayList of com.com.curator.TrackSimple objects
      *
      * @param sTracks array of wrapper's object TrackSimplified
-     * @return arrayList of com.curator.TrackSimple objects
+     * @return arrayList of com.com.curator.TrackSimple objects
      */
-    public static ArrayList<com.curator.models.TrackSimple> toTrackSimple(TrackSimplified[] sTracks) {
-        ArrayList<com.curator.models.TrackSimple> trackSimple = new ArrayList<>();
+    public static ArrayList<TrackSimple> toTrackSimple(TrackSimplified[] sTracks) {
+        ArrayList<TrackSimple> trackSimple = new ArrayList<>();
         for (TrackSimplified sTrack : sTracks) {
             trackSimple.add(toTrackSimple(sTrack));
         }
@@ -51,14 +52,14 @@ public class SpotifyTools {
     }
 
     /**
-     * Given wrapper's TrackSimplified object, convert to com.curator.TrackSimple objects
+     * Given wrapper's TrackSimplified object, convert to com.com.curator.TrackSimple objects
      *
      * @param sTrack wrapper's TrackSimplified object
-     * @return com.curator.TrackSimple objects
+     * @return com.com.curator.TrackSimple objects
      */
-    public static com.curator.models.TrackSimple toTrackSimple(TrackSimplified sTrack) {
+    public static TrackSimple toTrackSimple(TrackSimplified sTrack) {
         try {
-            return new com.curator.models.TrackSimple(api.getTrack(sTrack.getId()).build().execute());
+            return new TrackSimple(api.getTrack(sTrack.getId()).build().execute());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SpotifyWebApiException e) {
@@ -68,10 +69,10 @@ public class SpotifyTools {
     }
 
     /**
-     * Given wrapper's object ArtistSimplified, convert to com.curator.Artist object
+     * Given wrapper's object ArtistSimplified, convert to com.com.curator.Artist object
      *
      * @param sArtist wrapper's object ArtistSimplified
-     * @return com.curator.Artist object of
+     * @return com.com.curator.Artist object of
      */
     public static com.curator.models.Artist toArtist(ArtistSimplified sArtist) {
         try {
@@ -85,10 +86,10 @@ public class SpotifyTools {
     }
 
     /**
-     * Given array of wrapper's object ArtistSimplified, convert to ArrayList of com.curator.Artist objects
+     * Given array of wrapper's object ArtistSimplified, convert to ArrayList of com.com.curator.Artist objects
      *
      * @param sArtists array of wrapper's object ArtistSimplified
-     * @return ArrayList of com.curator.Artist objects
+     * @return ArrayList of com.com.curator.Artist objects
      */
     public static ArrayList<com.curator.models.Artist> toArtist(ArtistSimplified[] sArtists) {
         ArrayList<com.curator.models.Artist> artists = new ArrayList<>();
@@ -99,10 +100,10 @@ public class SpotifyTools {
     }
 
     /**
-     * Given array of wrapper's object AlbumSimplified, convert to ArrayList of com.curator.Album objects
+     * Given array of wrapper's object AlbumSimplified, convert to ArrayList of com.com.curator.Album objects
      *
      * @param sAlbums array of wrapper's object AlbumSimplified
-     * @return ArrayList of com.curator.Album objects
+     * @return ArrayList of com.com.curator.Album objects
      */
     public static ArrayList<com.curator.models.AlbumSimple> toAlbumSimple(AlbumSimplified[] sAlbums) {
         ArrayList<com.curator.models.AlbumSimple> albums = new ArrayList<>();
@@ -113,10 +114,10 @@ public class SpotifyTools {
     }
 
     /**
-     * Given wrapper's object AlbumSimplified, convert to com.curator.Album object
+     * Given wrapper's object AlbumSimplified, convert to com.com.curator.Album object
      *
      * @param sAlbum wrapper's object AlbumSimplified
-     * @return com.curator.Album object
+     * @return com.com.curator.Album object
      */
     public static com.curator.models.AlbumSimple toAlbumSimple(AlbumSimplified sAlbum) {
         try {
@@ -140,22 +141,22 @@ public class SpotifyTools {
     }
 
     /**
-     * Given com.curator Track object, get its AudioFeatures object
+     * Given com.com.curator Track object, get its AudioFeatures object
      *
-     * @param track com.curator Track object
+     * @param track com.com.curator Track object
      * @return AudioFeatures object of the Track object
      */
-    public static AudioFeatures getAudioFeatures(com.curator.models.Track track) {
+    public static AudioFeatures getAudioFeatures(Track track) {
         return getAudioFeatures(track.getTrackID());
     }
 
     /**
-     * Given com.curator Track object, get its AudioFeatures object
+     * Given com.com.curator Track object, get its AudioFeatures object
      *
-     * @param trackSimple com.curator TrackSimple object
+     * @param trackSimple com.com.curator TrackSimple object
      * @return AudioFeatures object of the Track object
      */
-    public static AudioFeatures getAudioFeatures(com.curator.models.TrackSimple trackSimple) {
+    public static AudioFeatures getAudioFeatures(TrackSimple trackSimple) {
         return getAudioFeatures(trackSimple.getTrackID());
     }
 

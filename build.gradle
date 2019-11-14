@@ -1,0 +1,70 @@
+plugins {
+    id 'java'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+
+javafx {
+    version = "13"
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.base', 'javafx.graphics',  'javafx.media'
+               , 'javafx.swing'
+    ]
+}
+
+setMainClassName("Main")
+
+repositories {
+    jcenter()
+    mavenCentral()
+    mavenLocal()
+}
+
+sourceCompatibility = '1.12'
+targetCompatibility = '1.12'
+
+dependencies {
+    implementation group: 'se.michaelthelin.spotify', name: 'spotify-web-api-java', version: '4.2.0'
+    implementation files('lib/jython-standalone-2.7.2b2.jar')
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+    implementation 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+compileJava {
+    doFirst {
+        options.compilerArgs = [
+                '--module-path', classpath.asPath,
+                '--add-modules', 'javafx.controls,javafx.fxml,javafx.base,javafx.graphics,javafx.media,javafx.swing'
+        ]
+    }
+}
+
+run {
+    doFirst {
+        jvmArgs = [
+                '--module-path', classpath.asPath,
+                '--add-modules', 'javafx.controls,javafx.fxml,javafx.base,javafx.graphics,javafx.media,javafx.swing'
+        ]
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class' : 'Main'
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+

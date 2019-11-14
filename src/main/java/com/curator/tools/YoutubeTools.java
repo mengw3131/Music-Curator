@@ -1,5 +1,3 @@
-package com.curator.tools;
-
 import javafx.scene.media.Media;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

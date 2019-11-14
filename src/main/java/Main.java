@@ -1,4 +1,4 @@
-package com.curator;
+package com.curator.main;
 
 import com.curator.tools.SpotifyTools;
 import com.curator.tools.YoutubeTools;
@@ -8,8 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import com.wrapper.spotify.*;
-
 //TODO: create sqlite database to keep user usage data, e.g. favorites etc
 //TODO: add clear cache feature in settings menu bar, to remove downloaded mp3 files
 
@@ -17,7 +15,7 @@ import com.wrapper.spotify.*;
  * Entry to the app.
  */
 public class Main extends Application {
-    public static SpotifyApi api = SpotifyTools.getApi();
+    public static com.wrapper.spotify.SpotifyApi api = SpotifyTools.getApi();
 
     /**
      * Initialize GUI app
@@ -36,7 +34,8 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        YoutubeTools.initializeInterpreter();
-        launch();
+        System.out.println("hello world");
+//        YoutubeTools.initializeInterpreter();
+//        launch();
     }
 }

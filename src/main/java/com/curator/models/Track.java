@@ -1,5 +1,3 @@
-package com.curator.models;
-
 import com.curator.tools.SpotifyTools;
 import com.wrapper.spotify.model_objects.specification.AudioFeatures;
 
@@ -127,7 +125,7 @@ public class Track {
 
 	/**
 	 * 
-	 * @return artists com.curator.Artist of the track
+	 * @return artists com.com.curator.Artist of the track
 	 */
 	public ArrayList<Artist> getArtists() { return artists; }
 

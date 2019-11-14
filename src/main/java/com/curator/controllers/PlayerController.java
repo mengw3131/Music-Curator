@@ -1,5 +1,3 @@
-package com.curator.controllers;
-
 import com.wrapper.spotify.model_objects.specification.Track;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -109,7 +107,7 @@ public class PlayerController implements Initializable {
     }
 
     /**
-     * TODO: change params to wrapper.Track instead of Song object
+     * TODO: change params to wrapper.com.curator.models.Track instead of Song object
      * TODO: double check the logic + corner cases
      *
      * Set current song to be the new song

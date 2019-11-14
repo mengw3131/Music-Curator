@@ -109,7 +109,7 @@
             </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="User Guide" />
+              <MenuItem mnemonicParsing="false" text="com.curator.models.User Guide" />
                   <MenuItem mnemonicParsing="false" text="About" />
             </items>
           </Menu>

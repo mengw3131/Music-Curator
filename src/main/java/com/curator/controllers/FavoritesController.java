@@ -1,9 +1,4 @@
-package com.curator.controllers;
-
-import com.curator.Main;
 import com.wrapper.spotify.SpotifyApi;
-import com.wrapper.spotify.exceptions.SpotifyWebApiException;
-import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.Track;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,10 +44,10 @@ public class FavoritesController implements Initializable {
 
         TableColumn<Track, String> nameColumn = new TableColumn<>("Name");
         TableColumn<Track, Integer> timeColumn = new TableColumn<>("Time");
-        TableColumn<Track, String> artistColumn = new TableColumn<>("Artist");
-        TableColumn<Track, String> albumColumn = new TableColumn<>("Album");
+        TableColumn<Track, String> artistColumn = new TableColumn<>("com.curator.models.Artist");
+        TableColumn<Track, String> albumColumn = new TableColumn<>("com.curator.models.Album");
 
-        //Correspond to Track object variable names
+        //Correspond to com.curator.models.Track object variable names
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("durationString"));
         artistColumn.setCellValueFactory(new PropertyValueFactory<>("artistsString"));

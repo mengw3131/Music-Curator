@@ -1,6 +1,4 @@
-package com.curator.recommender;
-
-import com.curator.models.Track;
+import Track;
 
 import java.util.ArrayList;
 import java.util.HashMap;

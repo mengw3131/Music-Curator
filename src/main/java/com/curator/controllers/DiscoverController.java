@@ -1,6 +1,3 @@
-package com.curator.controllers;
-
-import com.curator.Main;
 import com.curator.tools.YoutubeTools;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.model_objects.specification.AlbumSimplified;
@@ -219,8 +216,8 @@ public class DiscoverController implements Initializable {
 //                inPanePlayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 //                    @Override
 //                    public void handle(MouseEvent event) {
-//                        Media media = YoutubeTools.getMusicFileFromQuery(
-//                                YoutubeTools.createYoutubeQuery(track.getName(), track.getArtistsString())
+//                        Media media = com.curator.tools.YoutubeTools.getMusicFileFromQuery(
+//                                com.curator.tools.YoutubeTools.createYoutubeQuery(track.getName(), track.getArtistsString())
 //                        );
 //                        track.setMediaFile(media);
 //                        playerController.setCurrentTrack(track);
@@ -327,8 +324,8 @@ public class DiscoverController implements Initializable {
 //                inPanePlayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 //                    @Override
 //                    public void handle(MouseEvent event) {
-//                        Media media = YoutubeTools.getMusicFileFromQuery(
-//                                YoutubeTools.createYoutubeQuery(track.getName(), track.getArtistsString())
+//                        Media media = com.curator.tools.YoutubeTools.getMusicFileFromQuery(
+//                                com.curator.tools.YoutubeTools.createYoutubeQuery(track.getName(), track.getArtistsString())
 //                        );
 //                        track.setMediaFile(media);
 //                        playerController.setCurrentTrack(track);

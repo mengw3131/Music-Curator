@@ -1,6 +1,3 @@
-package com.curator.controllers;
-
-import com.curator.Main;
 import com.wrapper.spotify.SpotifyApi;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
