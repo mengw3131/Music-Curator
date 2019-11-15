@@ -1,12 +1,9 @@
-import com.curator.tools.SpotifyTools;
 import com.curator.tools.YoutubeTools;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.File;
 
 //TODO: create sqlite database to keep user usage data, e.g. favorites etc
 //TODO: add clear cache feature in settings menu bar, to remove downloaded mp3 files
@@ -15,6 +12,7 @@ import java.io.File;
  * Entry to the app.
  */
 public class Main extends Application {
+
     /**
      * Initialize GUI app
      *
@@ -33,6 +31,10 @@ public class Main extends Application {
         stage.show();
     }
 
+    /**
+     * Entry method to app
+     * @param args
+     */
     public static void main(String[] args) {
         YoutubeTools.initializeInterpreter();
         launch();

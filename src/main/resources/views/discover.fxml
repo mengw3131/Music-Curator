@@ -15,9 +15,9 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.curator.controllers.DiscoverController">
    <center>
-      <ScrollPane fx:id="discoverScrollPane" hbarPolicy="NEVER" maxWidth="1000.0" minWidth="400.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" vbarPolicy="NEVER" BorderPane.alignment="TOP_CENTER">
+      <ScrollPane fx:id="discoverScrollPane" hbarPolicy="NEVER" maxWidth="1000.0" minWidth="400.0" pannable="true" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" vbarPolicy="NEVER" BorderPane.alignment="TOP_CENTER">
          <content>
-            <VBox fx:id="discoverVBox" alignment="TOP_CENTER" minWidth="400.0">
+            <VBox fx:id="discoverVBox" alignment="TOP_CENTER" minWidth="400.0" spacing="10.0">
                <children>
                   <Label fx:id="discoverTitle" text="Discover">
                      <font>
@@ -29,7 +29,13 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </TextField>
-                  <Label fx:id="tracksLabel" text="Label" />
+                  <Label fx:id="tracksLabel" text="Label">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="34.0" />
+                     </font></Label>
                   <ScrollPane fx:id="tracksScrollPane" cache="true" cacheHint="SPEED" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="220.0" prefWidth="600.0">
                      <content>
                         <HBox alignment="CENTER" prefHeight="200.0">
@@ -310,7 +316,10 @@
                         </HBox>
                      </content>
                   </ScrollPane>
-                  <Label fx:id="artistsLabel" text="Label" />
+                  <Label fx:id="artistsLabel" text="Label">
+                     <font>
+                        <Font size="34.0" />
+                     </font></Label>
                   <ScrollPane fx:id="artistsScrollPane" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="220.0" prefWidth="600.0">
                      <content>
                         <HBox alignment="CENTER" prefHeight="200.0">
@@ -551,7 +560,10 @@
                         </HBox>
                      </content>
                   </ScrollPane>
-                  <Label fx:id="albumsLabel" text="Label" />
+                  <Label fx:id="albumsLabel" text="Label">
+                     <font>
+                        <Font size="34.0" />
+                     </font></Label>
                   <ScrollPane fx:id="albumsScrollPane" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="220.0" prefWidth="600.0">
                      <content>
                         <HBox alignment="CENTER" prefHeight="200.0">

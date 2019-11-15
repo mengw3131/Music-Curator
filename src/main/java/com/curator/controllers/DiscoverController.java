@@ -3,6 +3,7 @@ package com.curator.controllers;
 import com.curator.tools.SpotifyTools;
 import com.curator.tools.YoutubeTools;
 import com.curator.models.*;
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+//TODO: REFACTOR + CLEANUP
+
+/**
+ * Controller to discover.fxml
+ */
 public class DiscoverController implements Initializable {
     MainController mainController;
     PlayerController playerController;
@@ -58,6 +64,10 @@ public class DiscoverController implements Initializable {
     @FXML
     ScrollPane albumsScrollPane;
 
+    /**
+     * Show/hide child items on discover page
+     * @param isVisible
+     */
     private void toggleChildrenVisibility(boolean isVisible) {
         tracksLabel.setVisible(isVisible);
         artistsLabel.setVisible(isVisible);
@@ -67,6 +77,10 @@ public class DiscoverController implements Initializable {
         albumsScrollPane.setVisible(isVisible);
     }
 
+    /**
+     * Updates search result given query
+     * @param query search query
+     */
     private void update(String query) {
         if (query.equals("")) {
             toggleChildrenVisibility(false);
@@ -75,50 +89,55 @@ public class DiscoverController implements Initializable {
 
             //set matching tracks
             ArrayList<Track> tracks = SpotifyTools.searchTracks(query, 8);
+
             if (tracks.size() == 0) {
+                System.out.println("no tracks found!");
                 tracksLabel.setText("No tracks found");
-//                discoverVBox.getChildren().set(2, new Label("No tracks found"));
+                tracksScrollPane.setVisible(false);
             } else {
                 tracksLabel.setText("Tracks");
-//                discoverVBox.getChildren().set(2, tracksLabel);
-                tracksScrollPane = createTracksRecommendationBox(tracks);
-//                discoverVBox.getChildren().set(2, tracksScrollPane);
+                tracksScrollPane.setVisible(true);
+                tracksScrollPane.prefWidthProperty().bind(discoverScrollPane.widthProperty());
+                tracksScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+                tracksScrollPane.setContent(createTracksRecommendationBox(tracks));
             }
 
             //set matching artists
             ArrayList<Artist> artists = SpotifyTools.searchArtists(query, 8);
             if (artists.size() == 0) {
+                System.out.println("no artists found!");
                 artistsLabel.setText("No artists found");
-                discoverVBox.getChildren().set(4, new Label("No artists found"));
+                artistsScrollPane.setVisible(false);
             } else {
                 artistsLabel.setText("Artists");
-
-//                discoverVBox.getChildren().get(3).setVisible(true);
-                artistsScrollPane = createArtistsRecommendationBox(artists);
-//                discoverVBox.getChildren().set(4, artistsScrollPane);
+                artistsScrollPane.setVisible(true);
+                artistsScrollPane.prefWidthProperty().bind(discoverScrollPane.widthProperty());
+                artistsScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+                artistsScrollPane.setContent(createArtistsRecommendationBox(artists));
             }
 
             //set matching albums
             ArrayList<AlbumSimple> albums = SpotifyTools.searchAlbums(query, 8);
             if (albums.size() == 0) {
-
+                System.out.println("no albums found!");
                 albumsLabel.setText("No albums found");
-                discoverVBox.getChildren().set(6, new Label("No albums found"));
+                albumsScrollPane.setVisible(false);
             } else {
                 albumsLabel.setText("Albums");
-//                discoverVBox.getChildren().get(5).setVisible(true);
-                albumsScrollPane = createAlbumsRecommendationBox(albums);
-//                discoverVBox.getChildren().set(6, albumsScrollPane);
-//                discoverVBox.getChildren().get(6).setVisible(true);
+                albumsScrollPane.setVisible(true);
+                albumsScrollPane.prefWidthProperty().bind(discoverScrollPane.widthProperty());
+                albumsScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+                albumsScrollPane.setContent(createAlbumsRecommendationBox(albums));
             }
         }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("initializing");
-
+        //set to empty first
         update("");
+
+        // when user press Enter, update results
         searchBar.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -165,8 +184,11 @@ public class DiscoverController implements Initializable {
 
             HBox box = (HBox) pane.getContent();
 
+            System.out.println("artists size is");
+
             //loop on each music pane in HBox
-            for (int i = 0; i < ((HBox) pane.getContent()).getChildren().size(); i++) {
+//            for (int i = 0; i < ((HBox) pane.getContent()).getChildren().size(); i++) {
+            for (int i = 0; i < artists.size(); i++) {
                 Artist artist = artists.get(i);
                 Pane subPane = (Pane) box.getChildren().get(i);
                 ImageView trackImage = (ImageView) subPane.getChildren().get(0);
@@ -179,7 +201,6 @@ public class DiscoverController implements Initializable {
                     trackImage.setImage(artist.getImages().get(0));
                 }
                 artistName.setText(artist.getName());
-
 
                 //when mouse enter the pane
                 subPane.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
@@ -273,7 +294,8 @@ public class DiscoverController implements Initializable {
             HBox box = (HBox) pane.getContent();
 
             //loop on each music pane in HBox
-            for (int i = 0; i < ((HBox) pane.getContent()).getChildren().size(); i++) {
+//            for (int i = 0; i < ((HBox) pane.getContent()).getChildren().size(); i++) {
+             for (int i = 0; i < albumSimpleArr.size(); i++) {
                 AlbumSimple album = albumSimpleArr.get(i);
 
                 Pane subPane = (Pane) box.getChildren().get(i);
@@ -387,7 +409,8 @@ public class DiscoverController implements Initializable {
             HBox box = (HBox) pane.getContent();
 
             //loop on each music pane in HBox
-            for (int i = 0; i < ((HBox) pane.getContent()).getChildren().size(); i++) {
+//            for (int i = 0; i < ((HBox) pane.getContent()).getChildren().size(); i++) {
+            for (int i = 0; i < tracks.size(); i++) {
                 Track track = tracks.get(i);
                 Pane subPane = (Pane) box.getChildren().get(i);
                 ImageView trackImage = (ImageView) subPane.getChildren().get(0);

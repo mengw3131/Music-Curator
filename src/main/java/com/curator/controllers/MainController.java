@@ -26,8 +26,10 @@ public class MainController implements Initializable {
     private BorderPane homePane;
     private BorderPane discoverPane;
     private TableView favoritesTable;
-
-
+    private AnchorPane myMusicPane;
+    private AnchorPane madeForYouPane;
+    private AnchorPane playlistPane;
+    private AnchorPane profilePane;
 
     //set reuseable loader to improve performance
     FXMLLoader loader;
@@ -59,21 +61,23 @@ public class MainController implements Initializable {
     @FXML
     HBox playerContainer;
 
+    /**
+     * Hides all main pane
+     */
     private void hideAllMainPane(){
-        if (homePane != null) {
-            homePane.setVisible(false);
-        }
-
-        if (favoritesTable != null) {
-            favoritesTable.setVisible(false);
-        }
-
-        if (discoverPane != null){
-            discoverPane.setVisible(false);
-        }
+        if (homePane != null) { homePane.setVisible(false); }
+        if (discoverPane != null){ discoverPane.setVisible(false); }
+        if (myMusicPane != null) { myMusicPane.setVisible(false); }
+        if (favoritesTable != null) { favoritesTable.setVisible(false); }
+        if (madeForYouPane != null) { madeForYouPane.setVisible(false); }
+        if (playlistPane != null) { playlistPane.setVisible(false); }
+        if (profilePane != null) { profilePane.setVisible(false); }
     }
 
-    private void untoggleAllButton(){
+    /**
+     * Unselect all currently pane buttons
+     */
+    private void unselectAllButtons(){
            homeButton.setStyle("-fx-background-color: none;");
            discoverButton.setStyle("-fx-background-color: none;");
            favoritesButton.setStyle("-fx-background-color: none;");
@@ -83,8 +87,6 @@ public class MainController implements Initializable {
            profileButton.setStyle("-fx-background-color: none;");
     }
 
-
-
     /**
      * Triggered when home button in the left bar is clicked
      *
@@ -93,7 +95,7 @@ public class MainController implements Initializable {
     @FXML
     private void handleHomeButtonAction(ActionEvent event) throws IOException {
         hideAllMainPane();
-        untoggleAllButton();
+        unselectAllButtons();
         homeButton.setStyle("-fx-background-color: lightgrey;");
 
         if (homePane == null){
@@ -126,10 +128,14 @@ public class MainController implements Initializable {
         homePane.setVisible(true);
     }
 
+    /**
+     * Triggered when discover button in the left bar is clicked
+     * @param event
+     */
     @FXML
     private void handleDiscoverButtonAction(ActionEvent event){
         hideAllMainPane();
-        untoggleAllButton();
+        unselectAllButtons();
         discoverButton.setStyle("-fx-background-color: lightgrey;");
 
         if (discoverPane == null){
@@ -182,16 +188,15 @@ public class MainController implements Initializable {
     @FXML
     private void handleMyMusicButtonAction(ActionEvent event) {
         hideAllMainPane();
-        untoggleAllButton();
+        unselectAllButtons();
         myMusicButton.setStyle("-fx-background-color: lightgrey;");
 
         //TODO: TO BE IMPLEMENTED
 
-        //set temporary view
-        AnchorPane anchorPane = new AnchorPane();
-        anchorPane.getChildren().add(new Label("My Music page"));
-        mainPane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
-        mainPane.getChildren().add(anchorPane);
+        myMusicPane = new AnchorPane();
+        myMusicPane.getChildren().add(new Label("My Music page"));
+        myMusicPane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
+        mainPane.getChildren().add(myMusicPane);
     }
 
     /**
@@ -203,7 +208,7 @@ public class MainController implements Initializable {
     @FXML
     private void handleFavoritesButtonAction(ActionEvent event) throws IOException {
         hideAllMainPane();
-        untoggleAllButton();
+        unselectAllButtons();
         favoritesButton.setStyle("-fx-background-color: lightgrey;");
 
 
@@ -231,17 +236,15 @@ public class MainController implements Initializable {
     @FXML
     private void handleMadeForYouButtonAction(ActionEvent event) {
         hideAllMainPane();
-        untoggleAllButton();
+        unselectAllButtons();
         madeForYouButton.setStyle("-fx-background-color: lightgrey;");
-
 
         //TODO: TO BE IMPLEMENTED
 
-        //set temporary view
-        AnchorPane anchorPane = new AnchorPane();
-        anchorPane.getChildren().add(new Label("Made For You page"));
-        mainPane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
-        mainPane.getChildren().setAll(anchorPane);
+        madeForYouPane = new AnchorPane();
+        madeForYouPane.getChildren().add(new Label("Made For You page"));
+        madeForYouPane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
+        mainPane.getChildren().add(madeForYouPane);
     }
 
     /**
@@ -252,17 +255,16 @@ public class MainController implements Initializable {
     @FXML
     private void handlePlaylistsButtonAction(ActionEvent event) {
         hideAllMainPane();
-        untoggleAllButton();
+        unselectAllButtons();
         playlistsButton.setStyle("-fx-background-color: lightgrey;");
 
 
         //TODO: TO BE IMPLEMENTED
 
-        //set temporary view
-        AnchorPane anchorPane = new AnchorPane();
-        anchorPane.getChildren().add(new Label("Playlist page"));
-        mainPane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
-        mainPane.getChildren().add(anchorPane);
+        playlistPane = new AnchorPane();
+        playlistPane.getChildren().add(new Label("Playlist page"));
+        playlistPane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
+        mainPane.getChildren().add(playlistPane);
     }
 
     /**
@@ -273,18 +275,15 @@ public class MainController implements Initializable {
     @FXML
     private void handleProfileButtonAction(ActionEvent event) {
         hideAllMainPane();
-        untoggleAllButton();
+        unselectAllButtons();
         profileButton.setStyle("-fx-background-color: lightgrey;");
-
-
 
         //TODO: TO BE IMPLEMENTED
 
-        //set temporary view
-        AnchorPane anchorPane = new AnchorPane();
-        anchorPane.getChildren().add(new Label("Profile page"));
-        mainPane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
-        mainPane.getChildren().add(anchorPane);
+        profilePane = new AnchorPane();
+        profilePane.getChildren().add(new Label("Profile page"));
+        profilePane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
+        mainPane.getChildren().add(profilePane);
     }
 
     /**
@@ -293,7 +292,6 @@ public class MainController implements Initializable {
     private void loadPlayer() {
         try {
             loader = new FXMLLoader(getClass().getResource("/views/player.fxml"));
-
             HBox player = loader.load();
 
             //set player width to follow its container
@@ -318,10 +316,14 @@ public class MainController implements Initializable {
         System.out.println("Loading player ... ");
         loadPlayer();
         System.out.println("Loading panes... ");
-//        favoritesButton.fire();
-        System.out.println("favorites button loaded");
-//        discoverButton.fire();
-//        homeButton.fire();
-//        System.out.println("home button loaded");
+        discoverButton.fire();
+        myMusicButton.fire();
+        favoritesButton.fire();
+        madeForYouButton.fire();
+        playlistsButton.fire();
+        profileButton.fire();
+
+        System.out.println("Loading home... ");
+        homeButton.fire();
     }
 }

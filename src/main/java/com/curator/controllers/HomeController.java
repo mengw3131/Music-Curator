@@ -178,10 +178,7 @@ public class HomeController implements Initializable {
         label.setAlignment(Pos.TOP_LEFT);
         topRecommendationVBox.getChildren().add(label);
 
-
-        System.out.print("Getting 8 tracks... ");
         ArrayList<Track> tracks =  SpotifyTools.searchTracks("Claude Debussy", 8);
-        System.out.println("Done");
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
 
 //        tracks = api.searchTracks("Louis Armstrong", 6);
