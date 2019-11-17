@@ -2,6 +2,9 @@ package com.curator.controllers;
 
 import com.curator.models.*;
 
+import javafx.beans.binding.When;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -63,6 +66,8 @@ public class PlayerController implements Initializable {
 
     @FXML
     Label endDurationLabel;
+
+
 
     /**
      * Triggered when Play button in the player is clicked

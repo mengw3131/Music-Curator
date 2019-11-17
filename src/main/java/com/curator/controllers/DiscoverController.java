@@ -184,10 +184,7 @@ public class DiscoverController implements Initializable {
 
             HBox box = (HBox) pane.getContent();
 
-            System.out.println("artists size is");
-
             //loop on each music pane in HBox
-//            for (int i = 0; i < ((HBox) pane.getContent()).getChildren().size(); i++) {
             for (int i = 0; i < artists.size(); i++) {
                 Artist artist = artists.get(i);
                 Pane subPane = (Pane) box.getChildren().get(i);
@@ -294,7 +291,6 @@ public class DiscoverController implements Initializable {
             HBox box = (HBox) pane.getContent();
 
             //loop on each music pane in HBox
-//            for (int i = 0; i < ((HBox) pane.getContent()).getChildren().size(); i++) {
              for (int i = 0; i < albumSimpleArr.size(); i++) {
                 AlbumSimple album = albumSimpleArr.get(i);
 
@@ -409,7 +405,6 @@ public class DiscoverController implements Initializable {
             HBox box = (HBox) pane.getContent();
 
             //loop on each music pane in HBox
-//            for (int i = 0; i < ((HBox) pane.getContent()).getChildren().size(); i++) {
             for (int i = 0; i < tracks.size(); i++) {
                 Track track = tracks.get(i);
                 Pane subPane = (Pane) box.getChildren().get(i);
