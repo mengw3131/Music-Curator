@@ -15,7 +15,7 @@ public class TrackSimple {
     private ArrayList<Artist> artists;          // the list of artists on the album
     private String artistsString;               // the list of artists on the album
     private AudioFeatures features;             // only initialize when needed
-
+    private int duration;
 
     public TrackSimple(com.wrapper.spotify.model_objects.specification.Track sTrack){
         this.trackID = sTrack.getId();
@@ -24,6 +24,8 @@ public class TrackSimple {
 
 		this.artists = SpotifyTools.toArtist(sTrack.getArtists());
         this.artistsString = SpotifyTools.toString(this.artists);
+
+        this.duration = sTrack.getDurationMs() / 1000;
     }
 
 

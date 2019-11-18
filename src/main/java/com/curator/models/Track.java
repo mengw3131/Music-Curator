@@ -1,6 +1,8 @@
 package com.curator.models;
 
 import com.curator.tools.SpotifyTools;
+import com.curator.tools.YoutubeTools;
+import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
 import com.wrapper.spotify.model_objects.specification.AudioFeatures;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
@@ -14,17 +16,28 @@ import java.util.ArrayList;
  * to be accessed by other classes.
  */
 public class Track {
-    private String trackID;                     // Spotify track ID
-    private String name;                        // name of the song
-
-    private ArrayList<Artist> artists;    // the list of artists on the album
-    private String artistsString;    // the list of artists on the album
-    private AlbumSimple album;                  // the album of the song
-
+    private ArrayList<Artist> artists;               // the list of artists on the album
+    private String artistsNames;                     // the list of artists on the album
+    private AlbumSimple album;                       // the album of the song
     private Image image;
     private Media media;
-    private int popularity;                     // the popularity of a song (0 - 100)
-    private AudioFeatures features;             // only initialize when needed
+    private String trackName;                        // name of the song
+
+
+    //wrapper objects
+    private AudioFeatures features;
+    private com.wrapper.spotify.model_objects.specification.Track sTrack;
+
+    //Note:
+    // avoid api calls in constructor, they can throttle the main thread and freeze the UI
+    // only call api when requested via getters
+
+    /**
+     * Empty constructor, for testing.
+     */
+    public Track() {
+    }
+
 
     /**
      * Construct com.curator.models.Track object from wrapper's com.curator.models.Track object
@@ -32,14 +45,168 @@ public class Track {
      * @param sTrack spotify wrapper's com.curator.models.Track object
      */
     public Track(com.wrapper.spotify.model_objects.specification.Track sTrack) {
-        this.trackID = sTrack.getId();
-        this.name = sTrack.getName();
-        this.popularity = sTrack.getPopularity();
 
-        this.album = SpotifyTools.toAlbumSimple(sTrack.getAlbum());
+        this.sTrack = sTrack;
+    }
+
+
+    // ==========================================================================
+    // TRACK META GETTERS & SETTERS
+    // ==========================================================================
+
+    /**
+     * @return trackID The Spotify song ID
+     */
+    public String getTrackID() {
+        return sTrack.getId();
+    }
+
+    /**
+     * @return name The name of the song
+     */
+    public String getTrackName() {
+        if (trackName == null){
+            setTrackName(sTrack.getName());
+        }
+        return trackName;
+    }
+
+    /**
+     * Set track name
+     *
+     * @param name track name
+     */
+    public void setTrackName(String name) {
+        this.trackName = name;
+    }
+
+    /**
+     * @return artists com.curator.models.Artist of the track
+     */
+    public ArrayList<Artist> getArtists() {
         this.artists = SpotifyTools.toArtist(sTrack.getArtists());
-        this.artistsString = SpotifyTools.toString(this.artists);
-        this.image = this.album.getImages().get(0);
+
+        return artists;
+    }
+
+    /**
+     * Return the names of the artists, separated by comma
+     *
+     * @return comma separated string of the names of the artists
+     */
+    public String getArtistsNames() {
+        if (artistsNames == null) {
+            setArtistsNames();
+        }
+        return artistsNames;
+    }
+
+    /**
+     * Set artistNames variable of the track. If none supplied, artists is sourced from Spotify.
+     *
+     * @param artistsNames names of the artists
+     */
+    public void setArtistsNames(String... artistsNames) {
+        if (artistsNames.length == 0) {
+            StringBuilder sb = new StringBuilder();
+            for (ArtistSimplified a : sTrack.getArtists()) {
+                sb.append(a.getName()).append(", ");
+            }
+            this.artistsNames = sb.toString();
+            this.artistsNames = getArtistsNames().substring(0, getArtistsNames().length() - 2); //remove last ,
+
+        } else {
+            this.artistsNames = String.join(", ", artistsNames);
+        }
+    }
+
+    /**
+     * @return album The object for the album that the song is on
+     */
+    public AlbumSimple getAlbum() {
+        if (album == null) {
+            this.album = SpotifyTools.toAlbumSimple(sTrack.getAlbum());
+        }
+        return album;
+    }
+
+    /**
+     * Returns album name of current track
+     *
+     * @return album name of current track
+     */
+    public String getAlbumName() {
+        return sTrack.getAlbum().getName();
+    }
+
+    /**
+     * @return popularity The popularity measure of the song (0 - 100)
+     */
+    public int getPopularity() {
+        return sTrack.getPopularity();
+    }
+
+    /**
+     * Return image of the track.
+     *
+     * @return Image object of the track.
+     */
+    public Image getImage() {
+        if (image == null) {
+            setImage();
+        }
+        return image;
+    }
+
+    /**
+     * Set image of the track. If null supplied, image is sourced from Spotify.
+     *
+     * @param image image of the track
+     */
+    public void setImage(Image... image) {
+        if (image.length == 0) {
+            this.image = SpotifyTools.toImage(sTrack.getAlbum().getImages()[0].getUrl());
+        } else {
+            this.image = image[0];
+        }
+    }
+
+    /**
+     * Return Media object of the track.
+     *
+     * @return Media object of the track.
+     */
+    public Media getMedia() {
+        if (media == null) {
+            setMedia();
+        }
+        return media;
+    }
+
+    /**
+     * Set Media object of the track
+     *
+     * @param media
+     */
+    public void setMedia(Media... media) {
+        if (media.length == 0) {
+            this.media = YoutubeTools.getMusicFileFromQuery(
+                    YoutubeTools.createYoutubeQuery(this.getTrackName(), this.getArtistsNames()));
+        } else {
+            this.media = media[0];
+        }
+    }
+
+
+    // ==========================================================================
+    // AUDIO FEATURES GETTERS
+    // ==========================================================================
+
+    /**
+     * Set AudioFeatures object of the track
+     */
+    private void setAudioFeatures() {
+        this.features = SpotifyTools.getAudioFeatures(getTrackID());
     }
 
     /**
@@ -112,67 +279,4 @@ public class Track {
         }
         return features.getValence();
     }
-
-    /**
-     * @return trackID The Spotify song ID
-     */
-    public String getTrackID() {
-        return trackID;
-    }
-
-    /**
-     * @return name The name of the song
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @return artists com.com.curator.com.curator.models.Artist of the track
-     */
-    public ArrayList<Artist> getArtists() {
-        return artists;
-    }
-
-    /**
-     * @return album The object for the album that the song is on
-     */
-    public AlbumSimple getAlbum() {
-        return album;
-    }
-
-    /**
-     * @return popularity The popularity measure of the song (0 - 100)
-     */
-    public int getPopularity() {
-        return popularity;
-    }
-
-
-    public Image getImage() {
-        return image;
-    }
-
-
-    public Media getMedia() {
-        return media;
-    }
-
-    public int getDuration() {
-        return (int) media.getDuration().toSeconds();
-    }
-
-    public String getArtistsString() {
-        return artistsString;
-    }
-
-    public void setMedia(Media media) {
-        this.media = media;
-    }
-
-    private void setAudioFeatures() {
-        this.features = SpotifyTools.getAudioFeatures(trackID);
-    }
-
-
 }

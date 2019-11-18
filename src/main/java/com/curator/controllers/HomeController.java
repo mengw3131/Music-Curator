@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -18,6 +19,7 @@ import javafx.scene.media.Media;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -30,23 +32,10 @@ import java.util.ResourceBundle;
 public class HomeController implements Initializable {
     MainController mainController;
     PlayerController playerController;
-    FXMLLoader loader = new FXMLLoader();
 
-    @FXML
-    ScrollPane mainScrollPane;
-
-    @FXML
-    VBox mainVBox;
-
-    @FXML
-    VBox topRecommendationVBox;
-
-
-    //TODO: on mouse hover, dim background, show play button
-    //TODO: OPTIMIZE performance
-
-
-
+    @FXML ScrollPane mainScrollPane;
+    @FXML VBox mainVBox;
+    @FXML VBox topRecommendationVBox;
 
     /**
      * Creates a horizontal box of track panes. Default of 8 tracks.
@@ -87,11 +76,12 @@ public class HomeController implements Initializable {
                 ImageView inPanePlayButton = (ImageView) subPane.getChildren().get(3);
                 ImageView inPaneHeartButton = (ImageView) subPane.getChildren().get(4);
                 ImageView inPaneAddToPlaylistButton = (ImageView) subPane.getChildren().get(5);
+                ImageView dislikeButton = (ImageView) subPane.getChildren().get(6);
 
                 trackImage.setImage(track.getImage());
-                trackName.setText(track.getName());
-                trackArtist.setText(track.getArtistsString());
-
+                trackName.setText(track.getTrackName());
+                System.out.println("track name is " + track.getTrackName());
+                trackArtist.setText(track.getArtistsNames());
 
                 //when mouse enter the pane
                 subPane.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
@@ -101,10 +91,12 @@ public class HomeController implements Initializable {
                         inPanePlayButton.setOpacity(1);
                         inPaneHeartButton.setOpacity(1);
                         inPaneAddToPlaylistButton.setOpacity(1);
+                        dislikeButton.setOpacity(1);
 
                         inPanePlayButton.setDisable(false);
                         inPaneHeartButton.setDisable(false);
                         inPaneAddToPlaylistButton.setDisable(false);
+                        dislikeButton.setDisable(false);
                     }
                 });
 
@@ -116,10 +108,12 @@ public class HomeController implements Initializable {
                         inPanePlayButton.setOpacity(0);
                         inPaneHeartButton.setOpacity(0);
                         inPaneAddToPlaylistButton.setOpacity(0);
+                        dislikeButton.setOpacity(0);
 
                         inPanePlayButton.setDisable(true);
                         inPaneHeartButton.setDisable(true);
                         inPaneAddToPlaylistButton.setDisable(true);
+                        dislikeButton.setDisable(true);
                     }
                 });
 
@@ -127,10 +121,6 @@ public class HomeController implements Initializable {
                 inPanePlayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        Media media = YoutubeTools.getMusicFileFromQuery(
-                                YoutubeTools.createYoutubeQuery(track.getName(), track.getArtistsString())
-                        );
-                        track.setMedia(media);
                         playerController.setCurrentTrack(track);
                         event.consume();
                     }
@@ -153,11 +143,40 @@ public class HomeController implements Initializable {
                         System.out.println("heart clicked");
                     }
                 });
+
+                dislikeButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        //TODO: IMPLEMENT
+                        System.out.println("dislike clicked");
+                    }
+                });
+
+
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         return pane;
+    }
+
+    //create dummy arrays of track, no API calls, use this for testing
+    private ArrayList<Track> createDummy(){
+        System.out.println("creating dummy tracks");
+        ArrayList<Track> tracks = new ArrayList<>();
+        if (!new File("src/main/resources/music/g-jsW61e_-w.mp3").exists()){
+            YoutubeTools.getMediaFileFromYoutubeId("g-jsW61e_-w");
+        }
+        for (int i = 0; i < 8; i++) {
+            Track track = new Track();
+
+            track.setMedia(new Media(new File("src/main/resources/music/g-jsW61e_-w.mp3").toURI().toString()));
+            track.setImage(new Image("/icons/musical-note.png"));
+            track.setArtistsNames("[DUMMY] Bill Evans");
+            track.setTrackName("[DUMMY]My Foolish Heart");
+            tracks.add(track);
+        }
+        return tracks;
     }
 
 
@@ -178,10 +197,12 @@ public class HomeController implements Initializable {
         label.setAlignment(Pos.TOP_LEFT);
         topRecommendationVBox.getChildren().add(label);
 
-        ArrayList<Track> tracks =  SpotifyTools.searchTracks("Claude Debussy", 8);
+        ArrayList<Track> tracks =  SpotifyTools.searchTracks("Bill Evans", 8);
+//        ArrayList<Track> tracks =  createDummy();
+        System.out.println("done searching tracks");
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
 
-//        tracks = api.searchTracks("Louis Armstrong", 6);
+        tracks = SpotifyTools.searchTracks("Art Tatum", 8);
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
 
         Label label2 = new Label("Hot This Week");
@@ -189,15 +210,15 @@ public class HomeController implements Initializable {
         label2.setAlignment(Pos.TOP_LEFT);
         topRecommendationVBox.getChildren().add(label2);
 
-//        tracks = api.searchTracks("Al Bowlly", 6);
+        tracks = SpotifyTools.searchTracks("Oscar Peterson", 8);
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
-
+//
         Label label3 = new Label("Mood");
         label3.setFont(Font.font("Calibri", FontWeight.EXTRA_LIGHT, 35));
         label3.setAlignment(Pos.TOP_LEFT);
         topRecommendationVBox.getChildren().add(label3);
 
-//        tracks = api.searchTracks("Calm", 6);
+        tracks = SpotifyTools.searchTracks("Thelonius Monk", 8);
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
     }
 

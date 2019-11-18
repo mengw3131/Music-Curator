@@ -18,7 +18,7 @@ public class Album {
 	private String albumID;                // The Spotify ID of the album
 	private String name;                   // The name of the album
 	private int popularity;                // popularity of the album (0-100) calculated with the the
-	private String artistsString;    // the list of artists on the album
+	private String artistsString;          // the list of artists on the album
 					                       // popularity of the album's songs
 	ArrayList<Artist> artists;             // the list of artists on the album
 

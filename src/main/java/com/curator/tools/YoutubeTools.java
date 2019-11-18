@@ -1,6 +1,8 @@
 package com.curator.tools;
 
+import javafx.concurrent.Task;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -46,7 +48,7 @@ public class YoutubeTools {
     public static ArrayList<String> getIDsOfBestMatchVideos(String query) {
         String url = "https://www.youtube.com/results?search_query=" + query;
         ArrayList<String> results = new ArrayList<String>();
-        HashMap<String,String> uniqueLinks = new HashMap<>();
+        HashMap<String, String> uniqueLinks = new HashMap<>();
 
         try {
             //Get html of the query
@@ -59,7 +61,7 @@ public class YoutubeTools {
             while (m.find()) {
                 String link = m.group().replace("/watch?v=", "");
 
-                if (uniqueLinks.get(link) == null){
+                if (uniqueLinks.get(link) == null) {
                     uniqueLinks.put(link, "");
                     results.add(link);
                 }
@@ -74,7 +76,7 @@ public class YoutubeTools {
      * TODO: if not finish downloading and user click another music, stop
      * TODO: if possible find a way to stream instead of download
      * TODO: hide python outputs
-     *
+     * <p>
      * Given youtube video id, download music file to
      * default folder (named as videoid.mp3), then return Media object
      *
@@ -86,21 +88,60 @@ public class YoutubeTools {
 
 
     public static Media getMediaFileFromYoutubeId(String id, String outputFolder) {
-        //if music file was downloaded before and has the same id,
-        //   skip downloading, return Sound obj using existing file
-        if (isMediaFileExists(id, outputFolder)) {
-            return new Media(new File(outputFolder + id + ".mp3").toURI().toString());
+//        Task<Media> task = new Task<Media>() {
+//            @Override
+//            protected Media call() throws Exception {
+//                System.out.println("calling");
+//                //ydl configs. 'outtmpl': sets output dir and filename.
+//                i.exec("ydl_opts = {" +
+//                        "'outtmpl':'" + outputFolder + id + ".%(ext)s'," +
+//                        "'format':'bestaudio/best', " +
+//                        "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
+//                );
+//                i.exec("with youtube_dl.YoutubeDL(ydl_opts) as ydl: ydl.download(['https://www.youtube.com/watch?v=" + id + "'])");
+//                return new Media(new File(outputFolder + id + ".mp3").toURI().toString());
+//            }
+//        };
+//        Thread t = new Thread(task);
+//        t.start();
+
+
+//        return new Thread(task).start();
+
+//        return new Media("");
+
+
+//        if (!isMediaFileExists(id, outputFolder)) {
+//            Runnable task = new Runnable() {
+//                @Override
+//                public void run() {
+//                    //ydl configs. 'outtmpl': sets output dir and filename.
+//                    i.exec("ydl_opts = {" +
+//                            "'outtmpl':'" + outputFolder + id + ".%(ext)s'," +
+//                            "'format':'bestaudio/best', " +
+//                            "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
+//                    );
+//                    i.exec("with youtube_dl.YoutubeDL(ydl_opts) as ydl: ydl.download(['https://www.youtube.com/watch?v=" + id + "'])");
+//                }
+//
+//            };
+//            Thread downloadThread = new Thread(task);
+//            downloadThread.setDaemon(true);
+//            downloadThread.start();
+//
+//        }
+//        return new Media(new File(outputFolder + id + ".mp3").toURI().toString());
+
+//
+        if (!isMediaFileExists(id, outputFolder)) {
+            //ydl configs. 'outtmpl': sets output dir and filename.
+            i.exec("ydl_opts = {" +
+                    "'outtmpl':'" + outputFolder + id + ".%(ext)s'," +
+                    "'format':'bestaudio/best', " +
+                    "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
+            );
+            i.exec("with youtube_dl.YoutubeDL(ydl_opts) as ydl: ydl.download(['https://www.youtube.com/watch?v=" + id + "'])");
         }
-
-        //ydl configs. 'outtmpl': sets output dir and filename.
-        i.exec("ydl_opts = {" +
-                "'outtmpl':'" + outputFolder + id + ".%(ext)s'," +
-                "'format':'bestaudio/best', " +
-                "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
-        );
-
-        i.exec("with youtube_dl.YoutubeDL(ydl_opts) as ydl: ydl.download(['https://www.youtube.com/watch?v=" + id + "'])");
-
         return new Media(new File(outputFolder + id + ".mp3").toURI().toString());
     }
 
@@ -115,10 +156,10 @@ public class YoutubeTools {
      */
     public static Media getMusicFileFromQuery(String query) {
 
-        for (String link: getIDsOfBestMatchVideos(query)) {
+        for (String link : getIDsOfBestMatchVideos(query)) {
 
             //if video is 10 minutes or shorter, proceed, otherwise check the next best match
-            if (Integer.valueOf(getVideoMeta(link).get("duration").toString()) <= MAX_AUDIO_LENGTH_SECOND){
+            if (Integer.valueOf(getVideoMeta(link).get("duration").toString()) <= MAX_AUDIO_LENGTH_SECOND) {
                 return getMediaFileFromYoutubeId(link);
             }
             System.out.println(link + " is too long! Checking next best");
@@ -164,7 +205,7 @@ public class YoutubeTools {
     /**
      * Initialize python interpreter and import necessary modules.
      * Called before app launches to eliminate first load wait time during use.
-     *
+     * <p>
      * Returns true if interpreter is initialized successfully
      */
     public static boolean initializeInterpreter() {
@@ -182,6 +223,7 @@ public class YoutubeTools {
                   '__classpath__', '__pyclasspath__/']
              */
                 i.exec("import sys");
+                i.exec("from __future__ import unicode_literals");
 
                 //add to path '/home/username/Documents/MusicCurator/lib/youtube-dl-master'
                 i.exec("sys.path.append(sys.path[0][:-4] + '/youtube-dl-master')");
@@ -197,7 +239,7 @@ public class YoutubeTools {
             }
             System.out.println("Done");
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
@@ -205,18 +247,19 @@ public class YoutubeTools {
 
     /**
      * Get Youtube video meta data, given video id
+     *
      * @param id
      * @return PyDictionary containing meta data
      */
-    public static PyDictionary getVideoMeta(String id){
+    public static PyDictionary getVideoMeta(String id) {
         i.exec("with youtube_dl.YoutubeDL(ydl_opts) as ydl: " +
-                "meta = ydl.extract_info('https://www.youtube.com/watch?v="+ id + "', download=False)");
+                "meta = ydl.extract_info('https://www.youtube.com/watch?v=" + id + "', download=False)");
 
 //        System.out.println(i.get("meta").toString()); //uncomment to print the whole meta
         return (PyDictionary) i.get("meta");
     }
 
-    public static PythonInterpreter getInterpreter(){
+    public static PythonInterpreter getInterpreter() {
         return i;
     }
 }

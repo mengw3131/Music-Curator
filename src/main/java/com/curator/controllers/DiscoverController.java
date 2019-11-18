@@ -1,7 +1,6 @@
 package com.curator.controllers;
 
 import com.curator.tools.SpotifyTools;
-import com.curator.tools.YoutubeTools;
 import com.curator.models.*;
 
 import javafx.event.EventHandler;
@@ -18,7 +17,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
 
 import java.io.IOException;
 import java.net.URL;
@@ -235,7 +233,7 @@ public class DiscoverController implements Initializable {
 //                    @Override
 //                    public void handle(MouseEvent event) {
 //                        Media media = com.curator.tools.YoutubeTools.getMusicFileFromQuery(
-//                                com.curator.tools.YoutubeTools.createYoutubeQuery(track.getName(), track.getArtistsString())
+//                                com.curator.tools.YoutubeTools.createYoutubeQuery(track.getTrackName(), track.getArtistsNames())
 //                        );
 //                        track.setMediaFile(media);
 //                        playerController.setCurrentTrack(track);
@@ -343,7 +341,7 @@ public class DiscoverController implements Initializable {
 //                    @Override
 //                    public void handle(MouseEvent event) {
 //                        Media media = com.curator.tools.YoutubeTools.getMusicFileFromQuery(
-//                                com.curator.tools.YoutubeTools.createYoutubeQuery(track.getName(), track.getArtistsString())
+//                                com.curator.tools.YoutubeTools.createYoutubeQuery(track.getTrackName(), track.getArtistsNames())
 //                        );
 //                        track.setMediaFile(media);
 //                        playerController.setCurrentTrack(track);
@@ -414,10 +412,11 @@ public class DiscoverController implements Initializable {
                 ImageView inPanePlayButton = (ImageView) subPane.getChildren().get(3);
                 ImageView inPaneHeartButton = (ImageView) subPane.getChildren().get(4);
                 ImageView inPaneAddToPlaylistButton = (ImageView) subPane.getChildren().get(5);
+                ImageView inPaneDislikeButton = (ImageView) subPane.getChildren().get(6);
 
                 trackImage.setImage(track.getImage());
-                trackName.setText(track.getName());
-                trackArtist.setText(track.getArtistsString());
+                trackName.setText(track.getTrackName());
+                trackArtist.setText(track.getArtistsNames());
 
 
                 //when mouse enter the pane
@@ -428,10 +427,12 @@ public class DiscoverController implements Initializable {
                         inPanePlayButton.setOpacity(1);
                         inPaneHeartButton.setOpacity(1);
                         inPaneAddToPlaylistButton.setOpacity(1);
+                        inPaneDislikeButton.setOpacity(1);
 
                         inPanePlayButton.setDisable(false);
                         inPaneHeartButton.setDisable(false);
                         inPaneAddToPlaylistButton.setDisable(false);
+                        inPaneDislikeButton.setDisable(false);
                     }
                 });
 
@@ -443,10 +444,12 @@ public class DiscoverController implements Initializable {
                         inPanePlayButton.setOpacity(0);
                         inPaneHeartButton.setOpacity(0);
                         inPaneAddToPlaylistButton.setOpacity(0);
+                        inPaneDislikeButton.setOpacity(0);
 
                         inPanePlayButton.setDisable(true);
                         inPaneHeartButton.setDisable(true);
                         inPaneAddToPlaylistButton.setDisable(true);
+                        inPaneDislikeButton.setDisable(true);
                     }
                 });
 
@@ -454,10 +457,6 @@ public class DiscoverController implements Initializable {
                 inPanePlayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        Media media = YoutubeTools.getMusicFileFromQuery(
-                                YoutubeTools.createYoutubeQuery(track.getName(), track.getArtistsString())
-                        );
-                        track.setMedia(media);
                         playerController.setCurrentTrack(track);
                         event.consume();
                     }
@@ -480,6 +479,16 @@ public class DiscoverController implements Initializable {
                         System.out.println("heart clicked");
                     }
                 });
+
+                //when addToPlaylist button inside pane is clicked
+                inPaneDislikeButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        //TODO: IMPLEMENT
+                        System.out.println("dislike clicked");
+                    }
+                });
+
             }
         } catch (IOException e) {
             e.printStackTrace();

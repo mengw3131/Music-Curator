@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 
 //import static com.wrapper.spotify.SpotifyApi.getAccessToken;
 
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 public class SpotifyTools {
     //TODO: secure spotify API keys, store in config file OR prompt login
     private static String clientId = "f9c190003d09495d9915681495281934";
-    private static String clientSecret = "0608411b8e5b49e6b157504daccfbbcd";
+    private static String clientSecret = "e63dcad355af406aa0cfc516427095ec";
     public static SpotifyApi api = new SpotifyApi.Builder().setAccessToken(getAccessToken(clientId, clientSecret)).build();
 
     /**
@@ -219,11 +220,15 @@ public class SpotifyTools {
      * @return track arrays
      */
     public static ArrayList<com.curator.models.Track> searchTracks(String query, int limit) {
+        System.out.println("Searching for " + limit + " tracks of " + query);
         ArrayList<com.curator.models.Track> trackArr = new ArrayList<>();
         try {
+            System.out.println("create paging");
             Paging<com.wrapper.spotify.model_objects.specification.Track> tracks_paging =
                     api.searchTracks(query).limit(limit).build().execute();
+
             for (com.wrapper.spotify.model_objects.specification.Track track: tracks_paging.getItems()) {
+                System.out.println("adding tracks");
                 trackArr.add(new com.curator.models.Track(track));
             }
             return trackArr;
@@ -277,13 +282,8 @@ public class SpotifyTools {
      * @return JavaFX Image object
      */
     public static javafx.scene.image.Image toImage(String url){
-        try {
-            return SwingFXUtils.toFXImage(ImageIO.read(new URL(url)), null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        //process image in background thread
+        return new javafx.scene.image.Image(url, true);
     }
 
     /**

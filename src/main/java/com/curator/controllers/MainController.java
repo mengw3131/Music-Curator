@@ -299,7 +299,6 @@ public class MainController implements Initializable {
             playerContainer.getChildren().setAll(player);
 
             playerController = loader.getController();
-            playerController.setMainController(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -315,14 +314,6 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Loading player ... ");
         loadPlayer();
-        System.out.println("Loading panes... ");
-        discoverButton.fire();
-        myMusicButton.fire();
-        favoritesButton.fire();
-        madeForYouButton.fire();
-        playlistsButton.fire();
-        profileButton.fire();
-
         System.out.println("Loading home... ");
         homeButton.fire();
     }
