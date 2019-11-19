@@ -18,8 +18,8 @@ import java.util.ResourceBundle;
  */
 public class MainController implements Initializable {
 
-    //TODO: change to dependency injection to make api variable private
     private PlayerController playerController;
+    private NavbarController navbarController;
     private HomeController homeController;
     private DiscoverController discoverController;
 
@@ -61,17 +61,20 @@ public class MainController implements Initializable {
     @FXML
     HBox playerContainer;
 
+    @FXML
+    AnchorPane navbarContainer;
+
     /**
      * Hides all main pane
      */
     public void hideAllMainPane(){
-        if (homePane != null) { homePane.setVisible(false); }
-        if (discoverPane != null){ discoverPane.setVisible(false); }
-        if (myMusicPane != null) { myMusicPane.setVisible(false); }
-        if (favoritesTable != null) { favoritesTable.setVisible(false); }
-        if (madeForYouPane != null) { madeForYouPane.setVisible(false); }
-        if (playlistPane != null) { playlistPane.setVisible(false); }
-        if (profilePane != null) { profilePane.setVisible(false); }
+//        if (homePane != null) { homePane.setVisible(false); }
+//        if (discoverPane != null){ discoverPane.setVisible(false); }
+//        if (myMusicPane != null) { myMusicPane.setVisible(false); }
+//        if (favoritesTable != null) { favoritesTable.setVisible(false); }
+//        if (madeForYouPane != null) { madeForYouPane.setVisible(false); }
+//        if (playlistPane != null) { playlistPane.setVisible(false); }
+//        if (profilePane != null) { profilePane.setVisible(false); }
     }
 
     /**
@@ -123,9 +126,14 @@ public class MainController implements Initializable {
             homeController = loader.getController(); //get controller of home.fxml
             homeController.setMainController(this);
             homeController.setPlayerController(playerController);
+            homeController.setNavbarController(navbarController);
         }
 
         homePane.setVisible(true);
+
+
+
+        navbarController.addHomeArr(homePane);
     }
 
     /**
@@ -305,6 +313,25 @@ public class MainController implements Initializable {
     }
 
     /**
+     * Load the music player (at the bottom of the app)
+     */
+    private void loadNavBar() {
+        try {
+            loader = new FXMLLoader(getClass().getResource("/views/navbar.fxml"));
+            AnchorPane navbar = loader.load();
+
+            //set player width to follow its container
+            navbar.prefWidthProperty().bind(navbarContainer.widthProperty());
+            navbarContainer.getChildren().setAll(navbar);
+
+            navbarController = loader.getController();
+            navbarController.setMain(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Initialize controller
      *
      * @param url
@@ -314,6 +341,8 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Loading player ... ");
         loadPlayer();
+        System.out.println("loading nav bar");
+        loadNavBar();
         System.out.println("Loading home... ");
         homeButton.fire();
     }

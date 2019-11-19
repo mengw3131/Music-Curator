@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="navBar" prefHeight="20.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.curator.controllers.NavbarController">
+   <children>
+      <ImageView fx:id="backButton" fitHeight="16.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.topAnchor="2.0">
+         <image>
+            <Image url="@../icons/back.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="nextButton" fitHeight="16.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="2.0">
+         <image>
+            <Image url="@../icons/next-1.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

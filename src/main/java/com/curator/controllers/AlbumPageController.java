@@ -11,7 +11,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -43,9 +45,11 @@ public class AlbumPageController implements Initializable {
     @FXML
     Label albumName;
 
+    @FXML
+    Label artistsNames;
 
     private void createTrackList(ArrayList<TrackSimple> tracks){
-
+        boolean flag = false;
         /*
           Nodes hierarchy
 
@@ -72,16 +76,23 @@ public class AlbumPageController implements Initializable {
                 buttonsPane.setOpacity(0);
                 buttonsPane.setDisable(true);
 
+                if (flag){
+                    hbox.setStyle("-fx-background-color: #e8e8e8");
+                    flag = !flag;
+                } else {
+                    flag = !flag;
+                }
+
+                //when mouse enter the hbox, show action icons
                 hbox.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
                         buttonsPane.setOpacity(1);
-
                         buttonsPane.setDisable(false);
                     }
                 });
 
-                //when mouse exit the pane
+                //when mouse exit the hbox
                 hbox.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
@@ -90,6 +101,19 @@ public class AlbumPageController implements Initializable {
                     }
                 });
 
+                //if double click on track, play music
+                hbox.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if (event.getButton().equals(MouseButton.PRIMARY)){
+                            if (event.getClickCount() == 2){
+                                playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID()));
+                            }
+                        }
+                    }
+                });
+
+                //if click on play icon, play music
                 playButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
@@ -97,6 +121,7 @@ public class AlbumPageController implements Initializable {
                     }
                 });
 
+                //if click on heart icon,
                 heartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
@@ -105,6 +130,7 @@ public class AlbumPageController implements Initializable {
                     }
                 });
 
+                //if click on playlist icon,
                 playlistButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
@@ -138,13 +164,14 @@ public class AlbumPageController implements Initializable {
     public void setAlbum(Album album) {
         this.album = album;
         albumImage.setImage(album.getImages().get(0));
+        artistsNames.setText(album.getArtistsString());
         albumName.setText(album.getName());
         createTrackList(this.album.getTracks());
     }
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
-        this.mainController.mainPane.getChildren().clear();
+//        this.mainController.mainPane.getChildren().clear();
     }
 
     public void setPlayerController(PlayerController playerController) {

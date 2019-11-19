@@ -15,11 +15,6 @@ import javafx.stage.Stage;
  * Entry to the app.
  */
 public class Main extends Application {
-    Task task;
-    ProgressBar progressBar;
-    AnchorPane pane = new AnchorPane();
-    Scene tempScene;
-
     /**
      * Initialize GUI app
      *
@@ -28,7 +23,8 @@ public class Main extends Application {
      */
     @java.lang.Override
     public void start(Stage stage) throws Exception {
-        Parent root = new FXMLLoader(getClass().getResource("/views/main.fxml")).load();
+//        Parent root = new FXMLLoader(getClass().getResource("/views/main.fxml")).load();
+        Parent root = new FXMLLoader(getClass().getResource("/views/main2.fxml")).load();
         stage.setScene(new Scene(root, 300, 300));
         stage.setHeight(600);
         stage.setWidth(1200);

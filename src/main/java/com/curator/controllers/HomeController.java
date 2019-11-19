@@ -32,6 +32,7 @@ import java.util.ResourceBundle;
 public class HomeController implements Initializable {
     MainController mainController;
     PlayerController playerController;
+    NavbarController navbarController;
 
     @FXML ScrollPane mainScrollPane;
     @FXML VBox mainVBox;
@@ -156,9 +157,6 @@ public class HomeController implements Initializable {
                     @Override
                     public void handle(MouseEvent event) {
                         trackName.setStyle("-fx-underline: true");
-
-
-
                     }
                 });
 
@@ -181,6 +179,8 @@ public class HomeController implements Initializable {
                             albumPageController.setPlayerController(playerController);
                             albumPageController.setMainController(mainController);
                             albumPageController.setAlbum(track.getAlbum());
+
+                            navbarController.addHomeArr(borderPane);
 
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -273,5 +273,13 @@ public class HomeController implements Initializable {
      */
     public void setPlayerController(PlayerController playerController) {
         this.playerController = playerController;
+    }
+
+    /**
+     * Injects navbarController
+     * @param navbarController
+     */
+    public void setNavbarController(NavbarController navbarController) {
+        this.navbarController = navbarController;
     }
 }
