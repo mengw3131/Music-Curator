@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class TrackSimple {
     private String trackID;                     // Spotify track ID
-    private String name;                        // name of the song
+    private String trackName;                        // trackName of the song
     private int popularity;                     // the popularity of a song (0 - 100)
     private ArrayList<Artist> artists;          // the list of artists on the album
     private String artistsString;               // the list of artists on the album
@@ -19,7 +19,7 @@ public class TrackSimple {
 
     public TrackSimple(com.wrapper.spotify.model_objects.specification.Track sTrack){
         this.trackID = sTrack.getId();
-        this.name = sTrack.getName();
+        this.trackName = sTrack.getName();
         this.popularity =  sTrack.getPopularity();
 
 		this.artists = SpotifyTools.toArtist(sTrack.getArtists());
@@ -33,8 +33,8 @@ public class TrackSimple {
         return trackID;
     }
 
-    public String getName() {
-        return name;
+    public String getTrackName() {
+        return trackName;
     }
 
     public int getPopularity() {

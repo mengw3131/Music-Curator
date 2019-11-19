@@ -64,7 +64,7 @@ public class MainController implements Initializable {
     /**
      * Hides all main pane
      */
-    private void hideAllMainPane(){
+    public void hideAllMainPane(){
         if (homePane != null) { homePane.setVisible(false); }
         if (discoverPane != null){ discoverPane.setVisible(false); }
         if (myMusicPane != null) { myMusicPane.setVisible(false); }
@@ -77,7 +77,7 @@ public class MainController implements Initializable {
     /**
      * Unselect all currently pane buttons
      */
-    private void unselectAllButtons(){
+    public void unselectAllButtons(){
            homeButton.setStyle("-fx-background-color: none;");
            discoverButton.setStyle("-fx-background-color: none;");
            favoritesButton.setStyle("-fx-background-color: none;");

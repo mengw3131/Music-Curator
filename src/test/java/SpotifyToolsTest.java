@@ -37,7 +37,7 @@ public class SpotifyToolsTest {
                 TrackSimple trackSimple = trackSimpleArr.get(i);
 
                 Assertions.assertEquals(sTrack.getId(), trackSimple.getTrackID());
-                Assertions.assertEquals(sTrack.getName(), trackSimple.getName());
+                Assertions.assertEquals(sTrack.getName(), trackSimple.getTrackName());
             }
         } catch (IOException e) {
             e.printStackTrace();

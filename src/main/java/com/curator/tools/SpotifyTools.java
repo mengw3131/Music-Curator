@@ -185,6 +185,55 @@ public class SpotifyTools {
         return null;
     }
 
+    /**
+     * Given Spotify artistID, return Artist object
+     * @param artistID artistID of the artist
+     * @return com.curator.models.Artist object
+     */
+    public static com.curator.models.Artist getArtist(String artistID){
+        try {
+            return new Artist(api.getArtist(artistID).build().execute());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    /**
+     * Given Spotify albumID, return Album object
+     * @param albumID albumID of the album
+     * @return com.curator.models.Album object
+     */
+    public static com.curator.models.Album getAlbum(String albumID){
+        try {
+            return new com.curator.models.Album(api.getAlbum(albumID).build().execute());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Given Spotify trackID, return Track object
+     * @param trackID trackID of the track
+     * @return com.curator.models.Track object
+     */
+    public static com.curator.models.Track getTrack(String trackID){
+        try {
+            return new com.curator.models.Track(api.getTrack(trackID).build().execute());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     /**
      * Get access token given clientId and clientSecret
