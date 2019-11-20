@@ -21,8 +21,8 @@ public class ArtistRecommender {
 	ArrayList<Artist> userArtistLikes; // stores the user provided artists
 	HashMap<Track, Double> userSongRecs; // stores songs from the Spotify
 										// database and their similarity scores
-	HashMap<Artist, Double> userArtistRecs; // a list of recommended artists and
-											// their similarity scores
+	ArrayList<Artist, Double> userArtistRecs; // a list of the artists with the best
+	                                          // similarity scores
 
 	// Constructor
 	public ArtistRecommender(ArrayList<Artist> userArtistLikes) {
@@ -85,13 +85,20 @@ public class ArtistRecommender {
 	}
 
 	/**
-	 * Ranks the artists in userArtistRecs according to their similarity scores.
-	 * Displays the top-ranking 5 artists in the HashMap to the user.
+	 * Iterates through the TreeMap songPoolScored to return the songs with the 
+	 * best (lowest value) similarity scores. 
 	 * 
-	 * @param userArtistRecs The HashMap containing artists and their similarity
-	 *                       scores
+	 * @param songPoolScored The TreeMap containing songs and their similarity scores
+	 * @param userRecs The ArrayList containing the songs with the best similarity scores
 	 */
-	public void displayRecommendations() {
-		// TODO
+	public void bestRecommendations() {
+		int count = 0;
+		for (Map.Entry<Double, Track> entry : songPoolScored) {
+			if (count >= 15) {
+				break;
+			}
+			userRecs.add(entry.getValue());
+			count++;
+		}
 	}
 }
