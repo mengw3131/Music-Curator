@@ -1,6 +1,6 @@
 # Music Curator
 
-![alt test](screenshot.png)
+![alt test](screenshots/home.png)
 
 #### Short Description:
 

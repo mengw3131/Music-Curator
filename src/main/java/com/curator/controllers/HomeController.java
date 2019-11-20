@@ -242,7 +242,7 @@ public class HomeController implements Initializable {
         System.out.println("done searching tracks");
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
 
-//        tracks = SpotifyTools.searchTracks("Art Tatum", 8);
+        tracks = SpotifyTools.searchTracks("Art Tatum", 8);
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
 
         Label label2 = new Label("Hot This Week");
@@ -250,7 +250,7 @@ public class HomeController implements Initializable {
         label2.setAlignment(Pos.TOP_LEFT);
         topRecommendationVBox.getChildren().add(label2);
 
-//        tracks = SpotifyTools.searchTracks("Oscar Peterson", 8);
+        tracks = SpotifyTools.searchTracks("Oscar Peterson", 8);
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
 //
         Label label3 = new Label("Mood");
@@ -258,7 +258,7 @@ public class HomeController implements Initializable {
         label3.setAlignment(Pos.TOP_LEFT);
         topRecommendationVBox.getChildren().add(label3);
 
-//        tracks = SpotifyTools.searchTracks("Thelonius Monk", 8);
+        tracks = SpotifyTools.searchTracks("Calm", 8);
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
     }
 
