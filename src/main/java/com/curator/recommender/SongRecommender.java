@@ -1,10 +1,11 @@
 package com.curator.recommender;
 
-import com.curator.models.Track;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.*;
+import java.util.Map;
+import java.util.TreeMap;
+
+import com.curator.models.Track;
 
 /**
  * 
@@ -32,8 +33,8 @@ public class SongRecommender {
 								// scores
 
 	// Constructor
-	public SongRecommender(ArrayList<Track> song_inputs) {
-		this.userLikes = song_inputs;
+	public SongRecommender(ArrayList<Track> songInputs) {
+		this.userLikes = songInputs;
 		this.songPoolScored = new TreeMap<>();
 		this.userLikesMetrics = new HashMap<>();
 	}
@@ -90,7 +91,7 @@ public class SongRecommender {
 	 * @param userLikesMetrics The map containing the average feature score of
 	 *                         all the songs in userRecs
 	 */
-	public double averageUserLikesMetrics() {
+	public void averageUserLikesMetrics() {
 		double userLikesSize = userLikes.size();
 		double acousticScore = 0;
 		double danceScore = 0;
@@ -126,25 +127,43 @@ public class SongRecommender {
 
 	/**
 	 * 
-	 * Generates a similarity score for a song compared to the metrics in 
-	 * averageUserLikesMetrics. A percentage difference calculation is 
-	 * performed for each feature. The percentage differences are then 
-	 * summed in a weighted manner to yield the overall track similarity 
-	 * score. 
+	 * Generates a similarity score for a song compared to the metrics in
+	 * averageUserLikesMetrics. A percentage difference calculation is performed
+	 * for each feature. The percentage differences are then summed in a
+	 * weighted manner to yield the overall track similarity score.
 	 * 
-	 * @param averageUserLikesMetrics The map containing the average feature score of all the songs in userRecs
+	 * @param averageUserLikesMetrics The map containing the average feature
+	 *                                score of all the songs in userRecs
 	 */
 	public double generateSimilarityScore(Track song) {
 		double similarityScore;
-		double acousticScore = (song.getAcousticness() - averageUserLikesMetrics.get("Acousticness") / ((song.getAcousticness() + averageUserLikesMetrics.get("Acousticness"))/2);
-		double danceScore = (song.getDanceability() - averageUserLikesMetrics.get("Danceability") / ((song.getDanceability() + averageUserLikesMetrics.get("Danceability"))/2);
-		double energyScore = (song.getEnergy() - averageUserLikesMetrics.get("Energy") / ((song.getEnergy() + averageUserLikesMetrics.get("Energy"))/2);
-		double instrumentalScore = (song.getInstrumentalness() - averageUserLikesMetrics.get("Instrumentalness") / ((song.getInstrumentalness() + averageUserLikesMetrics.get("Instrumentalness"))/2);
-		double loudScore = (song.getLoudness() - averageUserLikesMetrics.get("Loudness") / ((song.getLoudness() + averageUserLikesMetrics.get("Loudness"))/2);
-		double tempoScore = (song.getTempo() - averageUserLikesMetrics.get("Tempo") / ((song.getTempo() + averageUserLikesMetrics.get("Tempo"))/2);
-		double valenceScore = (song.getValence() - averageUserLikesMetrics.get("Valence") / ((song.getValence() + averageUserLikesMetrics.get("Valence"))/2);
+		double acousticScore = (song.getAcousticness()
+				- userLikesMetrics.get("Acousticness"))
+				/ ((song.getAcousticness()
+						+ userLikesMetrics.get("Acousticness")) / 2);
+		double danceScore = (song.getDanceability()
+				- userLikesMetrics.get("Danceability"))
+				/ ((song.getDanceability()
+						+ userLikesMetrics.get("Danceability")) / 2);
+		double energyScore = (song.getEnergy() - userLikesMetrics.get("Energy"))
+				/ ((song.getEnergy() + userLikesMetrics.get("Energy")) / 2);
+		double instrumentalScore = (song.getInstrumentalness()
+				- userLikesMetrics.get("Instrumentalness"))
+				/ ((song.getInstrumentalness()
+						+ userLikesMetrics.get("Instrumentalness")) / 2);
+		double loudScore = (song.getLoudness()
+				- userLikesMetrics.get("Loudness"))
+				/ ((song.getLoudness() + userLikesMetrics.get("Loudness")) / 2);
+		double tempoScore = (song.getTempo() - userLikesMetrics.get("Tempo"))
+				/ ((song.getTempo() + userLikesMetrics.get("Tempo")) / 2);
+		double valenceScore = (song.getValence()
+				- userLikesMetrics.get("Valence"))
+				/ ((song.getValence() + userLikesMetrics.get("Valence")) / 2);
 
-		similarityScore = (acousticScore*0.16) + (danceScore*0.17) + (energyScore*0.20) + (instrumentalScore*0.11) + (loudScore*0.10) + (tempoScore*0.11) + (valenceScore*0.15); 
+		similarityScore = (acousticScore * 0.16) + (danceScore * 0.17)
+				+ (energyScore * 0.20) + (instrumentalScore * 0.11)
+				+ (loudScore * 0.10) + (tempoScore * 0.11)
+				+ (valenceScore * 0.15);
 		return similarityScore;
 	}
 
@@ -154,7 +173,7 @@ public class SongRecommender {
 	 * 
 	 * @param songPool       The list of songs that will be ranked by similarity
 	 *                       score
-	 * @param songPoolScored The TreeMap containing songs and their similarity
+	 * @param songRecs The TreeMap containing songs and their similarity
 	 *                       scores
 	 */
 	public void loadRecScores() {
@@ -167,15 +186,15 @@ public class SongRecommender {
 	 * Iterates through the TreeMap songPoolScored to return the songs with the
 	 * best (lowest value) similarity scores.
 	 * 
-	 * @param songPoolScored The TreeMap containing songs and their similarity
+	 * @param songRecs The TreeMap containing songs and their similarity
 	 *                       scores
 	 * @param userRecs       The ArrayList containing the songs with the best
 	 *                       similarity scores
 	 */
-	public void bestRecommendations() {
+	public void bestRecommendations(int listSize) {
 		int count = 0;
-		for (Map.Entry<Double, Track> entry : songPoolScored) {
-			if (count >= 15) {
+		for (Map.Entry<Double, Track> entry : songPoolScored.entrySet()) {
+			if (count >= listSize) {
 				break;
 			}
 			userRecs.add(entry.getValue());
@@ -183,11 +202,11 @@ public class SongRecommender {
 		}
 	}
 
-	public ArrayList<Track> runRecommender() {
+	public ArrayList<Track> runRecommender(int listSize) {
 		averageUserLikesMetrics();
 		searchByGenres();
 		loadRecScores();
-		bestRecommendations();
+		bestRecommendations(listSize);
 		return userRecs;
 	}
 }
