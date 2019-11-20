@@ -18,10 +18,9 @@ import java.util.ResourceBundle;
  * Controller to favorites.fxml
  */
 public class FavoritesController implements Initializable {
-//    SpotifyApi api = SpotifyTools.getApi();
 
     @FXML
-    TableView mainTable;
+    private TableView mainTable;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -29,8 +28,8 @@ public class FavoritesController implements Initializable {
     }
 
     /**
-     * Get random
-     * @return
+     * Get random tracks to be displayed
+     * @return ObservableList containing tracks
      */
     public ObservableList<Track> getTracks(){
         ObservableList<Track> track_list = FXCollections.observableArrayList();
@@ -38,6 +37,9 @@ public class FavoritesController implements Initializable {
         return track_list;
     }
 
+    /**
+     *  Test fill columns
+     */
     public void fillColumn(){
         mainTable.getColumns().clear(); //to avoid duplicates
 

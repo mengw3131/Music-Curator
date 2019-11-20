@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -23,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 
@@ -30,15 +32,17 @@ import java.util.ResourceBundle;
  * Controller to home.fxml
  */
 public class HomeController implements Initializable {
-    MainController mainController;
-    PlayerController playerController;
-    NavbarController navbarController;
+    private MainController mainController;
+    private PlayerController playerController;
+    private NavbarController navbarController;
 
-    @FXML ScrollPane mainScrollPane;
-    @FXML VBox mainVBox;
-    @FXML VBox topRecommendationVBox;
+    @FXML
+    private ScrollPane mainScrollPane;
+    @FXML
+    private VBox topRecommendationVBox;
 
     /**
+     * //TODO: REFACTOR INTO SEPARATE CLASS
      * Creates a horizontal box of track panes. Default of 8 tracks.
      *
      * @param tracks
@@ -175,21 +179,17 @@ public class HomeController implements Initializable {
                         try {
                             BorderPane borderPane = loader.load();
                             AlbumPageController albumPageController = loader.getController();
-                            mainScrollPane.setContent(borderPane);
                             albumPageController.setPlayerController(playerController);
                             albumPageController.setMainController(mainController);
                             albumPageController.setAlbum(track.getAlbum());
 
-                            navbarController.addHomeArr(borderPane);
+                            navbarController.addPage(borderPane);
 
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
                     }
                 });
-
-
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -234,8 +234,11 @@ public class HomeController implements Initializable {
         label.setAlignment(Pos.TOP_LEFT);
         topRecommendationVBox.getChildren().add(label);
 
+
+
         ArrayList<Track> tracks =  SpotifyTools.searchTracks("Bill Evans", 8);
-//        ArrayList<Track> tracks =  createDummy();
+//        ArrayList<Track> tracks =  createDummy();    //use dummy data
+
         System.out.println("done searching tracks");
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
 

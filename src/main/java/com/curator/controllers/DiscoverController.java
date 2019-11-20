@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -31,36 +32,37 @@ import java.util.ResourceBundle;
 public class DiscoverController implements Initializable {
     MainController mainController;
     PlayerController playerController;
+    NavbarController navbarController;
 
     @FXML
-    ScrollPane discoverScrollPane;
+    private ScrollPane discoverScrollPane;
 
     @FXML
-    VBox discoverVBox;
+    private VBox discoverVBox;
 
     @FXML
-    Label discoverTitle;
+    private Label discoverTitle;
 
     @FXML
-    TextField searchBar;
+    private TextField searchBar;
 
     @FXML
-    Label tracksLabel;
+    private Label tracksLabel;
 
     @FXML
-    ScrollPane tracksScrollPane;
+    private ScrollPane tracksScrollPane;
 
     @FXML
-    Label artistsLabel;
+    private Label artistsLabel;
 
     @FXML
-    ScrollPane artistsScrollPane;
+    private ScrollPane artistsScrollPane;
 
     @FXML
-    Label albumsLabel;
+    private Label albumsLabel;
 
     @FXML
-    ScrollPane albumsScrollPane;
+    private ScrollPane albumsScrollPane;
 
     /**
      * Show/hide child items on discover page
@@ -135,7 +137,7 @@ public class DiscoverController implements Initializable {
         //set to empty first
         update("");
 
-        // when user press Enter, update results
+        // when user press Enter, updateIndex results
         searchBar.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -153,6 +155,10 @@ public class DiscoverController implements Initializable {
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
+    }
+
+    public void setNavbarController(NavbarController navbarController) {
+        this.navbarController = navbarController;
     }
 
     /**
@@ -366,6 +372,40 @@ public class DiscoverController implements Initializable {
                         System.out.println("heart clicked");
                     }
                 });
+
+                 trackName.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+                     @Override
+                     public void handle(MouseEvent event) {
+                         trackName.setStyle("-fx-underline: true");
+                     }
+                 });
+
+                 trackName.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+                     @Override
+                     public void handle(MouseEvent event) {
+                         trackName.setStyle("-fx-underline: false");
+
+                     }
+                 });
+
+                 trackName.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                     @Override
+                     public void handle(MouseEvent event) {
+                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/album_page.fxml"));
+                         try {
+                             BorderPane borderPane = loader.load();
+                             AlbumPageController albumPageController = loader.getController();
+                             albumPageController.setPlayerController(playerController);
+                             albumPageController.setMainController(mainController);
+                             albumPageController.setAlbum(album);
+
+                             navbarController.addPage(borderPane);
+
+                         } catch (IOException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                 });
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -489,10 +529,46 @@ public class DiscoverController implements Initializable {
                     }
                 });
 
+
+                trackName.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        trackName.setStyle("-fx-underline: true");
+                    }
+                });
+
+                trackName.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        trackName.setStyle("-fx-underline: false");
+
+                    }
+                });
+
+                trackName.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/album_page.fxml"));
+                        try {
+                            BorderPane borderPane = loader.load();
+                            AlbumPageController albumPageController = loader.getController();
+                            albumPageController.setPlayerController(playerController);
+                            albumPageController.setMainController(mainController);
+                            albumPageController.setAlbum(track.getAlbum());
+
+                            navbarController.addPage(borderPane);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         return pane;
     }
+
+
 }

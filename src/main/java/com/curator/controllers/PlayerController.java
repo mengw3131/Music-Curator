@@ -30,36 +30,35 @@ public class PlayerController implements Initializable {
     private MediaPlayer mediaPlayer;
     private Track currentTrack;
 
+    @FXML
+    private HBox player;
 
     @FXML
-    HBox player;
+    private Button playButton;
 
     @FXML
-    Button playButton;
+    private Slider songSlider;
 
     @FXML
-    Slider songSlider;
+    private Slider volumeSlider;
 
     @FXML
-    Slider volumeSlider;
+    private AnchorPane nowPlayingPane;
 
     @FXML
-    AnchorPane nowPlayingPane;
+    private Label songNameLabel;
 
     @FXML
-    Label songNameLabel;
+    private Label artistNameLabel;
 
     @FXML
-    Label artistNameLabel;
+    private ImageView songCoverImageView;
 
     @FXML
-    ImageView songCoverImageView;
+    private Label startDurationLabel;
 
     @FXML
-    Label startDurationLabel;
-
-    @FXML
-    Label endDurationLabel;
+    private Label endDurationLabel;
 
 
     /**

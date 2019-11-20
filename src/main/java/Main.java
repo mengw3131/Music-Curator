@@ -23,8 +23,7 @@ public class Main extends Application {
      */
     @java.lang.Override
     public void start(Stage stage) throws Exception {
-//        Parent root = new FXMLLoader(getClass().getResource("/views/main.fxml")).load();
-        Parent root = new FXMLLoader(getClass().getResource("/views/main2.fxml")).load();
+        Parent root = new FXMLLoader(getClass().getResource("/views/main.fxml")).load();
         stage.setScene(new Scene(root, 300, 300));
         stage.setHeight(600);
         stage.setWidth(1200);

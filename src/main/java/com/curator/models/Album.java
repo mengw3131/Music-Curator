@@ -18,39 +18,37 @@ public class Album {
 	private String albumID;                // The Spotify ID of the album
 	private String name;                   // The name of the album
 	private int popularity;                // popularity of the album (0-100) calculated with the the
-	private String artistsString;          // the list of artists on the album
+	private String artistsNames;          // the list of artists on the album
 					                       // popularity of the album's songs
-	ArrayList<Artist> artists;             // the list of artists on the album
+	private ArrayList<Artist> artists;     // the list of artists on the album
 
-
-	ArrayList<TrackSimple> tracks;               // the list of tracks on the album
+	private ArrayList<TrackSimple> tracks; // the list of tracks on the album
 
 	private ArrayList<Image> images;
+
+	private com.wrapper.spotify.model_objects.specification.Album sAlbum;
+
 
 	/**
 	 * Constructor for com.curator.models.Album object from wrapper's com.curator.models.Album object
 	 * @param sAlbum wrapper's com.curator.models.Album object
 	 */
 	public Album(com.wrapper.spotify.model_objects.specification.Album sAlbum) {
-		this.albumType = sAlbum.getAlbumType().getType();
-		this.albumID = sAlbum.getId();
-		this.name = sAlbum.getName();
-
-		this.popularity = sAlbum.getPopularity();
-
-		this.artists = SpotifyTools.toArtist(sAlbum.getArtists());
-		this.artistsString = SpotifyTools.toString(this.artists);
-		this.tracks = SpotifyTools.toTrackSimple(sAlbum.getTracks().getItems());
-
-		this.images = SpotifyTools.toImage(sAlbum.getImages());
+	    this.sAlbum = sAlbum;
 	}
+
+
+
+	// ==========================================================================
+	// ALBUM META GETTERS & SETTERS
+	// ==========================================================================
 
 	/**
 	 * 
 	 * @return albumType com.curator.models.Album, single, or compilation
 	 */
 	public String getAlbumType() {
-		return albumType;
+		return sAlbum.getAlbumType().toString();
 	}
 
 	/**
@@ -58,7 +56,7 @@ public class Album {
 	 * @return albumID The Spotify ID of the album
 	 */
 	public String getAlbumID() {
-		return albumID;
+		return sAlbum.getId();
 	}
 
 	/**
@@ -66,7 +64,7 @@ public class Album {
 	 * @return name The name of the album
 	 */
 	public String getName() {
-		return name;
+		return sAlbum.getName();
 	}
 
 	/**
@@ -75,7 +73,7 @@ public class Album {
 	 *         the popularity of the album's songs
 	 */
 	public int getPopularity() {
-		return popularity;
+		return sAlbum.getPopularity();
 	}
 
 	/**
@@ -83,6 +81,9 @@ public class Album {
 	 * @return artists The list of artist objects who play on the album
 	 */
 	public ArrayList<Artist> getArtists() {
+	    if (artists == null){
+			this.artists = SpotifyTools.toArtist(sAlbum.getArtists());
+		}
 		return artists;
 	}
 
@@ -91,11 +92,31 @@ public class Album {
 	 * @return tracks The list of song objects on the album
 	 */
 	public ArrayList<TrackSimple> getTracks() {
+		if (tracks == null){
+			this.tracks = SpotifyTools.toTrackSimple(sAlbum.getTracks().getItems());
+		}
 		return tracks;
 	}
 
 
-	public ArrayList<Image> getImages() { return images; }
+	/**
+	 * @return arrayList of images of the album
+	 */
+	public ArrayList<Image> getImages() {
+		if (images == null){
+			this.images = SpotifyTools.toImage(sAlbum.getImages());
+		}
+		return images;
+	}
 
-	public String getArtistsString() { return artistsString; }
+
+	/**
+	 * @return the names of the artists of the album
+	 */
+	public String getArtistsNames() {
+		if (artistsNames == null){
+			this.artistsNames = SpotifyTools.toString(sAlbum.getArtists());
+		}
+		return artistsNames;
+	}
 }

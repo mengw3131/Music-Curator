@@ -37,7 +37,6 @@ public class SpotifyTools {
 
     /**
      * Return api instance
-     *
      * @return wrapper's SpotifyApi instance
      */
     public static SpotifyApi getApi() {
@@ -237,7 +236,6 @@ public class SpotifyTools {
 
     /**
      * Get access token given clientId and clientSecret
-     *
      * @param clientId
      * @param clientSecret
      * @return access token
@@ -262,11 +260,11 @@ public class SpotifyTools {
 
 
     /**
-     * Get arrays of tracks given query and limit (max 50)
+     * Given query and limit, search and return results as arrayList of Track
      *
-     * @param query
-     * @param limit
-     * @return track arrays
+     * @param query track name
+     * @param limit # of desired results, max 50
+     * @return arrayList of Track
      */
     public static ArrayList<com.curator.models.Track> searchTracks(String query, int limit) {
         System.out.println("Searching for " + limit + " tracks of " + query);
@@ -290,6 +288,12 @@ public class SpotifyTools {
         return null;
     }
 
+    /**
+     * Given query string and limit, search and return results as arrayList of Artist
+     * @param query artist's name
+     * @param limit # of desired result, max 50
+     * @return arrayList of Artist
+     */
     public static ArrayList<com.curator.models.Artist> searchArtists(String query, int limit) {
         ArrayList<com.curator.models.Artist> artistArr = new ArrayList<>();
         try {
@@ -308,6 +312,12 @@ public class SpotifyTools {
         return null;
     }
 
+    /**
+     * Given query string and limit, search and return results as arrayList of AlbumSimple
+     * @param query string query, e.g. Rondo Alla Turca Mozart
+     * @param limit # of desired results, max 50
+     * @return arrayList of AlbumSimple
+     */
     public static ArrayList<AlbumSimple> searchAlbums(String query, int limit) {
         ArrayList<AlbumSimple> albumSimpleArr = new ArrayList<>();
         try {
@@ -326,7 +336,7 @@ public class SpotifyTools {
 
 
     /**
-     * Returns JavaFX Image object given url
+     * Returns JavaFX Image object given url. Uses background thread.
      * @param url address of image resource
      * @return JavaFX Image object
      */
@@ -348,6 +358,11 @@ public class SpotifyTools {
         return imageArr;
     }
 
+    /**
+     * Given an array of artists, return the comma-separated strings of the names of the artists
+     * @param artistArr array of com.curator.models.Artist
+     * @return comma-separated strings of the names of the artists
+     */
     public static String toString(ArrayList<Artist> artistArr){
         StringBuilder sb = new StringBuilder();
         for (Artist artist: artistArr) {
@@ -355,5 +370,19 @@ public class SpotifyTools {
         }
         String res = sb.toString();
         return res.substring(0,res.length() - 3); //exclude last separator
+    }
+
+    /**
+     * Given an array of artists, return the comma-separated strings of the names of the artists
+     * @param artistArr com.wrapper.spotify.model_objects.specification.ArtistSimplified
+     * @return comma-separated strings of the names of the artists
+     */
+    public static String toString(ArtistSimplified[] artistArr){
+        StringBuilder sb = new StringBuilder();
+        for (ArtistSimplified artist: artistArr) {
+            sb.append(artist.getName()).append(", ");
+        }
+        String res = sb.toString();
+        return res.substring(0,res.length() - 2); //exclude last separator
     }
 }

@@ -2,7 +2,6 @@ package com.curator.controllers;
 
 import com.curator.models.Album;
 import com.curator.models.AlbumSimple;
-import com.curator.models.Track;
 import com.curator.models.TrackSimple;
 import com.curator.tools.SpotifyTools;
 import javafx.event.EventHandler;
@@ -11,7 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -25,29 +23,36 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+/**
+ * Controller to album_page.fxml. Shows album and its tracks.
+ */
 public class AlbumPageController implements Initializable {
-    PlayerController playerController;
-    MainController mainController;
-    Album album;
+    private PlayerController playerController;
+    private MainController mainController;
+    private Album album;
 
     @FXML
-    VBox mainVBox;
+    private VBox mainVBox;
 
     @FXML
-    BorderPane topBorderPane;
+    private BorderPane topBorderPane;
 
     @FXML
-    ScrollPane mainScrollPane;
+    private ScrollPane mainScrollPane;
 
     @FXML
-    ImageView albumImage;
+    private ImageView albumImage;
 
     @FXML
-    Label albumName;
+    private Label albumName;
 
     @FXML
-    Label artistsNames;
+    private Label artistsNames;
 
+    /**
+     * Fetch and display tracks of the album
+     * @param tracks tracks to be displayed
+     */
     private void createTrackList(ArrayList<TrackSimple> tracks){
         boolean flag = false;
         /*
@@ -65,23 +70,25 @@ public class AlbumPageController implements Initializable {
         HBox hbox;
         for (TrackSimple track: tracks) {
             try {
-                hbox = new FXMLLoader(getClass().getResource("/views/test.fxml")).load();
-                //set track name
-                ((Label)((AnchorPane)hbox.getChildren().get(0)).getChildren().get(0)).setText(track.getTrackName());
+                hbox = new FXMLLoader(getClass().getResource("/views/tracks_row.fxml")).load();
+
+                ((Label)((AnchorPane)hbox.getChildren().get(0)).getChildren().get(0)).setText(track.getTrackName()); //set track name
                 AnchorPane buttonsPane = (AnchorPane)(hbox.getChildren().get(2));
                 ImageView playButton = (ImageView) buttonsPane.getChildren().get(0);
                 ImageView heartButton = (ImageView) buttonsPane.getChildren().get(1);
                 ImageView playlistButton = (ImageView) buttonsPane.getChildren().get(2);
 
+                //initially hide and disable the action buttons (play, heart, add to playlist)
                 buttonsPane.setOpacity(0);
                 buttonsPane.setDisable(true);
 
-                if (flag){
+                //alternate the background color of the track row using flag
+                // white + light grey
+                if (flag) {
                     hbox.setStyle("-fx-background-color: #e8e8e8");
-                    flag = !flag;
-                } else {
-                    flag = !flag;
                 }
+                flag = !flag;
+
 
                 //when mouse enter the hbox, show action icons
                 hbox.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
@@ -125,6 +132,8 @@ public class AlbumPageController implements Initializable {
                 heartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
+
+                        //TODO: IMPLEMENT
                         System.out.println("heart clicked");
 
                     }
@@ -134,17 +143,21 @@ public class AlbumPageController implements Initializable {
                 playlistButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
+
+                        //TODO: IMPLEMENT
                         System.out.println("playlist clicked");
                     }
                 });
 
+                //add to container
                 mainVBox.getChildren().add(hbox);
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        mainController.hideAllMainPane();
+
+        //add to container & bind display config
         mainController.mainPane.getChildren().add(topBorderPane);
         topBorderPane.prefHeightProperty().bind(mainController.mainPane.heightProperty());
         topBorderPane.prefWidthProperty().bind(mainController.mainPane.widthProperty());
@@ -152,28 +165,48 @@ public class AlbumPageController implements Initializable {
     }
 
 
+    /**
+     * Initialize controller
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-    public void setAlbum(AlbumSimple album) {
-        this.album = SpotifyTools.getAlbum(album.getAlbumID());
+    /**
+     * Convert AlbumSimple to Album(full), then display them on page
+     * @param albumSimple album to be displayed on page
+     */
+    public void setAlbum(AlbumSimple albumSimple) {
+        this.album = SpotifyTools.getAlbum(albumSimple.getAlbumID());
         setAlbum(this.album);
     }
 
+    /**
+     * Set Album (full) to be displayed on page
+     * @param album album to be displayed on page
+     */
     public void setAlbum(Album album) {
         this.album = album;
         albumImage.setImage(album.getImages().get(0));
-        artistsNames.setText(album.getArtistsString());
+        artistsNames.setText(album.getArtistsNames());
         albumName.setText(album.getName());
         createTrackList(this.album.getTracks());
     }
 
+    /**
+     * Injects mainController
+     * @param mainController
+     */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
-//        this.mainController.mainPane.getChildren().clear();
     }
 
+    /**
+     * Injects playerController
+     * @param playerController
+     */
     public void setPlayerController(PlayerController playerController) {
         this.playerController = playerController;
     }
