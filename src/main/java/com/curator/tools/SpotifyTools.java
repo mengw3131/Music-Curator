@@ -3,6 +3,7 @@ package com.curator.tools;
 import com.curator.models.AlbumSimple;
 import com.curator.models.Artist;
 import com.curator.models.TrackSimple;
+import com.neovisionaries.i18n.CountryCode;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
@@ -37,6 +38,7 @@ public class SpotifyTools {
 
     /**
      * Return api instance
+     *
      * @return wrapper's SpotifyApi instance
      */
     public static SpotifyApi getApi() {
@@ -186,10 +188,11 @@ public class SpotifyTools {
 
     /**
      * Given Spotify artistID, return Artist object
+     *
      * @param artistID artistID of the artist
      * @return com.curator.models.Artist object
      */
-    public static com.curator.models.Artist getArtist(String artistID){
+    public static com.curator.models.Artist getArtist(String artistID) {
         try {
             return new Artist(api.getArtist(artistID).build().execute());
         } catch (IOException e) {
@@ -203,10 +206,11 @@ public class SpotifyTools {
 
     /**
      * Given Spotify albumID, return Album object
+     *
      * @param albumID albumID of the album
      * @return com.curator.models.Album object
      */
-    public static com.curator.models.Album getAlbum(String albumID){
+    public static com.curator.models.Album getAlbum(String albumID) {
         try {
             return new com.curator.models.Album(api.getAlbum(albumID).build().execute());
         } catch (IOException e) {
@@ -219,10 +223,11 @@ public class SpotifyTools {
 
     /**
      * Given Spotify trackID, return Track object
+     *
      * @param trackID trackID of the track
      * @return com.curator.models.Track object
      */
-    public static com.curator.models.Track getTrack(String trackID){
+    public static com.curator.models.Track getTrack(String trackID) {
         try {
             return new com.curator.models.Track(api.getTrack(trackID).build().execute());
         } catch (IOException e) {
@@ -236,6 +241,7 @@ public class SpotifyTools {
 
     /**
      * Get access token given clientId and clientSecret
+     *
      * @param clientId
      * @param clientSecret
      * @return access token
@@ -274,7 +280,7 @@ public class SpotifyTools {
             Paging<com.wrapper.spotify.model_objects.specification.Track> tracks_paging =
                     api.searchTracks(query).limit(limit).build().execute();
 
-            for (com.wrapper.spotify.model_objects.specification.Track track: tracks_paging.getItems()) {
+            for (com.wrapper.spotify.model_objects.specification.Track track : tracks_paging.getItems()) {
                 System.out.println("adding tracks");
                 trackArr.add(new com.curator.models.Track(track));
             }
@@ -290,6 +296,7 @@ public class SpotifyTools {
 
     /**
      * Given query string and limit, search and return results as arrayList of Artist
+     *
      * @param query artist's name
      * @param limit # of desired result, max 50
      * @return arrayList of Artist
@@ -300,7 +307,7 @@ public class SpotifyTools {
             Paging<com.wrapper.spotify.model_objects.specification.Artist> artists_paging =
                     api.searchArtists(query).limit(limit).build().execute();
 
-            for (com.wrapper.spotify.model_objects.specification.Artist artist: artists_paging.getItems()) {
+            for (com.wrapper.spotify.model_objects.specification.Artist artist : artists_paging.getItems()) {
                 artistArr.add(new Artist(artist));
             }
             return artistArr;
@@ -314,6 +321,7 @@ public class SpotifyTools {
 
     /**
      * Given query string and limit, search and return results as arrayList of AlbumSimple
+     *
      * @param query string query, e.g. Rondo Alla Turca Mozart
      * @param limit # of desired results, max 50
      * @return arrayList of AlbumSimple
@@ -322,7 +330,7 @@ public class SpotifyTools {
         ArrayList<AlbumSimple> albumSimpleArr = new ArrayList<>();
         try {
             Paging<AlbumSimplified> albumsSimplified_paging = api.searchAlbums(query).limit(limit).build().execute();
-            for (AlbumSimplified sAlbumSimplified: albumsSimplified_paging.getItems()) {
+            for (AlbumSimplified sAlbumSimplified : albumsSimplified_paging.getItems()) {
                 albumSimpleArr.add(toAlbumSimple(sAlbumSimplified));
             }
             return albumSimpleArr;
@@ -336,53 +344,101 @@ public class SpotifyTools {
 
 
     /**
-     * Returns JavaFX Image object given url. Uses background thread.
-     * @param url address of image resource
-     * @return JavaFX Image object
+     * Given artistID, return top tracks by artist
+     *
+     * @param artistID spotify's artist ID
+     * @return arrayList of top Tracks by artist
      */
-    public static javafx.scene.image.Image toImage(String url){
-        //process image in background thread
-        return new javafx.scene.image.Image(url, true);
+    public static ArrayList<com.curator.models.Track> getArtistTopTracks(String artistID) {
+        ArrayList<com.curator.models.Track> tracks = new ArrayList<>();
+        try {
+            for (com.wrapper.spotify.model_objects.specification.Track track :
+                    api.getArtistsTopTracks(artistID, CountryCode.US).build().execute()) {
+                tracks.add(new com.curator.models.Track(track));
+            }
+            return tracks;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
-     * Returns JavaFX Image object given url
-     * @param images ArrayList of wrapper's Image object
-     * @return ArrayList of javafx.scene.image.Image
+     * Given artistID, return arrayList of albums by artist
+     *
+     * @param artistID spotify's artistID
+     * @param limit    # of albums desired, max 20
+     * @return arrayList of albums
      */
-    public static ArrayList<javafx.scene.image.Image> toImage(com.wrapper.spotify.model_objects.specification.Image[] images){
-        ArrayList<javafx.scene.image.Image> imageArr = new ArrayList<>();
-        for (Image image: images) {
-            imageArr.add(toImage(image.getUrl()));
+    public static ArrayList<com.curator.models.Album> getArtistAlbums(String artistID, int limit) {
+        ArrayList<com.curator.models.Album> albums = new ArrayList<>();
+
+        try {
+            for (com.wrapper.spotify.model_objects.specification.AlbumSimplified album
+                    : api.getArtistsAlbums(artistID).build().execute().getItems()) {
+                albums.add(getAlbum(album.getId()));
+            }
+            return albums;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SpotifyWebApiException e) {
+            e.printStackTrace();
         }
-        return imageArr;
+        return null;
     }
 
-    /**
-     * Given an array of artists, return the comma-separated strings of the names of the artists
-     * @param artistArr array of com.curator.models.Artist
-     * @return comma-separated strings of the names of the artists
-     */
-    public static String toString(ArrayList<Artist> artistArr){
-        StringBuilder sb = new StringBuilder();
-        for (Artist artist: artistArr) {
-            sb.append(artist.getName()).append(", ");
-        }
-        String res = sb.toString();
-        return res.substring(0,res.length() - 3); //exclude last separator
-    }
 
-    /**
-     * Given an array of artists, return the comma-separated strings of the names of the artists
-     * @param artistArr com.wrapper.spotify.model_objects.specification.ArtistSimplified
-     * @return comma-separated strings of the names of the artists
-     */
-    public static String toString(ArtistSimplified[] artistArr){
-        StringBuilder sb = new StringBuilder();
-        for (ArtistSimplified artist: artistArr) {
-            sb.append(artist.getName()).append(", ");
+        /**
+         * Returns JavaFX Image object given url. Uses background thread.
+         * @param url address of image resource
+         * @return JavaFX Image object
+         */
+        public static javafx.scene.image.Image toImage (String url){
+            //process image in background thread
+            return new javafx.scene.image.Image(url, true);
         }
-        String res = sb.toString();
-        return res.substring(0,res.length() - 2); //exclude last separator
+
+        /**
+         * Returns JavaFX Image object given url
+         * @param images ArrayList of wrapper's Image object
+         * @return ArrayList of javafx.scene.image.Image
+         */
+        public static ArrayList<javafx.scene.image.Image> toImage
+        (com.wrapper.spotify.model_objects.specification.Image[]images){
+            ArrayList<javafx.scene.image.Image> imageArr = new ArrayList<>();
+            for (Image image : images) {
+                imageArr.add(toImage(image.getUrl()));
+            }
+            return imageArr;
+        }
+
+        /**
+         * Given an array of artists, return the comma-separated strings of the names of the artists
+         * @param artistArr array of com.curator.models.Artist
+         * @return comma-separated strings of the names of the artists
+         */
+        public static String toString (ArrayList < Artist > artistArr) {
+            StringBuilder sb = new StringBuilder();
+            for (Artist artist : artistArr) {
+                sb.append(artist.getName()).append(", ");
+            }
+            String res = sb.toString();
+            return res.substring(0, res.length() - 3); //exclude last separator
+        }
+
+        /**
+         * Given an array of artists, return the comma-separated strings of the names of the artists
+         * @param artistArr com.wrapper.spotify.model_objects.specification.ArtistSimplified
+         * @return comma-separated strings of the names of the artists
+         */
+        public static String toString (ArtistSimplified[]artistArr){
+            StringBuilder sb = new StringBuilder();
+            for (ArtistSimplified artist : artistArr) {
+                sb.append(artist.getName()).append(", ");
+            }
+            String res = sb.toString();
+            return res.substring(0, res.length() - 2); //exclude last separator
+        }
     }
-}

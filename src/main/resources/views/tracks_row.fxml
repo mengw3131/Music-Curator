@@ -6,15 +6,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane maxWidth="300.0" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+      <AnchorPane prefHeight="200.0" HBox.hgrow="ALWAYS">
          <children>
             <Label prefHeight="16.0" prefWidth="186.0" text="Label" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
          </children>
       </AnchorPane>
-      <AnchorPane prefWidth="0.0" HBox.hgrow="ALWAYS" />
+      <AnchorPane HBox.hgrow="ALWAYS" />
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
             <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="90.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">

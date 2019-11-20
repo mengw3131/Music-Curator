@@ -11,7 +11,7 @@
 
 <BorderPane fx:id="topBorderPane" cache="true" cacheHint="SPEED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.curator.controllers.AlbumPageController">
    <center>
-      <ScrollPane fx:id="mainScrollPane" hbarPolicy="NEVER" maxWidth="1000.0" minWidth="400.0" pannable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ScrollPane fx:id="mainScrollPane" hbarPolicy="NEVER" maxWidth="1000.0" minWidth="400.0" pannable="true" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
          <content>
             <VBox fx:id="mainVBox" alignment="TOP_CENTER" minWidth="400.0">
                <children>

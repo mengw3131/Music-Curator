@@ -265,6 +265,41 @@ public class DiscoverController implements Initializable {
                         System.out.println("heart clicked");
                     }
                 });
+
+                artistName.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        artistName.setStyle("-fx-underline: true");
+                    }
+                });
+
+                artistName.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        artistName.setStyle("-fx-underline: false");
+
+                    }
+                });
+
+                artistName.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/artist_page.fxml"));
+                        try {
+                            BorderPane borderPane = loader.load();
+                            ArtistPageController artistPageController  = loader.getController();
+                            artistPageController.setPlayerController(playerController);
+                            artistPageController.setMainController(mainController);
+                            artistPageController.setNavbarController(navbarController);
+                            artistPageController.setArtist(artist); //only get first artist
+
+                            navbarController.addPage(borderPane);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -398,6 +433,41 @@ public class DiscoverController implements Initializable {
                              albumPageController.setPlayerController(playerController);
                              albumPageController.setMainController(mainController);
                              albumPageController.setAlbum(album);
+
+                             navbarController.addPage(borderPane);
+
+                         } catch (IOException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                 });
+
+                 trackArtist.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+                     @Override
+                     public void handle(MouseEvent event) {
+                         trackArtist.setStyle("-fx-underline: true");
+                     }
+                 });
+
+                 trackArtist.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+                     @Override
+                     public void handle(MouseEvent event) {
+                         trackArtist.setStyle("-fx-underline: false");
+
+                     }
+                 });
+
+                 trackArtist.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                     @Override
+                     public void handle(MouseEvent event) {
+                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/artist_page.fxml"));
+                         try {
+                             BorderPane borderPane = loader.load();
+                             ArtistPageController artistPageController  = loader.getController();
+                             artistPageController.setPlayerController(playerController);
+                             artistPageController.setMainController(mainController);
+                             artistPageController.setNavbarController(navbarController);
+                             artistPageController.setArtist(album.getArtists().get(0)); //only get first artist
 
                              navbarController.addPage(borderPane);
 
@@ -555,6 +625,41 @@ public class DiscoverController implements Initializable {
                             albumPageController.setPlayerController(playerController);
                             albumPageController.setMainController(mainController);
                             albumPageController.setAlbum(track.getAlbum());
+
+                            navbarController.addPage(borderPane);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                trackArtist.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        trackArtist.setStyle("-fx-underline: true");
+                    }
+                });
+
+                trackArtist.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        trackArtist.setStyle("-fx-underline: false");
+
+                    }
+                });
+
+                trackArtist.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/artist_page.fxml"));
+                        try {
+                            BorderPane borderPane = loader.load();
+                            ArtistPageController artistPageController  = loader.getController();
+                            artistPageController.setPlayerController(playerController);
+                            artistPageController.setMainController(mainController);
+                            artistPageController.setNavbarController(navbarController);
+                            artistPageController.setArtist(track.getArtists().get(0)); //only get first artist
 
                             navbarController.addPage(borderPane);
 

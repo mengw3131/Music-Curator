@@ -190,6 +190,43 @@ public class HomeController implements Initializable {
                         }
                     }
                 });
+
+
+
+                trackArtist.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        trackArtist.setStyle("-fx-underline: true");
+                    }
+                });
+
+                trackArtist.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        trackArtist.setStyle("-fx-underline: false");
+
+                    }
+                });
+
+                trackArtist.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/artist_page.fxml"));
+                        try {
+                            BorderPane borderPane = loader.load();
+                            ArtistPageController artistPageController  = loader.getController();
+                            artistPageController.setPlayerController(playerController);
+                            artistPageController.setMainController(mainController);
+                            artistPageController.setNavbarController(navbarController);
+                            artistPageController.setArtist(track.getArtists().get(0)); //only get first artist
+
+                            navbarController.addPage(borderPane);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -236,13 +273,13 @@ public class HomeController implements Initializable {
 
 
 
-        ArrayList<Track> tracks =  SpotifyTools.searchTracks("Bill Evans", 8);
+        ArrayList<Track> tracks =  SpotifyTools.searchTracks("Art Tatum", 8);
 //        ArrayList<Track> tracks =  createDummy();    //use dummy data
 
         System.out.println("done searching tracks");
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
 
-        tracks = SpotifyTools.searchTracks("Art Tatum", 8);
+//        tracks = SpotifyTools.searchTracks("Art Tatum", 8);
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
 
         Label label2 = new Label("Hot This Week");
@@ -250,7 +287,7 @@ public class HomeController implements Initializable {
         label2.setAlignment(Pos.TOP_LEFT);
         topRecommendationVBox.getChildren().add(label2);
 
-        tracks = SpotifyTools.searchTracks("Oscar Peterson", 8);
+//        tracks = SpotifyTools.searchTracks("Oscar Peterson", 8);
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
 //
         Label label3 = new Label("Mood");
@@ -258,7 +295,7 @@ public class HomeController implements Initializable {
         label3.setAlignment(Pos.TOP_LEFT);
         topRecommendationVBox.getChildren().add(label3);
 
-        tracks = SpotifyTools.searchTracks("Calm", 8);
+//        tracks = SpotifyTools.searchTracks("Calm", 8);
         topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
     }
 
