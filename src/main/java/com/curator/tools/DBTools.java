@@ -6,12 +6,11 @@ import java.util.*;
 import com.curator.models.*;
 
 public class DBTools {
-	private static Connection conn;
-	private static ResultSet rs;
+	private Connection conn;
+	private ResultSet rs;
 	
 	public DBTools() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mysql://music-curator-user-preference.cd6o4ckow0r1.us-east-2.rds.amazonaws.com:3306/music_curator_user_preference?user=admin&password=musiccurator");
 		} catch (Exception ex) {
 			System.out.println("Error: " + ex);
@@ -22,10 +21,15 @@ public class DBTools {
 	/*
 	 * Returns an ArrayList of user liked songs by passing in the userID
 	 */
-	public static ArrayList<Track> getUserLikedSongs(String userID) {
+	public ArrayList<Track> getUserLikedSongs(String userID) {
 		ArrayList<Track> userLikedSongs= new ArrayList<>();	
 		String trackID = "";
 		try {
+			if (conn == null) {
+				System.out.print("error");
+			} else {
+				System.out.print("success");
+			}
 			PreparedStatement preStSong = conn.prepareStatement("SELECT Track_id FROM User_Preference_Song WHERE `Like/Dislike` = '1' AND User_id = ?");
 			preStSong.setString(1, userID);
 			rs = preStSong.executeQuery();
@@ -34,6 +38,8 @@ public class DBTools {
 				Track track = SpotifyTools.getTrack(trackID);
 				userLikedSongs.add(track);
 				System.out.println(rs.getString("Track_id"));
+				System.out.println(trackID);
+				System.out.println(track.getTrackID());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -45,7 +51,7 @@ public class DBTools {
 	/*
 	 * Returns an ArrayList of user liked artists by passing in the userID
 	 */
-	public static ArrayList<Artist> getUserLikedArtists(String userID) {
+	public ArrayList<Artist> getUserLikedArtists(String userID) {
 		ArrayList<Artist> userLikedArtist= new ArrayList<>();	
 		String artistID = "";
 		try {
@@ -67,7 +73,7 @@ public class DBTools {
 	/*
 	 * Returns an ArrayList of user liked albums by passing in the userID
 	 */
-	public static ArrayList<Album> getUserLikedAlbum(String userID) {
+	public ArrayList<Album> getUserLikedAlbum(String userID) {
 		ArrayList<Album> userLikedAlbum= new ArrayList<>();	
 		String albumID = "";
 		try {
@@ -89,7 +95,7 @@ public class DBTools {
 	/*
 	 * Returns an ArrayList of user disliked songs by passing in the userID
 	 */
-	public static ArrayList<Track> getUserDislikedSongs(String userID) {
+	public ArrayList<Track> getUserDislikedSongs(String userID) {
 		ArrayList<Track> userDislikedSongs= new ArrayList<>();	
 		String trackID = "";
 		try {
@@ -112,7 +118,7 @@ public class DBTools {
 	/*
 	 * Returns an ArrayList of user disliked artists by passing in the userID
 	 */
-	public static ArrayList<Artist> getUserDislikedArtists(String userID) {
+	public ArrayList<Artist> getUserDislikedArtists(String userID) {
 		ArrayList<Artist> userDislikedArtist= new ArrayList<>();	
 		String artistID = "";
 		try {
@@ -134,7 +140,7 @@ public class DBTools {
 	/*
 	 * Returns an ArrayList of user disliked albums by passing in the userID
 	 */
-	public static ArrayList<Album> getUserDislikedAlbum(String userID) {
+	public ArrayList<Album> getUserDislikedAlbum(String userID) {
 		ArrayList<Album> userDislikedAlbum= new ArrayList<>();	
 		String albumID = "";
 		try {
@@ -156,7 +162,7 @@ public class DBTools {
 	/*
 	 * Stores the user's liked/disliked songs into according database
 	 */
-	public static void storeUserPreferenceTracks(String userID, String trackID, boolean like) {
+	public void storeUserPreferenceTracks(String userID, String trackID, boolean like) {
 		try {
 			PreparedStatement preSt1 = conn.prepareStatement("INSERT INTO User_Preference_Song (User_id, Track_id, `Like/Dislike`) VALUES(?,?,?);");
 			preSt1.setString(1, userID);
@@ -172,7 +178,7 @@ public class DBTools {
 	/*
 	 * Stores the user's liked/disliked artists into according database
 	 */
-	public static void storeUserPreferenceArtist(String userID, String artistID, boolean like) {
+	public void storeUserPreferenceArtist(String userID, String artistID, boolean like) {
 		try {
 			PreparedStatement preSt2 = conn.prepareStatement("INSERT INTO User_Preference_Artist (User_id, Artist_id, `Like/Dislike`) VALUES(?,?,?);");
 			preSt2.setString(1, userID);
@@ -187,7 +193,7 @@ public class DBTools {
 	/*
 	 * Stores the user's liked/disliked albums into according database
 	 */
-	public static void storeUserPreferenceAlbum(String userID, String albumID, boolean like) {
+	public void storeUserPreferenceAlbum(String userID, String albumID, boolean like) {
 		try {
 			PreparedStatement preSt3 = conn.prepareStatement("INSERT INTO User_Preference_Album (User_id, Album_id, `Like/Dislike`) VALUES(?,?,?);");
 			preSt3.setString(1, userID);

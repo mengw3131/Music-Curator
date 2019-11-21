@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+
+import com.curator.models.Track;
+import com.curator.tools.DBTools;
 import com.curator.tools.YoutubeTools;
 import javafx.application.Application;
 import javafx.concurrent.Task;
@@ -36,8 +40,18 @@ public class Main extends Application {
      * @param args
      */
     public static void main(String[] args) {
-        YoutubeTools.initializeInterpreter();
-        launch();
+//        YoutubeTools.initializeInterpreter();
+//        launch();
+    	DBTools db = new DBTools();
+//		ArrayList<Track> list = db.getUserLikedSongs("meng");
+//		StringBuilder sb = new StringBuilder();
+//		for (Track track: list) {
+//			String track_id = track.getTrackID();
+//			sb.append(track_id);
+//		}
+//        System.out.print(sb.toString());
+    	db.storeUserPreferenceTracks("lemon", "76767", true);
+    	
     }
 
 

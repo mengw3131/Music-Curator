@@ -1,13 +1,7 @@
 
-
+import com.curator.tools.SpotifyTools;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Assertions;
@@ -19,21 +13,21 @@ import com.curator.tools.DBTools;
 class DBToolsTest {
 
 	@Test
-	void testDBTools() {
+	void testGetUserLikedSongs() {
+		//String userID = "meng";
+//		String trackID = "463564A";
+//		Boolean like = true;
+		
+//		DBTools.storeUserPreferenceTracks(userID, trackID, like);
+		DBTools db = new DBTools();
+		ArrayList<Track> list = db.getUserLikedSongs("meng");
+		StringBuilder sb = new StringBuilder();
+		for (Track track: list) {
+			String track_id = track.getTrackID();
+			sb.append(track_id);
+		}
+		Assertions.assertEquals("463564A", sb.toString());
 		fail("Not yet implemented");
 	}
 
-	@Test
-	void testGetUserLikedSongs() {
-		String userID = "meng";
-		String trackID = "463564A";
-		Boolean like = true;
-		
-		DBTools.storeUserPreferenceTracks(userID, trackID, like);
-		String track_id = DBTools.getUserLikedSongs("meng").toString();
-	    
-		Assertions.assertEquals("463564A", track_id);
-		fail("Not yet implemented");
-     }
-	
 }
