@@ -20,6 +20,7 @@ import javafx.stage.Stage;
  * Entry to the app.
  */
 public class Main extends Application {
+
     /**
      * Initialize GUI app
      *
@@ -37,21 +38,29 @@ public class Main extends Application {
     }
 
     /**
+     * USER NOTE:
+     * Do not use the main method to run the application
+     * Use Gradle -> run, instead.
+     *
      * Entry method to app
      * @param args
      */
     public static void main(String[] args) {
         YoutubeTools.initializeInterpreter();
+        DBTools.initialize("fancy_user_1");
         launch();
+
+
 //    	DBTools db = new DBTools();
-//		
-    	
+//
+//
+//
 //    	ArrayList<Track> tracks =  SpotifyTools.searchTracks("Rap songs", 8);
 //    	for (Track t: tracks) {
-//    		db.storeUserPreferenceTracks("abcde", t.getTrackID(), true);
+//    		db.storeUserPreferenceTracks(USER_ID, t.getTrackID(), true);
 //    	}
-//    	
-//    	ArrayList<Track> list = db.getUserLikedSongs("abcde");
+//
+//    	ArrayList<Track> list = db.getUserLikedSongs(USER_ID);
 //		StringBuilder sb = new StringBuilder();
 //		for (Track track: list) {
 //			String track_id = track.getTrackID();

@@ -27,17 +27,17 @@
                   </Label>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/other/play.png" />
+                        <Image url="@../icons/other/play.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/heart.png" />
+                        <Image url="@../icons/heart.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/copy.png" />
+                        <Image url="@../icons/copy.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
@@ -62,17 +62,17 @@
                   </Label>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/other/play.png" />
+                        <Image url="@../icons/other/play.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/heart.png" />
+                        <Image url="@../icons/heart.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/copy.png" />
+                        <Image url="@../icons/copy.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
@@ -97,17 +97,17 @@
                   </Label>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/other/play.png" />
+                        <Image url="@../icons/other/play.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/heart.png" />
+                        <Image url="@../icons/heart.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/copy.png" />
+                        <Image url="@../icons/copy.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
@@ -132,17 +132,17 @@
                   </Label>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/other/play.png" />
+                        <Image url="@../icons/other/play.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/heart.png" />
+                        <Image url="@../icons/heart.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/copy.png" />
+                        <Image url="@../icons/copy.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
@@ -167,17 +167,17 @@
                   </Label>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/other/play.png" />
+                        <Image url="@../icons/other/play.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/heart.png" />
+                        <Image url="@../icons/heart.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/copy.png" />
+                        <Image url="@../icons/copy.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
@@ -202,17 +202,17 @@
                   </Label>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/other/play.png" />
+                        <Image url="@../icons/other/play.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/heart.png" />
+                        <Image url="@../icons/heart.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/copy.png" />
+                        <Image url="@../icons/copy.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
@@ -237,17 +237,17 @@
                   </Label>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/other/play.png" />
+                        <Image url="@../icons/other/play.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/heart.png" />
+                        <Image url="@../icons/heart.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/copy.png" />
+                        <Image url="@../icons/copy.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
@@ -272,17 +272,17 @@
                   </Label>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/other/play.png" />
+                        <Image url="@../icons/other/play.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/heart.png" />
+                        <Image url="@../icons/heart.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/copy.png" />
+                        <Image url="@../icons/copy.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">

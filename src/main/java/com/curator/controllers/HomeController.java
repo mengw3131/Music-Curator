@@ -1,5 +1,6 @@
 package com.curator.controllers;
 
+import com.curator.tools.DBTools;
 import com.curator.tools.SpotifyTools;
 import com.curator.tools.YoutubeTools;
 import com.curator.models.*;
@@ -145,15 +146,14 @@ public class HomeController implements Initializable {
                     @Override
                     public void handle(MouseEvent event) {
                         //TODO: IMPLEMENT
-                        System.out.println("heart clicked");
+                        DBTools.storeUserPreferenceTracks(track.getTrackID(), true);
                     }
                 });
 
                 dislikeButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        //TODO: IMPLEMENT
-                        System.out.println("dislike clicked");
+                        DBTools.storeUserPreferenceTracks(track.getTrackID(), false);
                     }
                 });
 
