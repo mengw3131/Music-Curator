@@ -1,5 +1,6 @@
 package com.curator.controllers;
 
+import com.curator.tools.DBTools;
 import com.curator.tools.SpotifyTools;
 import com.curator.models.*;
 
@@ -261,8 +262,7 @@ public class DiscoverController implements Initializable {
                 inPaneHeartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        //TODO: IMPLEMENT
-                        System.out.println("heart clicked");
+                        DBTools.storeUserPreferenceArtist(artist.getArtistID(), true);
                     }
                 });
 
@@ -271,6 +271,7 @@ public class DiscoverController implements Initializable {
                     public void handle(MouseEvent event) {
                         artistName.setStyle("-fx-underline: true");
                     }
+
                 });
 
                 artistName.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
@@ -403,8 +404,7 @@ public class DiscoverController implements Initializable {
                 inPaneHeartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        //TODO: IMPLEMENT
-                        System.out.println("heart clicked");
+                        DBTools.storeUserPreferenceAlbum(album.getAlbumID(), true);
                     }
                 });
 
@@ -585,8 +585,7 @@ public class DiscoverController implements Initializable {
                 inPaneHeartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        //TODO: IMPLEMENT
-                        System.out.println("heart clicked");
+                        DBTools.storeUserPreferenceTracks(track.getTrackID(), true);
                     }
                 });
 
@@ -595,7 +594,7 @@ public class DiscoverController implements Initializable {
                     @Override
                     public void handle(MouseEvent event) {
                         //TODO: IMPLEMENT
-                        System.out.println("dislike clicked");
+                        DBTools.storeUserPreferenceTracks(track.getTrackID(), false);
                     }
                 });
 

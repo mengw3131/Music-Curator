@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane cache="true" cacheHint="SPEED" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="220.0" prefWidth="600.0" vbarPolicy="NEVER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <HBox alignment="CENTER" prefHeight="200.0">
+         <children>
+            <Pane prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/other/play.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/heart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/edit.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/cancel.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/other/play.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/heart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/edit.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/cancel.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/other/play.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/heart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/edit.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/cancel.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/other/play.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/heart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/edit.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/cancel.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/other/play.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/heart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/edit.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/cancel.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/other/play.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/heart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/edit.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/cancel.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/other/play.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/heart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/edit.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/cancel.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="150.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/other/play.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../git/final-project-music-curator/src/main/resources/icons/heart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/edit.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/cancel.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
+      </HBox>
+   </content>
+</ScrollPane>

@@ -145,7 +145,6 @@ public class HomeController implements Initializable {
                 inPaneHeartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        //TODO: IMPLEMENT
                         DBTools.storeUserPreferenceTracks(track.getTrackID(), true);
                     }
                 });

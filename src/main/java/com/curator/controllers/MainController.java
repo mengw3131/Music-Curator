@@ -34,13 +34,14 @@ public class MainController implements Initializable {
     private NavbarController navbarController;
     private HomeController homeController;
     private DiscoverController discoverController;
+    private PlaylistController playlistController;
 
     private BorderPane homePane;
     private BorderPane discoverPane;
     private TableView favoritesTable;
     private AnchorPane myMusicPane;
     private AnchorPane madeForYouPane;
-    private AnchorPane playlistPane;
+    private BorderPane playlistPane;
     private AnchorPane profilePane;
 
     //set reuseable loader to improve performance
@@ -286,27 +287,69 @@ public class MainController implements Initializable {
      */
     @FXML
     private void handlePlaylistsButtonAction(ActionEvent event) {
-        //change button visual effects
+        //update button UI
         unselectAllButtons();
         playlistsButton.setStyle("-fx-background-color: lightgrey;");
 
-        //set current page index
+        //update index first
         currentPageIndex = PAGE_INDEX.PLAYLISTS.index;
         navbarController.updateIndex();
 
-        //if music page already exists, don't create new, just switch to the last page
+        //if playlists page already exists, don't create new, just switch to the last page
         if (navbarController.getPagesCountInSection(currentPageIndex) != 0) {
             navbarController.switchPage();
         } else {
-            //TODO: IMPLEMENT HERE
+            if (playlistPane == null) {
 
-            playlistPane = new AnchorPane();
-            playlistPane.getChildren().add(new Label("Playlist page"));
-            playlistPane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
+                loader = new FXMLLoader(getClass().getResource("/views/playlists.fxml"));
 
-            //add myMusicPane
+                playlistController = loader.getController(); //get controller of home.fxml
+
+                try {
+                    playlistPane = loader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                ScrollPane scrollPane = (ScrollPane) playlistPane.getChildren().get(0);
+
+                //set BorderPane to follow mainpane's dimension (for resizing)
+                playlistPane.prefHeightProperty().bind(mainPane.heightProperty());
+                playlistPane.prefWidthProperty().bind(mainPane.widthProperty());
+
+                //hide horizontal and vertical scrollbar
+                scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+                scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+                scrollPane.setMinWidth(800);
+                scrollPane.setMaxWidth(1000);
+            }
+
+            //add homePane
             navbarController.addPage(playlistPane);
         }
+
+
+//        //change button visual effects
+//        unselectAllButtons();
+//        playlistsButton.setStyle("-fx-background-color: lightgrey;");
+//
+//        //set current page index
+//        currentPageIndex = PAGE_INDEX.PLAYLISTS.index;
+//        navbarController.updateIndex();
+//
+//        //if music page already exists, don't create new, just switch to the last page
+//        if (navbarController.getPagesCountInSection(currentPageIndex) != 0) {
+//            navbarController.switchPage();
+//        } else {
+//            //TODO: IMPLEMENT HERE
+//
+//            playlistPane = new AnchorPane();
+//            playlistPane.getChildren().add(new Label("Playlist page"));
+//            playlistPane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
+//
+//            //add myMusicPane
+//            navbarController.addPage(playlistPane);
+//        }
     }
 
     /**

@@ -49,24 +49,6 @@ public class Main extends Application {
         YoutubeTools.initializeInterpreter();
         DBTools.initialize("fancy_user_1");
         launch();
-
-
-//    	DBTools db = new DBTools();
-//
-//
-//
-//    	ArrayList<Track> tracks =  SpotifyTools.searchTracks("Rap songs", 8);
-//    	for (Track t: tracks) {
-//    		db.storeUserPreferenceTracks(USER_ID, t.getTrackID(), true);
-//    	}
-//
-//    	ArrayList<Track> list = db.getUserLikedSongs(USER_ID);
-//		StringBuilder sb = new StringBuilder();
-//		for (Track track: list) {
-//			String track_id = track.getTrackID();
-//			sb.append(track_id);
-//		}
-//        System.out.print(sb.toString());
     }
 
 
