@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+
+import com.curator.models.Track;
+import com.curator.tools.DBTools;
+import com.curator.tools.SpotifyTools;
 import com.curator.tools.YoutubeTools;
 import javafx.application.Application;
 import javafx.concurrent.Task;
@@ -38,6 +43,21 @@ public class Main extends Application {
     public static void main(String[] args) {
         YoutubeTools.initializeInterpreter();
         launch();
+//    	DBTools db = new DBTools();
+//		
+    	
+//    	ArrayList<Track> tracks =  SpotifyTools.searchTracks("Rap songs", 8);
+//    	for (Track t: tracks) {
+//    		db.storeUserPreferenceTracks("abcde", t.getTrackID(), true);
+//    	}
+//    	
+//    	ArrayList<Track> list = db.getUserLikedSongs("abcde");
+//		StringBuilder sb = new StringBuilder();
+//		for (Track track: list) {
+//			String track_id = track.getTrackID();
+//			sb.append(track_id);
+//		}
+//        System.out.print(sb.toString());
     }
 
 
