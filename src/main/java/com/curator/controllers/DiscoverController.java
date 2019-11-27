@@ -8,9 +8,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -184,7 +182,7 @@ public class DiscoverController implements Initializable {
         ScrollPane pane = null;
 
         try {
-            pane = new FXMLLoader(getClass().getResource("/views/artists_hbox.fxml")).load();
+            pane = new FXMLLoader(getClass().getResource("/views/artist_hbox.fxml")).load();
             pane.prefWidthProperty().bind(discoverScrollPane.widthProperty());
 
             HBox box = (HBox) pane.getContent();
@@ -325,7 +323,7 @@ public class DiscoverController implements Initializable {
         ScrollPane pane = null;
 
         try {
-            pane = new FXMLLoader(getClass().getResource("/views/albums_hbox.fxml")).load();
+            pane = new FXMLLoader(getClass().getResource("/views/album_hbox.fxml")).load();
             pane.prefWidthProperty().bind(discoverScrollPane.widthProperty());
 
             HBox box = (HBox) pane.getContent();
@@ -572,12 +570,22 @@ public class DiscoverController implements Initializable {
                     }
                 });
 
-                //when addToPlaylist button inside pane is clicked
-                inPaneAddToPlaylistButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                inPaneAddToPlaylistButton.setOnMousePressed(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        //TODO: IMPLEMENT
-                        System.out.println("playlist clicked");
+                        if (event.isPrimaryButtonDown()){
+
+                            ContextMenu contextMenu = new ContextMenu();
+                            for (String playlist_id:DBTools.getAllPlaylistIDs()) {
+                                MenuItem menuItem = new MenuItem(DBTools.getPlaylistName(playlist_id));
+                                menuItem.setId(playlist_id);
+                                menuItem.setOnAction(event2 -> {
+                                    DBTools.storeTrackToPlaylist(track.getTrackID(), playlist_id);
+                                });
+                                contextMenu.getItems().add(menuItem);
+                            }
+                            contextMenu.show(inPaneAddToPlaylistButton, event.getScreenX(), event.getScreenY());
+                        }
                     }
                 });
 

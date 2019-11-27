@@ -273,15 +273,12 @@ public class SpotifyTools {
      * @return arrayList of Track
      */
     public static ArrayList<com.curator.models.Track> searchTracks(String query, int limit) {
-        System.out.println("Searching for " + limit + " tracks of " + query);
         ArrayList<com.curator.models.Track> trackArr = new ArrayList<>();
         try {
-            System.out.println("create paging");
             Paging<com.wrapper.spotify.model_objects.specification.Track> tracks_paging =
                     api.searchTracks(query).limit(limit).build().execute();
 
             for (com.wrapper.spotify.model_objects.specification.Track track : tracks_paging.getItems()) {
-                System.out.println("adding tracks");
                 trackArr.add(new com.curator.models.Track(track));
             }
             return trackArr;

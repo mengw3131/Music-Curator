@@ -1,15 +1,13 @@
 package com.curator.controllers;
 
+import com.curator.tools.DBTools;
 import com.curator.tools.SpotifyTools;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import com.curator.models.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -99,7 +97,7 @@ public class ArtistPageController implements Initializable {
         HBox hbox;
         for (Track track: tracks) {
             try {
-                hbox = new FXMLLoader(getClass().getResource("/views/tracks_row.fxml")).load();
+                hbox = new FXMLLoader(getClass().getResource("/views/album_tracks_row.fxml")).load();
 
                 ((Label)((AnchorPane)hbox.getChildren().get(0)).getChildren().get(0)).setText(track.getTrackName()); //set track name
                 AnchorPane buttonsPane = (AnchorPane)(hbox.getChildren().get(2));
@@ -169,12 +167,22 @@ public class ArtistPageController implements Initializable {
                 });
 
                 //if click on playlist icon,
-                playlistButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                playlistButton.setOnMousePressed(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
+                        if (event.isPrimaryButtonDown()){
 
-                        //TODO: IMPLEMENT
-                        System.out.println("playlist clicked");
+                            ContextMenu contextMenu = new ContextMenu();
+                            for (String playlist_id: DBTools.getAllPlaylistIDs()) {
+                                MenuItem menuItem = new MenuItem(DBTools.getPlaylistName(playlist_id));
+                                menuItem.setId(playlist_id);
+                                menuItem.setOnAction(event2 -> {
+                                    DBTools.storeTrackToPlaylist(track.getTrackID(), playlist_id);
+                                });
+                                contextMenu.getItems().add(menuItem);
+                            }
+                            contextMenu.show(playlistButton, event.getScreenX(), event.getScreenY());
+                        }
                     }
                 });
 
@@ -229,7 +237,7 @@ public class ArtistPageController implements Initializable {
         ScrollPane pane = null;
 
         try {
-            pane = new FXMLLoader(getClass().getResource("/views/albums_hbox.fxml")).load();
+            pane = new FXMLLoader(getClass().getResource("/views/album_hbox.fxml")).load();
             pane.prefWidthProperty().bind(mainScrollPane.widthProperty());
 
             HBox box = (HBox) pane.getContent();

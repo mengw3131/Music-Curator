@@ -39,6 +39,7 @@ public class Track {
 	public Track() {
 	}
 
+
 	/**
 	 * Construct com.curator.models.Track object from wrapper's
 	 * com.curator.models.Track object
@@ -115,7 +116,7 @@ public class Track {
 			}
 			this.artistsNames = sb.toString();
 			this.artistsNames = getArtistsNames().substring(0,
-					getArtistsNames().length() - 2); // remove last ,
+					getArtistsNames().length() - 2); // removeFromPlaylists last ,
 
 		} else {
 			this.artistsNames = String.join(", ", artistsNames);

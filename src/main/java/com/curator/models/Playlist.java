@@ -1,30 +1,36 @@
 package com.curator.models;
 
-import com.curator.tools.SpotifyTools;
+import com.curator.tools.DBTools;
 import javafx.scene.image.Image;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Playlist {
     private ArrayList<Track> tracks = new ArrayList<>();
 
-
     private String name;
     private Image image;
+    private String id = UUID.randomUUID().toString().substring(0,8);
 
     public Playlist(String name){
         this.name = name;
     }
 
-    public Playlist(String name, Track track){
+    public Playlist(String name,Track track){
         this.name = name;
-        tracks.add(track);
+        this.tracks.add(track);
     }
 
     public Playlist(String name, ArrayList<Track> tracks){
         this.name = name;
-        tracks.addAll(tracks);
+        this.tracks.addAll(tracks);
+    }
+
+    public Playlist(String name, ArrayList<Track> tracks, String id){
+        this.id =  id;
+        this.name = name;
+        this.tracks.addAll(tracks);
     }
 
     public Image getImage() {
@@ -63,5 +69,9 @@ public class Playlist {
 
     public String getName() {
         return name;
+    }
+
+    public String getId() {
+        return id;
     }
 }

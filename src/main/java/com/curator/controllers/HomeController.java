@@ -5,16 +5,22 @@ import com.curator.tools.SpotifyTools;
 import com.curator.tools.YoutubeTools;
 import com.curator.models.*;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
@@ -38,9 +44,14 @@ public class HomeController implements Initializable {
     private NavbarController navbarController;
 
     @FXML
+    private BorderPane topBorderPane;
+
+    @FXML
     private ScrollPane mainScrollPane;
+
     @FXML
     private VBox topRecommendationVBox;
+
 
     /**
      * //TODO: REFACTOR INTO SEPARATE CLASS
@@ -49,7 +60,7 @@ public class HomeController implements Initializable {
      * @param tracks
      * @return HBox of track panes in tracks
      */
-    public ScrollPane createRecommendationBox(ArrayList<Track> tracks){
+    public ScrollPane createRecommendationBox(ArrayList<Track> tracks) {
 
         /*
           Nodes Hierarchy:
@@ -70,15 +81,15 @@ public class HomeController implements Initializable {
             pane = new FXMLLoader(getClass().getResource("/views/tracks_hbox.fxml")).load();
             pane.prefWidthProperty().bind(mainScrollPane.widthProperty());
 
-            HBox box = (HBox)pane.getContent();
+            HBox box = (HBox) pane.getContent();
 
             //loop on each music pane in HBox
-            for (int i = 0; i < ((HBox)pane.getContent()).getChildren().size(); i++) {
+            for (int i = 0; i < ((HBox) pane.getContent()).getChildren().size(); i++) {
                 Track track = tracks.get(i);
-                Pane subPane = (Pane)box.getChildren().get(i);
+                Pane subPane = (Pane) box.getChildren().get(i);
                 ImageView trackImage = (ImageView) subPane.getChildren().get(0);
-                Label trackName = (Label)subPane.getChildren().get(1);
-                Label trackArtist = (Label)subPane.getChildren().get(2);
+                Label trackName = (Label) subPane.getChildren().get(1);
+                Label trackArtist = (Label) subPane.getChildren().get(2);
                 ImageView inPanePlayButton = (ImageView) subPane.getChildren().get(3);
                 ImageView inPaneHeartButton = (ImageView) subPane.getChildren().get(4);
                 ImageView inPaneAddToPlaylistButton = (ImageView) subPane.getChildren().get(5);
@@ -86,7 +97,6 @@ public class HomeController implements Initializable {
 
                 trackImage.setImage(track.getImage());
                 trackName.setText(track.getTrackName());
-                System.out.println("track name is " + track.getTrackName());
                 trackArtist.setText(track.getArtistsNames());
 
                 //when mouse enter the pane
@@ -132,12 +142,24 @@ public class HomeController implements Initializable {
                     }
                 });
 
-                //when addToPlaylist button inside pane is clicked
-                inPaneAddToPlaylistButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+
+                inPaneAddToPlaylistButton.setOnMousePressed(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        //TODO: IMPLEMENT
-                        System.out.println("playlist clicked");
+                        if (event.isPrimaryButtonDown()){
+
+                            ContextMenu contextMenu = new ContextMenu();
+                            for (String playlist_id:DBTools.getAllPlaylistIDs()) {
+                                MenuItem menuItem = new MenuItem(DBTools.getPlaylistName(playlist_id));
+                                menuItem.setId(playlist_id);
+                                menuItem.setOnAction(event2 -> {
+                                    DBTools.storeTrackToPlaylist(track.getTrackID(), playlist_id);
+                                });
+                                contextMenu.getItems().add(menuItem);
+                            }
+                            contextMenu.show(inPaneAddToPlaylistButton, event.getScreenX(), event.getScreenY());
+                        }
                     }
                 });
 
@@ -153,6 +175,8 @@ public class HomeController implements Initializable {
                     @Override
                     public void handle(MouseEvent event) {
                         DBTools.storeUserPreferenceTracks(track.getTrackID(), false);
+
+
                     }
                 });
 
@@ -174,22 +198,23 @@ public class HomeController implements Initializable {
                 trackName.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/album_page.fxml"));
-                        try {
-                            BorderPane borderPane = loader.load();
-                            AlbumPageController albumPageController = loader.getController();
-                            albumPageController.setPlayerController(playerController);
-                            albumPageController.setMainController(mainController);
-                            albumPageController.setAlbum(track.getAlbum());
+                        if (event.getButton() == MouseButton.PRIMARY) {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/album_page.fxml"));
+                            try {
+                                BorderPane borderPane = loader.load();
+                                AlbumPageController albumPageController = loader.getController();
+                                albumPageController.setPlayerController(playerController);
+                                albumPageController.setMainController(mainController);
+                                albumPageController.setAlbum(track.getAlbum());
 
-                            navbarController.addPage(borderPane);
+                                navbarController.addPage(borderPane);
 
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 });
-
 
 
                 trackArtist.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
@@ -213,7 +238,7 @@ public class HomeController implements Initializable {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/artist_page.fxml"));
                         try {
                             BorderPane borderPane = loader.load();
-                            ArtistPageController artistPageController  = loader.getController();
+                            ArtistPageController artistPageController = loader.getController();
                             artistPageController.setPlayerController(playerController);
                             artistPageController.setMainController(mainController);
                             artistPageController.setNavbarController(navbarController);
@@ -234,10 +259,10 @@ public class HomeController implements Initializable {
     }
 
     //create dummy arrays of track, no API calls, use this for testing
-    private ArrayList<Track> createDummy(){
+    private ArrayList<Track> createDummy() {
         System.out.println("creating dummy tracks");
         ArrayList<Track> tracks = new ArrayList<>();
-        if (!new File("src/main/resources/music/g-jsW61e_-w.mp3").exists()){
+        if (!new File("src/main/resources/music/g-jsW61e_-w.mp3").exists()) {
             YoutubeTools.getMediaFileFromYoutubeId("g-jsW61e_-w");
         }
         for (int i = 0; i < 8; i++) {
@@ -261,45 +286,63 @@ public class HomeController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        reload();
+
+
+//        //when home page is visible again, reload to get new data from database
+//        topBorderPane.visibleProperty().addListener(new ChangeListener<Boolean>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//                if (newValue){
+//                    reload();
+//                }
+//            }
+//        });
+    }
+
+    public void reload(){
+        topRecommendationVBox.getChildren().clear();
+
         //this method currently contains placeholder values
         //this is supposed to be the receiver of the recommendation model
 
-        //Set placeholder values
+
         Label label = new Label("Top Recommendation");
         label.setFont(Font.font("Calibri", FontWeight.EXTRA_LIGHT, 35));
         label.setAlignment(Pos.TOP_LEFT);
-        topRecommendationVBox.getChildren().add(label);
+        topRecommendationVBox.getChildren().add(label); //INDEX 0
 
 
-
-        ArrayList<Track> tracks =  SpotifyTools.searchTracks("Art Tatum", 8);
+        ArrayList<Track> tracks = SpotifyTools.searchTracks("Art Tatum", 8);
 //        ArrayList<Track> tracks =  createDummy();    //use dummy data
 
-        System.out.println("done searching tracks");
-        topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
+        System.out.println("Loading tracks...");
+        topRecommendationVBox.getChildren().add(createRecommendationBox(tracks)); //INDEX 1
 
 //        tracks = SpotifyTools.searchTracks("Art Tatum", 8);
-        topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
+        topRecommendationVBox.getChildren().add(createRecommendationBox(tracks)); //INDEX 2
 
         Label label2 = new Label("Hot This Week");
         label2.setFont(Font.font("Calibri", FontWeight.EXTRA_LIGHT, 35));
         label2.setAlignment(Pos.TOP_LEFT);
-        topRecommendationVBox.getChildren().add(label2);
+        topRecommendationVBox.getChildren().add(label2);  //INDEX 3
 
 //        tracks = SpotifyTools.searchTracks("Oscar Peterson", 8);
-        topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
-//
+        topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));//INDEX 4
+
         Label label3 = new Label("Mood");
         label3.setFont(Font.font("Calibri", FontWeight.EXTRA_LIGHT, 35));
         label3.setAlignment(Pos.TOP_LEFT);
-        topRecommendationVBox.getChildren().add(label3);
+        topRecommendationVBox.getChildren().add(label3); //INDEX 5
 
 //        tracks = SpotifyTools.searchTracks("Calm", 8);
-        topRecommendationVBox.getChildren().add(createRecommendationBox(tracks));
+        topRecommendationVBox.getChildren().add(createRecommendationBox(tracks)); //INDEX 6
+
     }
 
     /**
      * Injects mainController
+     *
      * @param mainController
      */
     public void setMainController(MainController mainController) {
@@ -308,6 +351,7 @@ public class HomeController implements Initializable {
 
     /**
      * Injects playerController
+     *
      * @param playerController
      */
     public void setPlayerController(PlayerController playerController) {
@@ -316,9 +360,16 @@ public class HomeController implements Initializable {
 
     /**
      * Injects navbarController
+     *
      * @param navbarController
      */
     public void setNavbarController(NavbarController navbarController) {
         this.navbarController = navbarController;
     }
+
+
+    private void getContextMenu(){
+
+    }
+
 }

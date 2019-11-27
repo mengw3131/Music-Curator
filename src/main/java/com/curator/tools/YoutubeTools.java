@@ -37,7 +37,6 @@ public class YoutubeTools {
     private YoutubeTools() {
     }
 
-    ;
 
     /**
      * Given '+'-separated query containing keywords, fetch Youtube first page results unique video id.
@@ -88,51 +87,6 @@ public class YoutubeTools {
 
 
     public static Media getMediaFileFromYoutubeId(String id, String outputFolder) {
-//        Task<Media> task = new Task<Media>() {
-//            @Override
-//            protected Media call() throws Exception {
-//                System.out.println("calling");
-//                //ydl configs. 'outtmpl': sets output dir and filename.
-//                i.exec("ydl_opts = {" +
-//                        "'outtmpl':'" + outputFolder + id + ".%(ext)s'," +
-//                        "'format':'bestaudio/best', " +
-//                        "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
-//                );
-//                i.exec("with youtube_dl.YoutubeDL(ydl_opts) as ydl: ydl.download(['https://www.youtube.com/watch?v=" + id + "'])");
-//                return new Media(new File(outputFolder + id + ".mp3").toURI().toString());
-//            }
-//        };
-//        Thread t = new Thread(task);
-//        t.start();
-
-
-//        return new Thread(task).start();
-
-//        return new Media("");
-
-
-//        if (!isMediaFileExists(id, outputFolder)) {
-//            Runnable task = new Runnable() {
-//                @Override
-//                public void run() {
-//                    //ydl configs. 'outtmpl': sets output dir and filename.
-//                    i.exec("ydl_opts = {" +
-//                            "'outtmpl':'" + outputFolder + id + ".%(ext)s'," +
-//                            "'format':'bestaudio/best', " +
-//                            "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
-//                    );
-//                    i.exec("with youtube_dl.YoutubeDL(ydl_opts) as ydl: ydl.download(['https://www.youtube.com/watch?v=" + id + "'])");
-//                }
-//
-//            };
-//            Thread downloadThread = new Thread(task);
-//            downloadThread.setDaemon(true);
-//            downloadThread.start();
-//
-//        }
-//        return new Media(new File(outputFolder + id + ".mp3").toURI().toString());
-
-//
         if (!isMediaFileExists(id, outputFolder)) {
             //ydl configs. 'outtmpl': sets output dir and filename.
             i.exec("ydl_opts = {" +

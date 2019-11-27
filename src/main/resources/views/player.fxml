@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox fx:id="player" prefHeight="62.0" prefWidth="200.0" style="-fx-background-color: light grey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.curator.controllers.PlayerController">
+<HBox fx:id="player" prefHeight="62.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.curator.controllers.PlayerController">
    <children>
       <AnchorPane fx:id="nowPlayingPane" minWidth="200.0" prefWidth="200.0" style="-fx-background-color: #DDDDDD;" HBox.hgrow="ALWAYS">
          <children>

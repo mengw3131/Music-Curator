@@ -1,17 +1,13 @@
 package com.curator.controllers;
 
-import com.curator.models.Album;
-import com.curator.models.AlbumSimple;
-import com.curator.models.TrackSimple;
+import com.curator.models.Playlist;
 import com.curator.tools.DBTools;
 import com.curator.tools.SpotifyTools;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -25,14 +21,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import com.curator.models.*;
 
-/**
- * Controller to album_page.fxml. Shows album and its tracks.
- */
-public class AlbumPageController implements Initializable {
+public class PlaylistTrackController implements Initializable {
     private PlayerController playerController;
     private MainController mainController;
-    private Album album;
+    private Playlist playlist;
 
     @FXML
     private VBox mainVBox;
@@ -44,19 +38,18 @@ public class AlbumPageController implements Initializable {
     private ScrollPane mainScrollPane;
 
     @FXML
-    private ImageView albumImage;
+    private ImageView playlistImage;
 
     @FXML
-    private Label albumName;
-
-    @FXML
-    private Label artistsNames;
+    private Label playlistName;
 
     /**
-     * Fetch and display tracks of the album
+     * Fetch and display tracks of the playlist
+     *
      * @param tracks tracks to be displayed
      */
-    private void createTrackList(ArrayList<TrackSimple> tracks){
+    private void createTrackList(ArrayList<Track> tracks) {
+        System.out.println("inside create track list");
         boolean flag = false;
         /*
           Nodes hierarchy
@@ -71,15 +64,16 @@ public class AlbumPageController implements Initializable {
              ImageView (add to playlist)
          */
         HBox hbox;
-        for (TrackSimple track: tracks) {
+        for (int i = 0; i < tracks.size(); i++) {
+            Track track = tracks.get(i);
             try {
-                hbox = new FXMLLoader(getClass().getResource("/views/album_tracks_row.fxml")).load();
+                hbox = new FXMLLoader(getClass().getResource("/views/playlist_tracks_row.fxml")).load();
 
-                ((Label)((AnchorPane)hbox.getChildren().get(0)).getChildren().get(0)).setText(track.getTrackName()); //set track name
-                AnchorPane buttonsPane = (AnchorPane)(hbox.getChildren().get(2));
+                ((Label) ((AnchorPane) hbox.getChildren().get(0)).getChildren().get(0)).setText(track.getTrackName()); //set track name
+                AnchorPane buttonsPane = (AnchorPane) (hbox.getChildren().get(2));
                 ImageView playButton = (ImageView) buttonsPane.getChildren().get(0);
-                ImageView heartButton = (ImageView) buttonsPane.getChildren().get(1);
-                ImageView playlistButton = (ImageView) buttonsPane.getChildren().get(2);
+                ImageView deleteButton = (ImageView) buttonsPane.getChildren().get(1);
+                ImageView dotsButton = (ImageView) buttonsPane.getChildren().get(2);
 
                 //initially hide and disable the action buttons (play, heart, add to playlist)
                 buttonsPane.setOpacity(0);
@@ -115,8 +109,8 @@ public class AlbumPageController implements Initializable {
                 hbox.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        if (event.getButton().equals(MouseButton.PRIMARY)){
-                            if (event.getClickCount() == 2){
+                        if (event.getButton().equals(MouseButton.PRIMARY)) {
+                            if (event.getClickCount() == 2) {
                                 playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID()));
                             }
                         }
@@ -130,35 +124,25 @@ public class AlbumPageController implements Initializable {
                         playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID()));
                     }
                 });
+                final int x = i;
 
                 //if click on heart icon,
-                heartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-
-                        //TODO: IMPLEMENT
-                        System.out.println("heart clicked");
+                        delete(track);
+                        System.out.println("delete clicked");
 
                     }
                 });
 
-
-                playlistButton.setOnMousePressed(new EventHandler<MouseEvent>() {
+                //if click on playlist icon,
+                dotsButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        if (event.isPrimaryButtonDown()){
 
-                            ContextMenu contextMenu = new ContextMenu();
-                            for (String playlist_id: DBTools.getAllPlaylistIDs()) {
-                                MenuItem menuItem = new MenuItem(DBTools.getPlaylistName(playlist_id));
-                                menuItem.setId(playlist_id);
-                                menuItem.setOnAction(event2 -> {
-                                    DBTools.storeTrackToPlaylist(track.getTrackID(), playlist_id);
-                                });
-                                contextMenu.getItems().add(menuItem);
-                            }
-                            contextMenu.show(playlistButton, event.getScreenX(), event.getScreenY());
-                        }
+                        //TODO: IMPLEMENT
+                        System.out.println("dots clicked");
                     }
                 });
 
@@ -169,55 +153,61 @@ public class AlbumPageController implements Initializable {
                 e.printStackTrace();
             }
         }
+    }
 
-        //add to container & bind display config
-        mainController.mainPane.getChildren().add(topBorderPane);
-        topBorderPane.prefHeightProperty().bind(mainController.mainPane.heightProperty());
-        topBorderPane.prefWidthProperty().bind(mainController.mainPane.widthProperty());
-        mainVBox.prefWidthProperty().bind(mainScrollPane.widthProperty());
+    public void delete(Track track){
+//        playlist.removeTrack(track);
+        DBTools.removeTrackFromPlaylist(track, playlist);
+        playlist = DBTools.getPlaylist(playlist.getId());
+
+        //offset first two is image + playlist name
+        mainVBox.getChildren().remove(2, 2 + playlist.getTracks().size() + 1);
+
+        createTrackList(playlist.getTracks());
     }
 
 
     /**
      * Initialize controller
+     *
      * @param location
      * @param resources
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        mainVBox.prefWidthProperty().bind(mainScrollPane.widthProperty());
     }
 
     /**
-     * Convert AlbumSimple to Album(full), then display them on page
-     * @param albumSimple album to be displayed on page
+     * Set Playlist (full) to be displayed on page
+     *
+     * @param playlist playlist to be displayed on page
      */
-    public void setAlbum(AlbumSimple albumSimple) {
-        this.album = SpotifyTools.getAlbum(albumSimple.getAlbumID());
-        setAlbum(this.album);
-    }
-
-    /**
-     * Set Album (full) to be displayed on page
-     * @param album album to be displayed on page
-     */
-    public void setAlbum(Album album) {
-        this.album = album;
-        albumImage.setImage(album.getImages().get(0));
-        artistsNames.setText(album.getArtistsNames());
-        albumName.setText(album.getName());
-        createTrackList(this.album.getTracks());
+    public void setPlaylist(Playlist playlist) {
+        this.playlist = playlist;
+        playlistImage.setImage(playlist.getImage());
+        playlistName.setText(playlist.getName());
+        createTrackList(this.playlist.getTracks());
     }
 
     /**
      * Injects mainController
+     *
      * @param mainController
      */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
+
+        //add to container & bind display config
+        mainController.mainPane.getChildren().add(topBorderPane);
+        topBorderPane.prefHeightProperty().bind(mainController.mainPane.heightProperty());
+        topBorderPane.prefWidthProperty().bind(mainController.mainPane.widthProperty());
     }
 
     /**
      * Injects playerController
+     *
      * @param playerController
      */
     public void setPlayerController(PlayerController playerController) {

@@ -300,13 +300,10 @@ public class MainController implements Initializable {
             navbarController.switchPage();
         } else {
             if (playlistPane == null) {
-
                 loader = new FXMLLoader(getClass().getResource("/views/playlists.fxml"));
-
-                playlistController = loader.getController(); //get controller of home.fxml
-
                 try {
                     playlistPane = loader.load();
+                    playlistController = loader.getController(); //get controller of home.fxml
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -322,34 +319,17 @@ public class MainController implements Initializable {
 
                 scrollPane.setMinWidth(800);
                 scrollPane.setMaxWidth(1000);
+
+
+
+                playlistController.setMainController(this);
+                playlistController.setPlayerController(playerController);
+                playlistController.setNavbarController(navbarController);
             }
 
             //add homePane
             navbarController.addPage(playlistPane);
         }
-
-
-//        //change button visual effects
-//        unselectAllButtons();
-//        playlistsButton.setStyle("-fx-background-color: lightgrey;");
-//
-//        //set current page index
-//        currentPageIndex = PAGE_INDEX.PLAYLISTS.index;
-//        navbarController.updateIndex();
-//
-//        //if music page already exists, don't create new, just switch to the last page
-//        if (navbarController.getPagesCountInSection(currentPageIndex) != 0) {
-//            navbarController.switchPage();
-//        } else {
-//            //TODO: IMPLEMENT HERE
-//
-//            playlistPane = new AnchorPane();
-//            playlistPane.getChildren().add(new Label("Playlist page"));
-//            playlistPane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
-//
-//            //add myMusicPane
-//            navbarController.addPage(playlistPane);
-//        }
     }
 
     /**
@@ -446,5 +426,6 @@ public class MainController implements Initializable {
         loadNavBar();
         System.out.println("Loading home content... ");
         homeButton.fire();
+//        playlistsButton.fire();
     }
 }
