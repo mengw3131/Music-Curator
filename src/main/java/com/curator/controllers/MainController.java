@@ -14,20 +14,22 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Controller to main.fxml
+ * Controller to main.fxml.
  */
 public class MainController implements Initializable {
+
+    //Each page has an index for navigation purposes
     public enum PAGE_INDEX {
         HOME(0), DISCOVER(1), MYMUSIC(2), FAVORITES(3),
         MADEFORYOU(4), PLAYLISTS(5), PROFILE(6);
 
         int index;
-
         PAGE_INDEX(int i) {
             this.index = i;
         }
     }
 
+    //MainController controls which page is currently on display
     public static int currentPageIndex = PAGE_INDEX.HOME.index;
 
     private PlayerController playerController;
@@ -35,16 +37,15 @@ public class MainController implements Initializable {
     private HomeController homeController;
     private DiscoverController discoverController;
     private PlaylistController playlistController;
+    private MyMusicController myMusicController;
 
     private BorderPane homePane;
     private BorderPane discoverPane;
-    private TableView favoritesTable;
-    private AnchorPane myMusicPane;
+    private BorderPane myMusicPane;
     private AnchorPane madeForYouPane;
     private BorderPane playlistPane;
     private AnchorPane profilePane;
 
-    //set reuseable loader to improve performance
     FXMLLoader loader;
 
     @FXML
@@ -58,9 +59,6 @@ public class MainController implements Initializable {
 
     @FXML
     Button myMusicButton;
-
-    @FXML
-    Button favoritesButton;
 
     @FXML
     Button madeForYouButton;
@@ -80,16 +78,14 @@ public class MainController implements Initializable {
 
     /**
      * Triggered when home button in the left bar is clicked
-     *
-     * @param event
      */
     @FXML
-    private void handleHomeButtonAction(ActionEvent event) throws IOException {
+    private void handleHomeButtonAction() throws IOException {
         //update button UI
         unselectAllButtons();
         homeButton.setStyle("-fx-background-color: lightgrey;");
 
-        //update index first
+        //update page index
         currentPageIndex = PAGE_INDEX.HOME.index;
         navbarController.updateIndex();
 
@@ -99,47 +95,32 @@ public class MainController implements Initializable {
         } else {
             if (homePane == null) {
                 loader = new FXMLLoader(getClass().getResource("/views/home.fxml"));
-
                 homePane = loader.load();
-                ScrollPane scrollPane = (ScrollPane) homePane.getChildren().get(0);
 
                 //set BorderPane to follow mainpane's dimension (for resizing)
                 homePane.prefHeightProperty().bind(mainPane.heightProperty());
                 homePane.prefWidthProperty().bind(mainPane.widthProperty());
 
-                //hide horizontal and vertical scrollbar
-                scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-                scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
-                scrollPane.setMinWidth(800);
-                scrollPane.setMaxWidth(1000);
-
                 //pass parent controller to child
                 homeController = loader.getController(); //get controller of home.fxml
-                homeController.setMainController(this);
-                homeController.setPlayerController(playerController);
-                homeController.setNavbarController(navbarController);
+                homeController.setControllers(this, navbarController, playerController);
             }
 
             //add homePane
             navbarController.addPage(homePane);
-
-
         }
     }
 
     /**
      * Triggered when discover button in the left bar is clicked
-     *
-     * @param event
      */
     @FXML
-    private void handleDiscoverButtonAction(ActionEvent event) {
+    private void handleDiscoverButtonAction() {
         //change button visual effects
         unselectAllButtons();
         discoverButton.setStyle("-fx-background-color: lightgrey;");
 
-        //update index index first
+        //update index page index
         currentPageIndex = PAGE_INDEX.DISCOVER.index;
         navbarController.updateIndex();
 
@@ -151,27 +132,16 @@ public class MainController implements Initializable {
                 loader = new FXMLLoader(getClass().getResource("/views/discover.fxml"));
                 try {
                     discoverPane = loader.load();
-
                     ScrollPane scrollPane = (ScrollPane) discoverPane.getChildren().get(0);
                     VBox discoverVBox = (VBox) scrollPane.getContent();
 
                     //set BorderPane to follow mainpane's dimension (for resizing)
                     discoverPane.prefHeightProperty().bind(mainPane.heightProperty());
                     discoverPane.prefWidthProperty().bind(mainPane.widthProperty());
-
-                    //hide horizontal and vertical scrollbar
-                    scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-                    scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-                    scrollPane.setMinWidth(800);
-                    scrollPane.setMaxWidth(1000);
-
-                    //center the vbox and its children (incl. search bar
                     discoverVBox.prefWidthProperty().bind(scrollPane.widthProperty());
 
-                    discoverController = loader.getController(); //get controller of discover.fxml
-                    discoverController.setMainController(this);
-                    discoverController.setPlayerController(playerController);
-                    discoverController.setNavbarController(navbarController);
+                    discoverController = loader.getController();
+                    discoverController.setControllers(this, navbarController, playerController);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -183,11 +153,9 @@ public class MainController implements Initializable {
 
     /**
      * Triggered when My Music button in the left bar is clicked
-     *
-     * @param event
      */
     @FXML
-    private void handleMyMusicButtonAction(ActionEvent event) {
+    private void handleMyMusicButtonAction() {
         //change button visual effects
         unselectAllButtons();
         myMusicButton.setStyle("-fx-background-color: lightgrey;");
@@ -200,11 +168,24 @@ public class MainController implements Initializable {
         if (navbarController.getPagesCountInSection(currentPageIndex) != 0) {
             navbarController.switchPage();
         } else {
-            //TODO: IMPLEMENT HERE
+            if (myMusicPane == null) {
+                loader = new FXMLLoader(getClass().getResource("/views/my_music.fxml"));
+                try {
+                    myMusicPane = loader.load();
+                    ScrollPane scrollPane = (ScrollPane) myMusicPane.getChildren().get(2);
+                    VBox myMusicVBox = (VBox) scrollPane.getContent();
 
-            myMusicPane = new AnchorPane();
-            myMusicPane.getChildren().add(new Label("My Music page"));
-            myMusicPane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
+                    //set BorderPane to follow mainpane's dimension (for resizing)
+                    myMusicPane.prefHeightProperty().bind(mainPane.heightProperty());
+                    myMusicPane.prefWidthProperty().bind(mainPane.widthProperty());
+                    myMusicVBox.prefWidthProperty().bind(scrollPane.widthProperty());
+
+                    myMusicController = loader.getController();
+                    myMusicController.setControllers(this, navbarController, playerController);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
             //add myMusicPane
             navbarController.addPage(myMusicPane);
@@ -212,51 +193,10 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Triggered when Favorites button in the left bar is clicked
-     *
-     * @param event
-     * @throws IOException
-     */
-    @FXML
-    private void handleFavoritesButtonAction(ActionEvent event) throws IOException {
-        //change button visual effects
-        unselectAllButtons();
-        favoritesButton.setStyle("-fx-background-color: lightgrey;");
-
-        //set current page index
-        currentPageIndex = PAGE_INDEX.FAVORITES.index;
-        navbarController.updateIndex();
-
-        //if music page already exists, don't create new, just switch to the last page
-        if (navbarController.getPagesCountInSection(currentPageIndex) != 0) {
-            navbarController.switchPage();
-        } else {
-            //TODO: IMPLEMENT HERE
-
-
-            if (favoritesTable == null) {
-                favoritesTable = loader.load(getClass().getResource("/views/favorites.fxml"));
-
-                //set tableview to fill the whole container upon resize
-                favoritesTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-                //set tableview to follow container's width and height (for resizing)
-                favoritesTable.prefWidthProperty().bind(mainPane.widthProperty());
-                favoritesTable.prefHeightProperty().bind(mainPane.heightProperty());
-            }
-
-            //add myMusicPane
-            navbarController.addPage(favoritesTable);
-        }
-    }
-
-    /**
      * Triggered when MadeForYou button in the left bar is clicked
-     *
-     * @param event
      */
     @FXML
-    private void handleMadeForYouButtonAction(ActionEvent event) {
+    private void handleMadeForYouButtonAction() {
         //change button visual effects
         unselectAllButtons();
         madeForYouButton.setStyle("-fx-background-color: lightgrey;");
@@ -282,16 +222,14 @@ public class MainController implements Initializable {
 
     /**
      * Triggered when Playlists button in the left bar is clicked
-     *
-     * @param event
      */
     @FXML
-    private void handlePlaylistsButtonAction(ActionEvent event) {
+    private void handlePlaylistsButtonAction() {
         //update button UI
         unselectAllButtons();
         playlistsButton.setStyle("-fx-background-color: lightgrey;");
 
-        //update index first
+        //update page index
         currentPageIndex = PAGE_INDEX.PLAYLISTS.index;
         navbarController.updateIndex();
 
@@ -303,28 +241,16 @@ public class MainController implements Initializable {
                 loader = new FXMLLoader(getClass().getResource("/views/playlists.fxml"));
                 try {
                     playlistPane = loader.load();
-                    playlistController = loader.getController(); //get controller of home.fxml
+
+                    //set BorderPane to follow mainpane's dimension (for resizing)
+                    playlistPane.prefHeightProperty().bind(mainPane.heightProperty());
+                    playlistPane.prefWidthProperty().bind(mainPane.widthProperty());
+
+                    playlistController = loader.getController();
+                    playlistController.setControllers(this, navbarController, playerController);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                ScrollPane scrollPane = (ScrollPane) playlistPane.getChildren().get(0);
-
-                //set BorderPane to follow mainpane's dimension (for resizing)
-                playlistPane.prefHeightProperty().bind(mainPane.heightProperty());
-                playlistPane.prefWidthProperty().bind(mainPane.widthProperty());
-
-                //hide horizontal and vertical scrollbar
-                scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-                scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
-                scrollPane.setMinWidth(800);
-                scrollPane.setMaxWidth(1000);
-
-
-
-                playlistController.setMainController(this);
-                playlistController.setPlayerController(playerController);
-                playlistController.setNavbarController(navbarController);
             }
 
             //add homePane
@@ -334,11 +260,9 @@ public class MainController implements Initializable {
 
     /**
      * Triggered when Profile button in the left bar is clicked
-     *
-     * @param event
      */
     @FXML
-    private void handleProfileButtonAction(ActionEvent event) {
+    private void handleProfileButtonAction() {
 
         //change button visual effects
         unselectAllButtons();
@@ -352,7 +276,10 @@ public class MainController implements Initializable {
         if (navbarController.getPagesCountInSection(currentPageIndex) != 0) {
             navbarController.switchPage();
         } else {
+
+
             //TODO: IMPLEMENT HERE
+
 
             profilePane = new AnchorPane();
             profilePane.getChildren().add(new Label("Profile page"));
@@ -406,7 +333,6 @@ public class MainController implements Initializable {
     public void unselectAllButtons() {
         homeButton.setStyle("-fx-background-color: none;");
         discoverButton.setStyle("-fx-background-color: none;");
-        favoritesButton.setStyle("-fx-background-color: none;");
         madeForYouButton.setStyle("-fx-background-color: none;");
         myMusicButton.setStyle("-fx-background-color: none;");
         playlistsButton.setStyle("-fx-background-color: none;");
@@ -425,7 +351,8 @@ public class MainController implements Initializable {
         loadPlayer();
         loadNavBar();
         System.out.println("Loading home content... ");
+
+        //which page to show first
         homeButton.fire();
-//        playlistsButton.fire();
     }
 }

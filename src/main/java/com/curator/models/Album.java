@@ -11,24 +11,14 @@ import javafx.scene.image.Image;
  * This class stores the features of albums and allows the features to
  * be accessed by other classes.
  *
- *
  */
 public class Album {
-	private String albumType;              // album, single, or compilation
-	private String albumID;                // The Spotify ID of the album
-	private String name;                   // The name of the album
-	private int popularity;                // popularity of the album (0-100) calculated with the the
-	private String artistsNames;          // the list of artists on the album
-					                       // popularity of the album's songs
-	private ArrayList<Artist> artists;     // the list of artists on the album
-
 	private ArrayList<TrackSimple> tracks; // the list of tracks on the album
-
+	private ArrayList<Artist> artists;     // the list of artists on the album
+	private String artistsNames;           // the list of artists' name on the album
 	private ArrayList<Image> images;
 
-	private com.wrapper.spotify.model_objects.specification.Album sAlbum;
-
-
+	private com.wrapper.spotify.model_objects.specification.Album sAlbum;    //wrapper's object
 	/**
 	 * Constructor for com.curator.models.Album object from wrapper's com.curator.models.Album object
 	 * @param sAlbum wrapper's com.curator.models.Album object
@@ -36,12 +26,6 @@ public class Album {
 	public Album(com.wrapper.spotify.model_objects.specification.Album sAlbum) {
 	    this.sAlbum = sAlbum;
 	}
-
-
-
-	// ==========================================================================
-	// ALBUM META GETTERS & SETTERS
-	// ==========================================================================
 
 	/**
 	 * 
@@ -98,7 +82,6 @@ public class Album {
 		return tracks;
 	}
 
-
 	/**
 	 * @return arrayList of images of the album
 	 */
@@ -108,7 +91,6 @@ public class Album {
 		}
 		return images;
 	}
-
 
 	/**
 	 * @return the names of the artists of the album

@@ -235,6 +235,12 @@ public class DBTools {
     +-------------+-------------+------+-----+---------+----------------+
 
     */
+
+
+    /**
+     * Store playlist to DB
+     * @param playlist playlist to be stored
+     */
     public static void storePlaylist(Playlist playlist) {
         if (isPlaylistExist(playlist)) {
             System.out.println("Playlist " + playlist.getId() + " already exists.");
@@ -249,6 +255,10 @@ public class DBTools {
         }
     }
 
+    /**
+     * Get all of user's playlist
+     * @return ArrayList of all user's playlist
+     */
     public static ArrayList<Playlist> getAllPlaylist() {
         ArrayList<Playlist> playlists = new ArrayList<>();
         for (String playlist_id : getAllPlaylistIDs()) {
@@ -257,6 +267,11 @@ public class DBTools {
         return playlists;
     }
 
+    /**
+     * Get user's playlist with playlist_id
+     * @param playlist_id playlist id of the playlist to be obtained
+     * @return returns Playlist object if playlist exists
+     */
     public static Playlist getPlaylist(String playlist_id) {
         if (!isPlaylistExist(playlist_id)) {
             System.out.println("Playlist" + playlist_id + " doesn't exist");
@@ -265,6 +280,10 @@ public class DBTools {
         return new Playlist(getPlaylistName(playlist_id), getTracksFromPlaylistID(playlist_id), playlist_id);
     }
 
+    /**
+     * Get playlist IDs of all user's playlist
+     * @return ArrayList of string containing user's playlist ID
+     */
     public static ArrayList<String> getAllPlaylistIDs() {
         ArrayList<String> playlistIDs = new ArrayList<>();
         try {
@@ -282,6 +301,11 @@ public class DBTools {
         return playlistIDs;
     }
 
+    /**
+     * Given playlist id, return its tracks
+     * @param playlist_id the playlist_id of the playlist to be queried
+     * @return ArrayList of Track belonging to the playlist
+     */
     public static ArrayList<Track> getTracksFromPlaylistID(String playlist_id) {
         if (!isPlaylistExist(playlist_id)) {
             System.out.println("Playlist " + playlist_id + " doesn't exist");
@@ -306,6 +330,12 @@ public class DBTools {
 
     }
 
+    /**
+     *
+     *  Given Playlist object, return its tracks'IDs
+     *  @param playlist playlist to be queried
+     *  @return ArrayList of track IDs belonging to the playlist
+     */
     public static ArrayList<String> getTracksIDsFromPlaylist(Playlist playlist) {
         if (!isPlaylistExist(playlist)) {
             System.out.println("Playlist " + playlist.getId() + " doesn't exist");
@@ -328,10 +358,20 @@ public class DBTools {
         return tracksID;
     }
 
+    /**
+     * Store track to the playlist
+     * @param track track to be stored
+     * @param playlist destination playlist
+     */
     public static void storeTrackToPlaylist(Track track, Playlist playlist) {
         storeTrackToPlaylist(track.getTrackID(), playlist.getId());
     }
 
+    /**
+     * Store track to the playlist
+     * @param track_id track_id of the track to be stored
+     * @param playlist_id playlist_id of the destination playlist
+     */
     public static void storeTrackToPlaylist(String track_id, String playlist_id) {
         if (!isPlaylistExist(playlist_id)) {
             System.out.println("Playlist " + playlist_id + " doesn't exist");
@@ -356,12 +396,23 @@ public class DBTools {
         }
     }
 
+
+    /**
+     * Store multiple tracks to the playlist
+     * @param tracks tracks to be stored
+     * @param playlist the destination playlist
+     */
     public static void storeTracksToPlaylist(ArrayList<Track> tracks, Playlist playlist) {
         for (Track track : tracks) {
             storeTrackToPlaylist(track, playlist);
         }
     }
 
+    /**
+     * Rename playlist
+     * @param newName the new name of the playlist
+     * @param playlist_id the playlist_id of the playlist to be renamed
+     */
     public static void renamePlaylist(String newName, String playlist_id){
         if (! isPlaylistExist(playlist_id)){
             System.out.println("Playlist " + playlist_id + " doesn't exist");
@@ -381,10 +432,20 @@ public class DBTools {
 
     }
 
+    /**
+     * Remove track from playlist
+     * @param track track to be removed
+     * @param playlist playlist where the track to be removed belongs
+     */
     public static void removeTrackFromPlaylist(Track track, Playlist playlist) {
         removeTrackFromPlaylist(track.getTrackID(), playlist.getId());
     }
 
+    /**
+     * Remove track from playlist
+     * @param track_id track_id of the track to be removed
+     * @param playlist_id playlist_id of the playlist where the track to be removed belongs
+     */
     public static void removeTrackFromPlaylist(String track_id, String playlist_id) {
         if (!isTrackExistInPlaylist(track_id, playlist_id)) {
             return;
@@ -404,10 +465,18 @@ public class DBTools {
         }
     }
 
+    /**
+     * Remove playlist from user's playlist
+     * @param playlist playlist to be removed
+     */
     public static void removePlaylist(Playlist playlist) {
         removePlaylist(playlist.getId());
     }
 
+    /**
+     * Remove playlist from user's playlist
+     * @param playlist_id playlist_id of the playlist to be removed
+     */
     public static void removePlaylist(String playlist_id) {
         if (!isPlaylistExist(playlist_id)) {
             return;
@@ -433,19 +502,22 @@ public class DBTools {
         }
     }
 
-
-
     /**
-     * Checks if user has a playlist with id playlist_id
-     *
+     * Checks if a track exist in user's playlist with id playlist_id
      * @param track    the track to be checked
      * @param playlist the playlist to be checked
-     * @return true if user has previplaylist
+     * @return true if the track is in the playlist
      */
     public static boolean isTrackExistInPlaylist(Track track, Playlist playlist) {
         return isTrackExistInPlaylist(track.getTrackID(), playlist.getId());
     }
 
+    /**
+     * Checks if a track exist in user's playlist with id playlist_id
+     * @param track_id    the track_id of the track to be checked
+     * @param playlist_id the playlist_id of the playlist to be checked
+     * @return true if the track is in the playlist
+     */
     public static boolean isTrackExistInPlaylist(String track_id, String playlist_id) {
         if (isPlaylistExist(playlist_id)) {
             try {
@@ -497,6 +569,10 @@ public class DBTools {
     +-------------+-------------+------+-----+---------+----------------+
     */
 
+    /**
+     * Store playlist's meta data
+     * @param playlist playlist which meta data will be stored
+     */
     public static void storePlaylistMeta(Playlist playlist) {
         String q = "INSERT INTO playlist_meta (user_id, playlist_id, name) VALUES(?,?,?);";
         PreparedStatement psStoreTrackToPlaylist;
@@ -512,6 +588,11 @@ public class DBTools {
         }
     }
 
+    /**
+     * Get playlist name given playlist_id
+     * @param playlist_id the playlist_id of the playlist whose name to be queried
+     * @return the name of the playlist, if playlist exists
+     */
     public static String getPlaylistName(String playlist_id) {
         if (!isPlaylistExist(playlist_id)) {
             return null;
@@ -570,24 +651,11 @@ public class DBTools {
     }
 
 
-
-
-
-
-
-
-
-
-
-
+    /**
+     * Terminate DB connection session
+     */
     public static void terminate() {
         try {
-
-            //clean up
-//            for (String playlistID: getAllPlaylistIDs()) {
-//                removePlaylist(pl);
-//            }
-
             conn.close();
             System.out.println("Connection closed");
         } catch (SQLException e) {

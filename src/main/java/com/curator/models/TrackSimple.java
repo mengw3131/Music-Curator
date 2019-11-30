@@ -2,51 +2,79 @@ package com.curator.models;
 
 import com.curator.tools.SpotifyTools;
 import com.wrapper.spotify.model_objects.specification.AudioFeatures;
-
 import java.util.ArrayList;
 
 /**
  * Simplified com.curator.models.Track object with no reference to album objects (to avoid circularity)
  */
 public class TrackSimple {
-    private String trackID;                     // Spotify track ID
-    private String trackName;                        // trackName of the song
-    private int popularity;                     // the popularity of a song (0 - 100)
     private ArrayList<Artist> artists;          // the list of artists on the album
     private String artistsString;               // the list of artists on the album
     private AudioFeatures features;             // only initialize when needed
-    private int duration;
+    private com.wrapper.spotify.model_objects.specification.Track sTrack;  //wrapper's object
 
+    /**
+     * Constructs a TrackSimple object from wrapper's Track object.
+     * @param sTrack
+     */
     public TrackSimple(com.wrapper.spotify.model_objects.specification.Track sTrack){
-        this.trackID = sTrack.getId();
-        this.trackName = sTrack.getName();
-        this.popularity =  sTrack.getPopularity();
-
-		this.artists = SpotifyTools.toArtist(sTrack.getArtists());
-        this.artistsString = SpotifyTools.toString(this.artists);
-
-        this.duration = sTrack.getDurationMs() / 1000;
+        this.sTrack = sTrack;
     }
 
 
+    /**
+     * Get the Spotify's track ID of the track
+     * @return Spotify's track ID of the track
+     */
     public String getTrackID() {
-        return trackID;
+        return sTrack.getId();
     }
 
+    /**
+     * Get the name of the Track
+     * @return track's name
+     */
     public String getTrackName() {
-        return trackName;
+        return sTrack.getName();
     }
 
+    /**
+     * Get the popularity of the track
+     * @return track's popularity
+     */
     public int getPopularity() {
-        return popularity;
+        return sTrack.getPopularity();
     }
 
+    /**
+     * Get the Artists of the track
+     * @return ArrayList of Artist of the track
+     */
     public ArrayList<Artist> getArtists() {
+        if (artists == null){
+            this.artists = SpotifyTools.toArtist(sTrack.getArtists());
+        }
         return artists;
     }
 
-    public String getArtistsString() { return artistsString; }
+    /**
+     * Get the names of the artists of the track, comma separated
+     * @return names of the artists of the track
+     */
+    public String getArtistsString() {
+        if (artistsString == null){
+            this.artistsString = SpotifyTools.toString(getArtists());
+        }
+        return artistsString;
+    }
 
+    /**
+     * Duration (seconds) of the track
+     * @return duration of the track in seconds
+     */
+    public int getDuration() {
+        return sTrack.getDurationMs() / 1000;
+    }
 
     /**
      * @return acousticness The confidence measure (0.0 - 1.0) of whether the song is acoustic
@@ -119,8 +147,10 @@ public class TrackSimple {
         return features.getValence();
     }
 
-
+    /**
+     *  Sets the AudioFeatures object of this Track.
+     */
     private void setAudioFeatures() {
-        this.features = SpotifyTools.getAudioFeatures(trackID);
+        this.features = SpotifyTools.getAudioFeatures(getTrackID());
     }
 }

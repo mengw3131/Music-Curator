@@ -8,18 +8,14 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="220.0" prefWidth="600.0" vbarPolicy="NEVER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="200.0" prefWidth="600.0" vbarPolicy="NEVER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <content>
       <HBox alignment="CENTER" prefHeight="200.0">
          <children>
             <Pane prefHeight="200.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="artistImage" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/avatar.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="artistLabel" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <ImageView fx:id="artistImage" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="artistLabel" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="12.0" />
                      </font>
@@ -43,12 +39,8 @@
             </Pane>
             <Pane prefHeight="200.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="artistImage1" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/avatar.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="artistLabel1" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <ImageView fx:id="artistImage1" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="artistLabel1" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="12.0" />
                      </font>
@@ -72,12 +64,8 @@
             </Pane>
             <Pane prefHeight="200.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="artistImage2" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/avatar.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="artistLabel2" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <ImageView fx:id="artistImage2" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="artistLabel2" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="12.0" />
                      </font>
@@ -101,12 +89,8 @@
             </Pane>
             <Pane prefHeight="200.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="artistImage3" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/avatar.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="artistLabel3" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <ImageView fx:id="artistImage3" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="artistLabel3" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="12.0" />
                      </font>
@@ -130,12 +114,8 @@
             </Pane>
             <Pane prefHeight="200.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="artistImage4" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/avatar.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="artistLabel4" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <ImageView fx:id="artistImage4" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="artistLabel4" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="12.0" />
                      </font>
@@ -159,12 +139,8 @@
             </Pane>
             <Pane prefHeight="200.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="artistImage5" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/avatar.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="artistLabel5" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <ImageView fx:id="artistImage5" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="artistLabel5" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="12.0" />
                      </font>
@@ -188,12 +164,8 @@
             </Pane>
             <Pane prefHeight="200.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="artistImage6" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/avatar.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="artistLabel6" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <ImageView fx:id="artistImage6" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="artistLabel6" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="12.0" />
                      </font>
@@ -217,12 +189,8 @@
             </Pane>
             <Pane prefHeight="200.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="artistImage7" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/avatar.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="artistLabel7" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <ImageView fx:id="artistImage7" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="artistLabel7" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="12.0" />
                      </font>

@@ -47,15 +47,6 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="favoritesButton" mnemonicParsing="false" onAction="#handleFavoritesButtonAction" prefHeight="30.0" prefWidth="1000.0" style="-fx-background-color: none;" text="Favorites">
-                           <graphic>
-                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../icons/star.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
                         <Button fx:id="madeForYouButton" mnemonicParsing="false" onAction="#handleMadeForYouButtonAction" prefHeight="30.0" prefWidth="1000.0" style="-fx-background-color: none;" text="Made 4 U">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">

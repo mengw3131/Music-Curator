@@ -5,38 +5,47 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="topBorderPane" cache="true" cacheHint="SPEED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.curator.controllers.ArtistPageController">
    <center>
-      <ScrollPane fx:id="mainScrollPane" hbarPolicy="NEVER" maxWidth="1000.0" minWidth="400.0" pannable="true" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: yellow;" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
+      <ScrollPane fx:id="mainScrollPane" hbarPolicy="NEVER" maxWidth="1000.0" minWidth="400.0" pannable="true" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
          <content>
             <VBox fx:id="mainVBox" alignment="TOP_CENTER" minWidth="400.0">
                <children>
-                  <ImageView fx:id="artistImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <VBox.margin>
-                        <Insets bottom="20.0" top="30.0" />
-                     </VBox.margin>
-                  </ImageView>
-                  <Label fx:id="artistName" text="Label">
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="34.0" />
-                     </font>
-                  </Label>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="artistImage" fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../icons/avatar.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="artistName" text="Label">
+                           <font>
+                              <Font size="34.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
                   <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                       <Tab fx:id="trackTab" text="Tracks">
                            <content>
                               <AnchorPane fx:id="trackTabPane">
                                  <children>
-                                    <ScrollPane fx:id="trackTabPaneScroll" hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: pink;" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <ScrollPane fx:id="trackTabPaneScroll" hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <content>
                                           <VBox fx:id="trackTabPaneVBox" alignment="TOP_CENTER" />
                                        </content>
@@ -47,9 +56,13 @@
                       </Tab>
                       <Tab fx:id="albumTab" text="Albums">
                         <content>
-                          <AnchorPane fx:id="albumTabPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                          <AnchorPane fx:id="albumTabPane">
                                  <children>
-                                    <VBox fx:id="albumTabPaneVBox" prefHeight="200.0" prefWidth="100.0" />
+                                    <ScrollPane fx:id="albumTabScrollPane" hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <content>
+                                          <VBox fx:id="albumTabPaneVBox" />
+                                       </content>
+                                    </ScrollPane>
                                  </children>
                               </AnchorPane>
                         </content>

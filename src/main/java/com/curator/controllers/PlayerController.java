@@ -2,6 +2,7 @@ package com.curator.controllers;
 
 import com.curator.models.*;
 
+import com.curator.views.Icons;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -132,7 +134,7 @@ public class PlayerController implements Initializable {
      * Set Now Playing Pane to loading
      */
     public void setNowPlayingPaneToLoading() {
-        songCoverImageView.setImage(new Image("/icons/musical-note.png"));
+        songCoverImageView.setImage(Icons.MUSICAL_NOTE);
         songNameLabel.setText("Loading track...");
         artistNameLabel.setText("Please wait");
     }
@@ -144,7 +146,9 @@ public class PlayerController implements Initializable {
     public void changeVolume() {
         volumeSlider.valueProperty().addListener(
                 (observable, oldVal, newVal) -> {
-                    mediaPlayer.setVolume(newVal.doubleValue());
+                    if (mediaPlayer != null){
+                        mediaPlayer.setVolume(newVal.doubleValue());
+                    }
                 }
         );
     }
@@ -219,14 +223,10 @@ public class PlayerController implements Initializable {
         }));
 
         //when music finishes
-        mediaPlayer.setOnEndOfMedia(new Runnable() {
-            @Override
-            public void run() {
-                mediaPlayer.seek(Duration.seconds(0));
-                mediaPlayer.stop();
-                setPlayButtonImage(new Image("/icons/other/play.png"));
-            }
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaPlayer.seek(Duration.seconds(0));
+            mediaPlayer.stop();
+            setPlayButtonImage(new Image("/icons/other/play.png"));
         });
     }
-
 }

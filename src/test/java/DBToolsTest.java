@@ -79,17 +79,17 @@ class DBToolsTest {
     }
 
     @Test
-    public static void storeTracksToPlaylist_storesTracksToPlaylistIfPlaylistExistsAndTracksNeverAdded(){
+    public void storeTracksToPlaylist_storesTracksToPlaylistIfPlaylistExistsAndTracksNeverAdded(){
 
     }
 
     @Test
-    public static void storeTracksToPlaylist_storesNothingIfPlaylistExistsAndTracksAlreadyInPlaylist(){
+    public void storeTracksToPlaylist_storesNothingIfPlaylistExistsAndTracksAlreadyInPlaylist(){
 
     }
 
     @Test
-    public static void storeTracksToPlaylist_storesNothingIfPlaylistDoesNotExist(){
+    public void storeTracksToPlaylist_storesNothingIfPlaylistDoesNotExist(){
 
     }
 }

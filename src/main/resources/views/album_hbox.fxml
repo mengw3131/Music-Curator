@@ -14,17 +14,13 @@
          <children>
             <Pane prefHeight="200.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="albumImage" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/musical-note.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="albumName" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <ImageView fx:id="albumImage" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="albumName" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="albumArtist" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <Label fx:id="albumArtist" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="11.0" />
                      </font>
@@ -48,17 +44,13 @@
             </Pane>
             <Pane prefHeight="200.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="albumImage1" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/musical-note.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="albumName1" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <ImageView fx:id="albumImage1" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="albumName1" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="albumArtist1" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <Label fx:id="albumArtist1" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="11.0" />
                      </font>
@@ -82,17 +74,13 @@
             </Pane>
             <Pane prefHeight="200.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="albumImage2" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/musical-note.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="albumName2" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <ImageView fx:id="albumImage2" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="albumName2" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="albumArtist2" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <Label fx:id="albumArtist2" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="11.0" />
                      </font>
@@ -116,17 +104,13 @@
             </Pane>
             <Pane prefHeight="200.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="albumImage3" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/musical-note.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="albumName3" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <ImageView fx:id="albumImage3" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="albumName3" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="albumArtist3" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <Label fx:id="albumArtist3" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="11.0" />
                      </font>
@@ -150,17 +134,13 @@
             </Pane>
             <Pane prefHeight="200.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="albumImage4" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/musical-note.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="albumName4" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <ImageView fx:id="albumImage4" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="albumName4" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="albumArtist4" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <Label fx:id="albumArtist4" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="11.0" />
                      </font>
@@ -184,17 +164,13 @@
             </Pane>
             <Pane prefHeight="200.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="albumImage5" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/musical-note.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="albumName5" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <ImageView fx:id="albumImage5" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="albumName5" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="albumArtist5" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <Label fx:id="albumArtist5" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="11.0" />
                      </font>
@@ -218,17 +194,13 @@
             </Pane>
             <Pane prefHeight="200.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="albumImage6" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/musical-note.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="albumName6" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <ImageView fx:id="albumImage6" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="albumName6" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="albumArtist6" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <Label fx:id="albumArtist6" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="11.0" />
                      </font>
@@ -252,17 +224,13 @@
             </Pane>
             <Pane prefHeight="200.0" prefWidth="150.0">
                <children>
-                  <ImageView fx:id="albumImage7" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/musical-note.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="albumName7" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <ImageView fx:id="albumImage7" fitHeight="150.0" fitWidth="130.0" layoutX="9.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="albumName7" layoutX="6.0" layoutY="157.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="albumArtist7" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0" text="Label">
+                  <Label fx:id="albumArtist7" layoutX="7.0" layoutY="178.0" prefHeight="14.0" prefWidth="134.0">
                      <font>
                         <Font size="11.0" />
                      </font>

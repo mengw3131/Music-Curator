@@ -189,9 +189,7 @@ public class YoutubeTools {
                         "'format':'bestaudio/best', " +
                         "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
                 );
-
             }
-            System.out.println("Done");
             return true;
         } catch (Exception e) {
             e.printStackTrace();

@@ -2,28 +2,17 @@ package com.curator.controllers;
 
 import com.curator.models.Album;
 import com.curator.models.AlbumSimple;
-import com.curator.models.TrackSimple;
-import com.curator.tools.DBTools;
 import com.curator.tools.SpotifyTools;
-import javafx.event.EventHandler;
+import com.curator.views.TrackListVBox;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -32,6 +21,7 @@ import java.util.ResourceBundle;
 public class AlbumPageController implements Initializable {
     private PlayerController playerController;
     private MainController mainController;
+    private NavbarController navbarController;
     private Album album;
 
     @FXML
@@ -52,134 +42,15 @@ public class AlbumPageController implements Initializable {
     @FXML
     private Label artistsNames;
 
-    /**
-     * Fetch and display tracks of the album
-     * @param tracks tracks to be displayed
-     */
-    private void createTrackList(ArrayList<TrackSimple> tracks){
-        boolean flag = false;
-        /*
-          Nodes hierarchy
+    @FXML
+    private VBox secondaryVBox;
 
-          HBox
-           AnchorPane
-             Label (track name)
-           AnchorPane
-           AnchorPane
-             ImageView (play)
-             ImageView (heart)
-             ImageView (add to playlist)
-         */
-        HBox hbox;
-        for (TrackSimple track: tracks) {
-            try {
-                hbox = new FXMLLoader(getClass().getResource("/views/album_tracks_row.fxml")).load();
-
-                ((Label)((AnchorPane)hbox.getChildren().get(0)).getChildren().get(0)).setText(track.getTrackName()); //set track name
-                AnchorPane buttonsPane = (AnchorPane)(hbox.getChildren().get(2));
-                ImageView playButton = (ImageView) buttonsPane.getChildren().get(0);
-                ImageView heartButton = (ImageView) buttonsPane.getChildren().get(1);
-                ImageView playlistButton = (ImageView) buttonsPane.getChildren().get(2);
-
-                //initially hide and disable the action buttons (play, heart, add to playlist)
-                buttonsPane.setOpacity(0);
-                buttonsPane.setDisable(true);
-
-                //alternate the background color of the track row using flag
-                // white + light grey
-                if (flag) {
-                    hbox.setStyle("-fx-background-color: #e8e8e8");
-                }
-                flag = !flag;
-
-
-                //when mouse enter the hbox, show action icons
-                hbox.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        buttonsPane.setOpacity(1);
-                        buttonsPane.setDisable(false);
-                    }
-                });
-
-                //when mouse exit the hbox
-                hbox.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        buttonsPane.setOpacity(0);
-                        buttonsPane.setDisable(true);
-                    }
-                });
-
-                //if double click on track, play music
-                hbox.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        if (event.getButton().equals(MouseButton.PRIMARY)){
-                            if (event.getClickCount() == 2){
-                                playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID()));
-                            }
-                        }
-                    }
-                });
-
-                //if click on play icon, play music
-                playButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID()));
-                    }
-                });
-
-                //if click on heart icon,
-                heartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-
-                        //TODO: IMPLEMENT
-                        System.out.println("heart clicked");
-
-                    }
-                });
-
-
-                playlistButton.setOnMousePressed(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        if (event.isPrimaryButtonDown()){
-
-                            ContextMenu contextMenu = new ContextMenu();
-                            for (String playlist_id: DBTools.getAllPlaylistIDs()) {
-                                MenuItem menuItem = new MenuItem(DBTools.getPlaylistName(playlist_id));
-                                menuItem.setId(playlist_id);
-                                menuItem.setOnAction(event2 -> {
-                                    DBTools.storeTrackToPlaylist(track.getTrackID(), playlist_id);
-                                });
-                                contextMenu.getItems().add(menuItem);
-                            }
-                            contextMenu.show(playlistButton, event.getScreenX(), event.getScreenY());
-                        }
-                    }
-                });
-
-                //add to container
-                mainVBox.getChildren().add(hbox);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        //add to container & bind display config
-        mainController.mainPane.getChildren().add(topBorderPane);
-        topBorderPane.prefHeightProperty().bind(mainController.mainPane.heightProperty());
-        topBorderPane.prefWidthProperty().bind(mainController.mainPane.widthProperty());
-        mainVBox.prefWidthProperty().bind(mainScrollPane.widthProperty());
-    }
-
+    @FXML
+    private ScrollPane secondaryScrollPane;
 
     /**
      * Initialize controller
+     *
      * @param location
      * @param resources
      */
@@ -188,39 +59,68 @@ public class AlbumPageController implements Initializable {
     }
 
     /**
-     * Convert AlbumSimple to Album(full), then display them on page
+     * Convert AlbumSimple to Album then display it
+     *
      * @param albumSimple album to be displayed on page
      */
     public void setAlbum(AlbumSimple albumSimple) {
         this.album = SpotifyTools.getAlbum(albumSimple.getAlbumID());
-        setAlbum(this.album);
+        if (this.album != null){
+            setAlbum(this.album);
+        }
     }
 
     /**
-     * Set Album (full) to be displayed on page
+     * Set Album to be displayed on page, then load track of the albums
+     *
      * @param album album to be displayed on page
      */
     public void setAlbum(Album album) {
         this.album = album;
-        albumImage.setImage(album.getImages().get(0));
+        if (album.getImages().size() != 0) {
+            albumImage.setImage(album.getImages().get(0));
+        }
         artistsNames.setText(album.getArtistsNames());
         albumName.setText(album.getName());
-        createTrackList(this.album.getTracks());
+
+        loadTrack();
     }
 
     /**
-     * Injects mainController
-     * @param mainController
+     * Load the tracks of the current album to the page
      */
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
+    public void loadTrack(){
+        secondaryVBox.getChildren().add(new TrackListVBox(this.album.getTracks(), mainController,
+                navbarController, playerController).asVBox());
     }
 
     /**
-     * Injects playerController
-     * @param playerController
+     * Set controllers, and initialize property
+     * @param mainController instance of MainController
+     * @param navbarController instance of NavbarController
+     * @param playerController instance of PlayerController
      */
-    public void setPlayerController(PlayerController playerController) {
+    public void setControllers(MainController mainController, NavbarController navbarController,
+                               PlayerController playerController) {
         this.playerController = playerController;
+        this.navbarController = navbarController;
+        this.mainController = mainController;
+
+        initProperty();
+    }
+
+    /**
+     * Set the width and height bindings
+     */
+    private void initProperty(){
+        mainController.mainPane.getChildren().add(topBorderPane);
+        topBorderPane.prefHeightProperty().bind(mainController.mainPane.heightProperty());
+        topBorderPane.prefWidthProperty().bind(mainController.mainPane.widthProperty());
+
+        mainVBox.prefWidthProperty().bind(mainScrollPane.widthProperty());
+        mainVBox.prefHeightProperty().bind(mainScrollPane.heightProperty());
+
+        secondaryVBox.prefWidthProperty().bind(mainScrollPane.widthProperty());
+        secondaryScrollPane.prefHeightProperty().bind(mainScrollPane.heightProperty());
     }
 }

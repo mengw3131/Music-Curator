@@ -2,7 +2,6 @@ package com.curator.models;
 
 import com.curator.tools.SpotifyTools;
 import javafx.scene.image.Image;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -13,24 +12,17 @@ import java.util.Arrays;
  * be accessed by other classes.
  */
 public class Artist {
-	private ArrayList<String> genres;      // the list of genres of an artist
-	private String artistID;               // the Spotify ID number for the artist
-	private String name;                   // name of the artist
-	private int popularity;                // popularity of the artist (0-100) calculated from the
-					                       // popularity of all the artist's songs
-
+	private ArrayList<String> genres;
 	private ArrayList<Image> images;
+	private ArrayList<Track> tracks;
+	private com.wrapper.spotify.model_objects.specification.Artist sArtist;
 
 	/**
 	 * Construct com.curator.models.Artist object from wrapper's com.curator.models.Artist object
 	 * @param sArtist spotify wrapper's com.curator.models.Artist object
 	 */
 	public Artist(com.wrapper.spotify.model_objects.specification.Artist sArtist) {
-		this.genres = new ArrayList<String>(Arrays.asList(sArtist.getGenres()));
-		this.artistID = sArtist.getId();
-		this.name = sArtist.getName();
-		this.popularity = sArtist.getPopularity();
-		this.images = SpotifyTools.toImage(sArtist.getImages());
+		this.sArtist = sArtist;
 	}
 
 	/**
@@ -38,6 +30,9 @@ public class Artist {
 	 * @return genres The list of the artist's genres
 	 */
 	public ArrayList<String> getGenres() {
+	    if (this.genres.size() == 0){
+			this.genres = new ArrayList<>(Arrays.asList(sArtist.getGenres()));
+		}
 		return genres;
 	}
 
@@ -46,7 +41,7 @@ public class Artist {
 	 * @return artistID The artist's Spotify ID
 	 */
 	public String getArtistID() {
-		return artistID;
+		return sArtist.getId();
 	}
 
 	/**
@@ -54,7 +49,7 @@ public class Artist {
 	 * @return name The name of the artist
 	 */
 	public String getName() {
-		return name;
+		return sArtist.getName();
 	}
 
 	/**
@@ -62,9 +57,27 @@ public class Artist {
 	 * @return popularity The popularity of the artist
 	 */
 	public int getPopularity() {
-		return popularity;
+		return sArtist.getPopularity();
 	}
 
+	/**
+	 * Get the images of the Artist
+	 * @return ArrayList of Image of the Artist
+	 */
+	public ArrayList<Image> getImages() {
+		if (this.images == null){
+			this.images = SpotifyTools.toImage(sArtist.getImages());
+		}
+		return images; }
 
-	public ArrayList<Image> getImages() { return images; }
+	/**
+	 * Get the top tracks by this Artist
+	 * @return ArrayList of top Tracks by the Artist
+	 */
+	public ArrayList<Track> getTracks(){
+		if (tracks == null){
+			this.tracks = SpotifyTools.getArtistTopTracks(getArtistID());
+		}
+		return this.tracks;
+	}
 }

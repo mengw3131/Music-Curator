@@ -2,6 +2,7 @@ package com.curator.controllers;
 
 import com.curator.models.Playlist;
 import com.curator.tools.DBTools;
+import com.curator.views.Icons;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
@@ -13,7 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
@@ -24,12 +24,15 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+/**
+ * Controller to playlists.fxml
+ */
 public class PlaylistController implements Initializable {
     private MainController mainController;
     private PlayerController playerController;
     private NavbarController navbarController;
 
-    ArrayList<Playlist> playlists = new ArrayList<>();
+    private ArrayList<Playlist> playlists = new ArrayList<>();
 
     @FXML
     private BorderPane topBorderPane;
@@ -43,6 +46,55 @@ public class PlaylistController implements Initializable {
     @FXML
     private Button newPlaylistButton;
 
+    /**
+     * Initialize controller
+     * @param location
+     * @param resources
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        playlists.addAll(DBTools.getAllPlaylist()); //get user's playlist (based on USER_ID)
+        initProperty();
+        reload();
+    }
+
+    /**
+     * Set the UI elements behavior
+     */
+    private void initProperty(){
+        //when playlist page is visible again, loadContent to get new data from database
+        topBorderPane.visibleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue){
+                reload();
+            }
+        });
+
+        //when "New" button is clicked, add new playlist
+        newPlaylistButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            DBTools.storePlaylist(new Playlist("New Playlist"));
+            reload();
+        });
+    }
+
+    /**
+     * Set controllers
+     * @param mainController instance of MainController
+     * @param navbarController instance of NavbarController
+     * @param playerController instance of PlayerController
+     */
+    public void setControllers(MainController mainController, NavbarController navbarController,
+                               PlayerController playerController) {
+        this.playerController = playerController;
+        this.navbarController = navbarController;
+        this.mainController = mainController;
+    }
+
+    /**
+     * TODO: REFACTOR
+     *
+     * @param playlists
+     * @return
+     */
     public ScrollPane createRecommendationBox(ArrayList<Playlist> playlists) {
 
         /*
@@ -67,7 +119,6 @@ public class PlaylistController implements Initializable {
             HBox box = (HBox) pane.getContent();
 
             //loop on each music pane in HBox
-//            for (int i = 0; i < ((HBox)pane.getContent()).getChildren().size(); i++) {
             for (int i = 0; i < playlists.size(); i++) {
                 final int index = i;
                 Playlist playlist = playlists.get(i);
@@ -90,7 +141,7 @@ public class PlaylistController implements Initializable {
                         if (playlist.getImage() != null) {
                             playlistImage.setImage(playlist.getImage());
                         } else {
-                            playlistImage.setImage(new Image("/icons/musical-note.png"));
+                            playlistImage.setImage(Icons.MUSICAL_NOTE);
                         }
                         return null;
                     }
@@ -154,7 +205,6 @@ public class PlaylistController implements Initializable {
                             textField.setVisible(false);
                             playlistName.setVisible(true);
                             textField.setText(playlistName.getText());
-//                            textField.requestFocus();
 
                         } else {
                             textField.setVisible(true);
@@ -223,8 +273,7 @@ public class PlaylistController implements Initializable {
                         try {
                             BorderPane borderPane = loader.load();
                             PlaylistTrackController playlistTrackController = loader.getController();
-                            playlistTrackController.setPlayerController(playerController);
-                            playlistTrackController.setMainController(mainController);
+                            playlistTrackController.setControllers(mainController, navbarController, playerController);
                             playlistTrackController.setPlaylist(playlist);
 
                             navbarController.addPage(borderPane);
@@ -241,11 +290,17 @@ public class PlaylistController implements Initializable {
         return pane;
     }
 
+    /**
+     * Remove playlist from user's playlists
+     */
     public void removeFromPlaylists(String playlist_id) {
         DBTools.removePlaylist(playlist_id);
         reload();
     }
 
+    /**
+     * Reload playlist page
+     */
     public void reload() {
         playlists = DBTools.getAllPlaylist();
         mainVBox.getChildren().remove(2, mainVBox.getChildren().size());
@@ -262,44 +317,5 @@ public class PlaylistController implements Initializable {
                 break;
             }
         }
-    }
-
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
-    }
-
-    public void setPlayerController(PlayerController playerController) {
-        this.playerController = playerController;
-    }
-
-    public void setNavbarController(NavbarController navbarController) {
-        this.navbarController = navbarController;
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        //get user's playlist (based on USER_ID)
-        playlists.addAll(DBTools.getAllPlaylist());
-        reload();
-
-        //when playlist page is visible again, reload to get new data from database
-        topBorderPane.visibleProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue){
-                    reload();
-                }
-            }
-        });
-
-
-        //when "New" button is clicked, add new playlist
-        newPlaylistButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                DBTools.storePlaylist(new Playlist("New Playlist"));
-                reload();
-            }
-        });
     }
 }

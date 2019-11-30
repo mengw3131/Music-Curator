@@ -28,18 +28,6 @@ public class Track {
 	private AudioFeatures features;
 	private com.wrapper.spotify.model_objects.specification.Track sTrack;
 
-	// Note:
-	// avoid api calls in constructor, they can throttle the main thread and
-	// freeze the UI
-	// only call api when requested via getters
-
-	/**
-	 * Empty constructor, for testing.
-	 */
-	public Track() {
-	}
-
-
 	/**
 	 * Construct com.curator.models.Track object from wrapper's
 	 * com.curator.models.Track object
