@@ -29,7 +29,7 @@ public class DBTools {
                     //initialize dummy data
                     storePlaylist(new Playlist("New Playlist"));
                 } else {
-
+                    incrementLoginCount();
                 }
             } catch (Exception ex) {
                 System.out.println("Error: " + ex);
@@ -37,13 +37,42 @@ public class DBTools {
         }
     }
 
+
+    public static int incrementLoginCount(){
+        try {
+            String q =  "UPDATE user_meta SET login_count = ? WHERE username = ?;";
+            PreparedStatement stmt = conn.prepareStatement(q);
+            stmt.setInt(1, getLoginCount() + 1);
+            stmt.setString(2, USER_ID);
+            stmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static int getLoginCount(){
+        try {
+            String q =  "SELECT login_count FROM user_meta WHERE username = ?;";
+            PreparedStatement preStSong = conn.prepareStatement(q);
+            preStSong.setString(1, USER_ID);
+            rs = preStSong.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static void addNewUser(){
-        String q = "INSERT INTO user_meta (username) VALUES(?);";
+        String q = "INSERT INTO user_meta (username, login_count) VALUES(?, ?);";
         try {
             PreparedStatement stmt = conn.prepareStatement(q);
             stmt.setString(1, USER_ID);
+            stmt.setInt(2, 1);
             stmt.execute();
-
             System.out.println("Added new user: " + USER_ID);
         } catch (SQLException e){
             e.printStackTrace();

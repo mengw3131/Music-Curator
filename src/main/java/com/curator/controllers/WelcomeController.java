@@ -54,16 +54,37 @@ public class WelcomeController implements Initializable {
             public void handle(MouseEvent event) {
                 DBTools.initialize(usernameTextField.getText());
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main.fxml"));
-                try {
-                    stage.setScene(new Scene(loader.load()));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                boolean isNewUser = DBTools.getLoginCount() == 1;
+                System.out.println("is New user is ");
+
+                /*
+                If is a new user, show survey which music user likes
+                 */
+                if (isNewUser){
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/survey.fxml"));
+                    try {
+                        stage.setScene(new Scene(loader.load()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    SurveyController surveyController = loader.getController();
+                    surveyController.setStage(stage);
+
+                    stage.setTitle("Music Curator");
+                    stage.show();
+                } else {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main.fxml"));
+                    try {
+                        stage.setScene(new Scene(loader.load()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    stage.setHeight(600);
+                    stage.setMinWidth(1300);
+                    stage.setTitle("Music Curator");
+                    stage.show();
                 }
-                stage.setHeight(600);
-                stage.setMinWidth(1300);
-                stage.setTitle("Music Curator");
-                stage.show();
             }
         });
     }
