@@ -14,6 +14,11 @@
          <content>
             <VBox fx:id="topRecommendationVBox" alignment="TOP_CENTER">
                <children>
+                  <Label fx:id="welcomeLabel" text="Label">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
                   <Label text="Tracks For You">
                      <font>
                         <Font size="30.0" />

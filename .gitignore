@@ -8,6 +8,7 @@ out/
 .gradle/
 *.ipr
 *.iml
+src/main/resources/music/*
 
 
 

@@ -3,10 +3,12 @@ package com.curator.controllers;
 import com.curator.models.AlbumSimple;
 import com.curator.models.Artist;
 import com.curator.models.Track;
+import com.curator.tools.DBTools;
 import com.curator.tools.SpotifyTools;
 import com.curator.views.ItemScrollPane;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -45,6 +47,9 @@ public class HomeController implements Initializable {
     @FXML
     private VBox artistVBox;
 
+    @FXML
+    private Label welcomeLabel;
+
     /**
      * Initialize HomeController
      *
@@ -53,6 +58,8 @@ public class HomeController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        welcomeLabel.setText("Welcome, " + DBTools.getUserId());
         initProperty();
 
         //NOTE: DISPLAY RECOMMENDATION MODEL RESULTS HERE

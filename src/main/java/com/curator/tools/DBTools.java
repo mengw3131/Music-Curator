@@ -22,11 +22,51 @@ public class DBTools {
         if (conn == null) {
             try {
                 conn = DriverManager.getConnection("jdbc:mysql://music-curator-user-preference.cd6o4ckow0r1.us-east-2.rds.amazonaws.com:3306/music_curator_user_preference?user=admin&password=musiccurator");
-                System.out.println("Connection Successful");
+                System.out.println("Connection Successful. Logged in as " + USER_ID);
+
+                if (isNewUser()){
+                    addNewUser();
+                    //initialize dummy data
+                    storePlaylist(new Playlist("New Playlist"));
+                } else {
+
+                }
             } catch (Exception ex) {
                 System.out.println("Error: " + ex);
             }
         }
+    }
+
+    public static void addNewUser(){
+        String q = "INSERT INTO user_meta (username) VALUES(?);";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(q);
+            stmt.setString(1, USER_ID);
+            stmt.execute();
+
+            System.out.println("Added new user: " + USER_ID);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean isNewUser(){
+        String q = "SELECT EXISTS(SELECT username FROM user_meta WHERE username = ? LIMIT 1);";
+        try {
+            PreparedStatement preStPlaylistExist = conn.prepareStatement(q);
+            preStPlaylistExist.setString(1, USER_ID);
+
+            rs = preStPlaylistExist.executeQuery();
+            rs.next();
+            if (rs.getInt(1) == 1) {
+                System.out.println(USER_ID + " is not a new user");
+                return false;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        System.out.println(USER_ID + " is a new user");
+        return true;
     }
 
     /*
@@ -803,5 +843,9 @@ public class DBTools {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String getUserId() {
+        return USER_ID;
     }
 }

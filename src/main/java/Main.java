@@ -1,6 +1,8 @@
+import com.curator.controllers.WelcomeController;
 import com.curator.tools.DBTools;
 import com.curator.tools.YoutubeTools;
 import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,6 +23,8 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
+    public boolean isAuthenticated = false;
+
     /**
      * Initialize GUI app
      *
@@ -29,15 +33,26 @@ public class Main extends Application {
      */
     @java.lang.Override
     public void start(Stage stage) throws Exception {
-        YoutubeTools.initialize();
-        DBTools.initialize("user");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/welcome.fxml"));
+        Scene scene = new Scene(loader.load(), 300, 300);
+        WelcomeController welcomeController = loader.getController();
+        welcomeController.setStage(stage);
+        welcomeController.setScene(scene);
 
-        Parent root = new FXMLLoader(getClass().getResource("/views/main.fxml")).load();
-        stage.setScene(new Scene(root, 300, 300));
-        stage.setHeight(600);
-        stage.setMinWidth(1300);
+        stage.setScene(scene);
         stage.setTitle("Music Curator");
         stage.show();
+
+        Task task = new Task(){
+            @Override
+            protected Object call() throws Exception {
+                YoutubeTools.initialize();
+                return null;
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     @Override
