@@ -52,9 +52,9 @@
                         </Tab>
                         <Tab fx:id="albumTab" text="Albums">
                            <content>
-                              <AnchorPane fx:id="albumTabPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                              <AnchorPane fx:id="albumTabPane" minHeight="0.0" minWidth="0.0">
                                  <children>
-                                    <ScrollPane fx:id="albumTabScrollPane" hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER">
+                                    <ScrollPane fx:id="albumTabScrollPane" hbarPolicy="NEVER" pannable="true" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <content>
                                           <VBox fx:id="albumTabPaneVBox" />
                                        </content>
@@ -65,9 +65,9 @@
                         </Tab>
                         <Tab fx:id="artistTab" text="Artists">
                            <content>
-                              <AnchorPane fx:id="artistTabPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                              <AnchorPane fx:id="artistTabPane" minHeight="0.0" minWidth="0.0">
                                  <children>
-                                    <ScrollPane fx:id="artistTabScrollPane" hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER">
+                                    <ScrollPane fx:id="artistTabScrollPane" hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <content>
                                           <VBox fx:id="artistTabPaneVBox" />
                                        </content>

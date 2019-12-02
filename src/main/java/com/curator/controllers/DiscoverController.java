@@ -1,12 +1,16 @@
 package com.curator.controllers;
 
+import com.curator.models.Album;
+import com.curator.models.AlbumSimple;
+import com.curator.models.Artist;
+import com.curator.models.Track;
 import com.curator.tools.SpotifyTools;
-import com.curator.models.*;
-
 import com.curator.views.ItemScrollPane;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 
@@ -111,7 +115,7 @@ public class DiscoverController implements Initializable {
      * @param items ArrayList of Artist, Track, or Album
      */
     private void loadResults(ArrayList items) {
-        ScrollPane pane = new ItemScrollPane(items, mainController, navbarController, playerController);
+        ScrollPane pane = new ItemScrollPane(items, mainController, navbarController, playerController, 0);
         pane.prefWidthProperty().bind(discoverScrollPane.widthProperty());
 
         if (items.get(0) instanceof Track) {

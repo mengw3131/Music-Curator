@@ -174,12 +174,12 @@ public class ArtistPageController implements Initializable {
         while (remaining > 0) {
             if (remaining >= 8) {
                 albumTabPaneVBox.getChildren().add(new ItemScrollPane(new ArrayList(albums.subList(i, i + 8)),
-                        mainController, navbarController, playerController));
+                        mainController, navbarController, playerController, 1));
                 remaining -= 8;
                 i += 8;
             } else {
                 albumTabPaneVBox.getChildren().add(new ItemScrollPane(new ArrayList(albums.subList(i, i + remaining)),
-                        mainController, navbarController, playerController));
+                        mainController, navbarController, playerController, 1));
                 break;
             }
         }

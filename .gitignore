@@ -6,6 +6,8 @@ out/
 .project
 .gradle/
 .gradle/
+*.ipr
+*.iml
 
 
 

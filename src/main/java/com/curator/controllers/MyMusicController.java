@@ -8,8 +8,12 @@ import com.curator.views.ItemScrollPane;
 import com.curator.views.TrackListVBox;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -65,6 +69,12 @@ public class MyMusicController implements Initializable {
 
     @FXML
     private ScrollPane artistTabScrollPane;
+
+    @FXML
+    private AnchorPane albumTabPane;
+
+    @FXML
+    private AnchorPane artistTabPane;
 
 
     /**
@@ -137,12 +147,12 @@ public class MyMusicController implements Initializable {
         while (remaining > 0) {
             if (remaining >= 8) {
                 albumTabPaneVBox.getChildren().add(new ItemScrollPane(new ArrayList(albums.subList(i, i + 8)),
-                        mainController, navbarController, playerController));
+                        mainController, navbarController, playerController, 1));
                 remaining -= 8;
                 i += 8;
             } else {
                 albumTabPaneVBox.getChildren().add(new ItemScrollPane(new ArrayList(albums.subList(i, i + remaining)),
-                        mainController, navbarController, playerController));
+                        mainController, navbarController, playerController, 1));
                 break;
             }
         }
@@ -162,12 +172,12 @@ public class MyMusicController implements Initializable {
         while (remaining > 0) {
             if (remaining >= 8) {
                 artistTabPaneVBox.getChildren().add(new ItemScrollPane(new ArrayList(artists.subList(i, i + 8)),
-                        mainController, navbarController, playerController));
+                        mainController, navbarController, playerController, 1));
                 remaining -= 8;
                 i += 8;
             } else {
                 artistTabPaneVBox.getChildren().add(new ItemScrollPane(new ArrayList(artists.subList(i, i + remaining)),
-                        mainController, navbarController, playerController));
+                        mainController, navbarController, playerController, 1));
                 break;
             }
         }
@@ -212,9 +222,11 @@ public class MyMusicController implements Initializable {
         trackTabPane.prefHeightProperty().bind(mainScrollPane.heightProperty());
 
         albumTabScrollPane.prefWidthProperty().bind(mainScrollPane.widthProperty());
+        albumTabPane.prefHeightProperty().bind(mainScrollPane.heightProperty());
         albumTabPaneVBox.prefWidthProperty().bind(mainScrollPane.widthProperty());
 
         artistTabScrollPane.prefWidthProperty().bind(mainScrollPane.widthProperty());
+        artistTabPane.prefHeightProperty().bind(mainScrollPane.heightProperty());
         artistTabPaneVBox.prefWidthProperty().bind(mainScrollPane.widthProperty());
     }
 }

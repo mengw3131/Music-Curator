@@ -1,13 +1,15 @@
 package com.curator.controllers;
 
+import com.curator.models.AlbumSimple;
+import com.curator.models.Artist;
+import com.curator.models.Track;
 import com.curator.tools.SpotifyTools;
-import com.curator.models.*;
-
 import com.curator.views.ItemScrollPane;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -128,7 +130,8 @@ public class HomeController implements Initializable {
      * @param items ArrayList of Track, AlbumSimple, or Artist
      */
     private void loadItems(ArrayList items) {
-        ScrollPane pane = new ItemScrollPane(items, mainController, navbarController, playerController);
+        ScrollPane pane = new ItemScrollPane(items, mainController, navbarController, playerController,
+                0);
         pane.prefWidthProperty().bind(mainScrollPane.widthProperty());
 
         //set the location of each pane, depending of the item's type

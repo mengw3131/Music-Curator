@@ -1,8 +1,12 @@
 package com.curator.tools;
 
+import com.curator.models.Album;
+import com.curator.models.Artist;
+import com.curator.models.Playlist;
+import com.curator.models.Track;
+
 import java.sql.*;
-import java.util.*;
-import com.curator.models.*;
+import java.util.ArrayList;
 
 public class DBTools {
     private static Connection conn;
@@ -53,7 +57,6 @@ public class DBTools {
             e.printStackTrace();
         }
         return userLikedSongs;
-
     }
 
     /*
@@ -171,15 +174,20 @@ public class DBTools {
      * Stores the user's liked/disliked songs into according database
      */
     public static void storeUserPreferenceTracks(String trackID, boolean like) {
-        try {
-            PreparedStatement preSt1 = conn.prepareStatement("INSERT INTO User_Preference_Song (User_id, Track_id, `Like/Dislike`) VALUES(?,?,?);");
-            preSt1.setString(1, USER_ID);
-            preSt1.setString(2, trackID);
-            preSt1.setBoolean(3, like);
-            preSt1.executeUpdate();
+        //if track exists in preference table, update like/dislike value
+        if (isTrackExistInUPSong(trackID)) {
+            updateTrackPreference(like, trackID);
+        } else {
+            try {
+                PreparedStatement preSt1 = conn.prepareStatement("INSERT INTO User_Preference_Song (User_id, Track_id, `Like/Dislike`) VALUES(?,?,?);");
+                preSt1.setString(1, USER_ID);
+                preSt1.setString(2, trackID);
+                preSt1.setBoolean(3, like);
+                preSt1.executeUpdate();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -187,14 +195,19 @@ public class DBTools {
      * Stores the user's liked/disliked artists into according database
      */
     public static void storeUserPreferenceArtist(String artistID, boolean like) {
-        try {
-            PreparedStatement preSt2 = conn.prepareStatement("INSERT INTO User_Preference_Artist (User_id, Artist_id, `Like/Dislike`) VALUES(?,?,?);");
-            preSt2.setString(1, USER_ID);
-            preSt2.setString(2, artistID);
-            preSt2.setBoolean(3, like);
-            preSt2.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        //if artist exists in preference table, update like/dislike value
+        if (isArtistExistInUPArtist(artistID)) {
+            updateArtistPreference(like, artistID);
+        } else {
+            try {
+                PreparedStatement preSt2 = conn.prepareStatement("INSERT INTO User_Preference_Artist (User_id, Artist_id, `Like/Dislike`) VALUES(?,?,?);");
+                preSt2.setString(1, USER_ID);
+                preSt2.setString(2, artistID);
+                preSt2.setBoolean(3, like);
+                preSt2.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -202,16 +215,131 @@ public class DBTools {
      * Stores the user's liked/disliked albums into according database
      */
     public static void storeUserPreferenceAlbum(String albumID, boolean like) {
+        //if artist exists in preference table, update like/dislike value
+        if (isAlbumExistInUPAlbum(albumID)) {
+            updateAlbumPreference(like, albumID);
+        } else {
+            try {
+                String q = "INSERT INTO User_Preference_Album (User_id, Album_id, `Like/Dislike`) VALUES(?,?,?);";
+                PreparedStatement preSt3 = conn.prepareStatement(q);
+                preSt3.setString(1, USER_ID);
+                preSt3.setString(2, albumID);
+                preSt3.setBoolean(3, like);
+                preSt3.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Checks if itemId exists in the table specified in query
+     *
+     * @param itemId id of the item to be checked, e.g. artistId, trackId
+     * @param q      SQL query to check the item existence
+     * @return true if itemId exists in the table
+     */
+    private static boolean isItemExistInTable(String itemId, String q) {
         try {
-            String q = "INSERT INTO User_Preference_Album (User_id, Album_id, `Like/Dislike`) VALUES(?,?,?);";
-            PreparedStatement preSt3 = conn.prepareStatement(q);
-            preSt3.setString(1, USER_ID);
-            preSt3.setString(2, albumID);
-            preSt3.setBoolean(3, like);
-            preSt3.executeUpdate();
+            PreparedStatement stmt = conn.prepareStatement(q);
+            stmt.setString(1, USER_ID);
+            stmt.setString(2, itemId);
+            rs = stmt.executeQuery();
+            rs.next();
+            return rs.getInt(1) == 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
+    }
+
+    /**
+     * Checks if track exists in preference song table
+     *
+     * @param trackId trackId of the track to be checked
+     * @return true if  track exists in preference song table, otherwise false
+     */
+    private static boolean isTrackExistInUPSong(String trackId) {
+        String q = "SELECT EXISTS(SELECT Track_id FROM User_Preference_Song WHERE User_id = ? " +
+                "AND Track_id = ? LIMIT 1);";
+        return isItemExistInTable(trackId, q);
+    }
+
+    /**
+     * Checks if album exists in preference album table
+     *
+     * @param albumId of the album to be checked
+     * @return true if album exists in preference album table, otherwise false
+     */
+    private static boolean isAlbumExistInUPAlbum(String albumId) {
+        String q = "SELECT EXISTS(SELECT Album_id FROM User_Preference_Album " +
+                "WHERE User_id = ? AND Album_id = ? LIMIT 1);";
+        return isItemExistInTable(albumId, q);
+    }
+
+    /**
+     * Checks if artist exists in preference artist table
+     *
+     * @param artistId of the artist to be checked
+     * @return true if artist exists in preference artist table, otherwise false
+     */
+    private static boolean isArtistExistInUPArtist(String artistId) {
+        String q = "SELECT EXISTS(SELECT Artist_id FROM User_Preference_Artist " +
+                "WHERE User_id = ? AND Artist_id = ? LIMIT 1);";
+        return isItemExistInTable(artistId, q);
+    }
+
+    /**
+     * Update user's preference on item
+     * @param newPreference like (true) or dislike (false)
+     * @param itemId artistId/trackId/albumId
+     * @param q SQL query to update user's preference
+     */
+    private static void updateItemPreference(boolean newPreference, String itemId, String q) {
+        try {
+            PreparedStatement preSt1 = conn.prepareStatement(q);
+            preSt1.setBoolean(1, newPreference);
+            preSt1.setString(2, itemId);
+            preSt1.setString(3, USER_ID);
+            preSt1.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Update user's track preference
+     * @param newPreference like (true) or dislike (false)
+     * @param trackId trackId of the track to be updated
+     */
+    private static void updateTrackPreference(boolean newPreference, String trackId) {
+        String q = "UPDATE User_Preference_Artist SET `Like/Dislike` = ? " +
+                "WHERE Artist_id = ? AND User_id = ?";
+        updateItemPreference(newPreference, trackId, q);
+    }
+
+
+    /**
+     * Update user's album preference
+     * @param newPreference like (true) or dislike (false)
+     * @param albumId albumId of the album to be updated
+     */
+    private static void updateAlbumPreference(boolean newPreference, String albumId) {
+        String q = "UPDATE User_Preference_Album SET `Like/Dislike` = ? " +
+                "WHERE Album_id = ? AND User_id = ?";
+        updateItemPreference(newPreference, albumId, q);
+    }
+
+
+    /**
+     * Update user's artist preference
+     * @param newPreference like (true) or dislike (false)
+     * @param artistId artistId of the artist to be updated
+     */
+    private static void updateArtistPreference(boolean newPreference, String artistId) {
+        String q = "UPDATE User_Preference_Artist SET `Like/Dislike` = ? " +
+                "WHERE Artist_id = ? AND User_id = ?";
+        updateItemPreference(newPreference, artistId, q);
     }
 
 
@@ -233,12 +361,11 @@ public class DBTools {
     | playlist_id | varchar(45) | NO   |     | NULL    |                |
     | track_id    | varchar(45) | NO   |     | NULL    |                |
     +-------------+-------------+------+-----+---------+----------------+
-
     */
-
 
     /**
      * Store playlist to DB
+     *
      * @param playlist playlist to be stored
      */
     public static void storePlaylist(Playlist playlist) {
@@ -257,6 +384,7 @@ public class DBTools {
 
     /**
      * Get all of user's playlist
+     *
      * @return ArrayList of all user's playlist
      */
     public static ArrayList<Playlist> getAllPlaylist() {
@@ -269,6 +397,7 @@ public class DBTools {
 
     /**
      * Get user's playlist with playlist_id
+     *
      * @param playlist_id playlist id of the playlist to be obtained
      * @return returns Playlist object if playlist exists
      */
@@ -282,6 +411,7 @@ public class DBTools {
 
     /**
      * Get playlist IDs of all user's playlist
+     *
      * @return ArrayList of string containing user's playlist ID
      */
     public static ArrayList<String> getAllPlaylistIDs() {
@@ -303,6 +433,7 @@ public class DBTools {
 
     /**
      * Given playlist id, return its tracks
+     *
      * @param playlist_id the playlist_id of the playlist to be queried
      * @return ArrayList of Track belonging to the playlist
      */
@@ -331,10 +462,10 @@ public class DBTools {
     }
 
     /**
+     * Given Playlist object, return its tracks'IDs
      *
-     *  Given Playlist object, return its tracks'IDs
-     *  @param playlist playlist to be queried
-     *  @return ArrayList of track IDs belonging to the playlist
+     * @param playlist playlist to be queried
+     * @return ArrayList of track IDs belonging to the playlist
      */
     public static ArrayList<String> getTracksIDsFromPlaylist(Playlist playlist) {
         if (!isPlaylistExist(playlist)) {
@@ -360,7 +491,8 @@ public class DBTools {
 
     /**
      * Store track to the playlist
-     * @param track track to be stored
+     *
+     * @param track    track to be stored
      * @param playlist destination playlist
      */
     public static void storeTrackToPlaylist(Track track, Playlist playlist) {
@@ -369,7 +501,8 @@ public class DBTools {
 
     /**
      * Store track to the playlist
-     * @param track_id track_id of the track to be stored
+     *
+     * @param track_id    track_id of the track to be stored
      * @param playlist_id playlist_id of the destination playlist
      */
     public static void storeTrackToPlaylist(String track_id, String playlist_id) {
@@ -399,7 +532,8 @@ public class DBTools {
 
     /**
      * Store multiple tracks to the playlist
-     * @param tracks tracks to be stored
+     *
+     * @param tracks   tracks to be stored
      * @param playlist the destination playlist
      */
     public static void storeTracksToPlaylist(ArrayList<Track> tracks, Playlist playlist) {
@@ -410,11 +544,12 @@ public class DBTools {
 
     /**
      * Rename playlist
-     * @param newName the new name of the playlist
+     *
+     * @param newName     the new name of the playlist
      * @param playlist_id the playlist_id of the playlist to be renamed
      */
-    public static void renamePlaylist(String newName, String playlist_id){
-        if (! isPlaylistExist(playlist_id)){
+    public static void renamePlaylist(String newName, String playlist_id) {
+        if (!isPlaylistExist(playlist_id)) {
             System.out.println("Playlist " + playlist_id + " doesn't exist");
             return;
         }
@@ -434,7 +569,8 @@ public class DBTools {
 
     /**
      * Remove track from playlist
-     * @param track track to be removed
+     *
+     * @param track    track to be removed
      * @param playlist playlist where the track to be removed belongs
      */
     public static void removeTrackFromPlaylist(Track track, Playlist playlist) {
@@ -443,7 +579,8 @@ public class DBTools {
 
     /**
      * Remove track from playlist
-     * @param track_id track_id of the track to be removed
+     *
+     * @param track_id    track_id of the track to be removed
      * @param playlist_id playlist_id of the playlist where the track to be removed belongs
      */
     public static void removeTrackFromPlaylist(String track_id, String playlist_id) {
@@ -467,6 +604,7 @@ public class DBTools {
 
     /**
      * Remove playlist from user's playlist
+     *
      * @param playlist playlist to be removed
      */
     public static void removePlaylist(Playlist playlist) {
@@ -475,6 +613,7 @@ public class DBTools {
 
     /**
      * Remove playlist from user's playlist
+     *
      * @param playlist_id playlist_id of the playlist to be removed
      */
     public static void removePlaylist(String playlist_id) {
@@ -504,6 +643,7 @@ public class DBTools {
 
     /**
      * Checks if a track exist in user's playlist with id playlist_id
+     *
      * @param track    the track to be checked
      * @param playlist the playlist to be checked
      * @return true if the track is in the playlist
@@ -514,6 +654,7 @@ public class DBTools {
 
     /**
      * Checks if a track exist in user's playlist with id playlist_id
+     *
      * @param track_id    the track_id of the track to be checked
      * @param playlist_id the playlist_id of the playlist to be checked
      * @return true if the track is in the playlist
@@ -547,7 +688,6 @@ public class DBTools {
     }
 
 
-
     // ==========================================================================
     // ==========================================================================
     //
@@ -571,6 +711,7 @@ public class DBTools {
 
     /**
      * Store playlist's meta data
+     *
      * @param playlist playlist which meta data will be stored
      */
     public static void storePlaylistMeta(Playlist playlist) {
@@ -590,6 +731,7 @@ public class DBTools {
 
     /**
      * Get playlist name given playlist_id
+     *
      * @param playlist_id the playlist_id of the playlist whose name to be queried
      * @return the name of the playlist, if playlist exists
      */

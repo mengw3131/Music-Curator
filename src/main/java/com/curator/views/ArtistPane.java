@@ -1,28 +1,46 @@
 package com.curator.views;
 
-import com.curator.controllers.*;
+import com.curator.controllers.ArtistPageController;
+import com.curator.controllers.MainController;
+import com.curator.controllers.NavbarController;
+import com.curator.controllers.PlayerController;
 import com.curator.models.Artist;
 import com.curator.models.Track;
 import com.curator.tools.DBTools;
 import com.curator.tools.SpotifyTools;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
 public class ArtistPane {
     private Pane pane;
+    private NavbarController navbarController;
+    private MainController mainController;
+    private PlayerController playerController;
+    private ItemScrollPane parentContainer;
+    private int childIndex;
+    private int type;
 
     public ArtistPane(Artist artist, MainController mainController, NavbarController navbarController,
-                     PlayerController playerController) {
+                      PlayerController playerController, ItemScrollPane parentContainer,
+                      int childIndex, int type) {
+        this.mainController = mainController;
+        this.navbarController = navbarController;
+        this.playerController = playerController;
+        this.parentContainer = parentContainer;
+        this.childIndex = childIndex;
+        this.type = type;
+
         try {
             //=================================
             // GET CHILD NODES & ASSIGN CONTENT
@@ -32,8 +50,7 @@ public class ArtistPane {
             Label artistNameLabel                  = (Label)     pane.getChildren().get(1);
             ImageView playButtonImageView          = (ImageView) pane.getChildren().get(3);
             ImageView heartButtonImageView         = (ImageView) pane.getChildren().get(4);
-            ImageView addToPlaylistButtonImageView = (ImageView) pane.getChildren().get(5);
-            ImageView dislikeButtonImageView       = (ImageView) pane.getChildren().get(6);
+            ImageView dislikeButtonImageView       = (ImageView) pane.getChildren().get(5);
 
             if (artist.getImages().size() != 0){
                 artistImageView.setImage(artist.getImages().get(0));
@@ -42,7 +59,6 @@ public class ArtistPane {
             artistNameLabel                        .setText(artist.getName());
             playButtonImageView                    .setImage(Icons.PLAY);
             heartButtonImageView                   .setImage(Icons.HEART);
-            addToPlaylistButtonImageView           .setImage(Icons.COPY);
             dislikeButtonImageView                 .setImage(Icons.DISLIKE);
 
 
@@ -55,10 +71,10 @@ public class ArtistPane {
                 artistImageView.setOpacity(0.2);
 
                 setVisible(true, playButtonImageView, heartButtonImageView,
-                        addToPlaylistButtonImageView, dislikeButtonImageView);
+                        dislikeButtonImageView);
 
                 setDisabled(false,playButtonImageView, heartButtonImageView,
-                        addToPlaylistButtonImageView, dislikeButtonImageView );
+                        dislikeButtonImageView );
 
             });
 
@@ -67,10 +83,10 @@ public class ArtistPane {
                 artistImageView.setOpacity(1);
 
                 setVisible(false, playButtonImageView, heartButtonImageView,
-                        addToPlaylistButtonImageView, dislikeButtonImageView);
+                        dislikeButtonImageView);
 
                 setDisabled(true, playButtonImageView, heartButtonImageView,
-                        addToPlaylistButtonImageView, dislikeButtonImageView );
+                        dislikeButtonImageView );
             });
 
             //Called when mouse exits the scrollPane
@@ -85,7 +101,21 @@ public class ArtistPane {
                     event -> DBTools.storeUserPreferenceArtist(artist.getArtistID(), true));
 
             dislikeButtonImageView.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                    event -> DBTools.storeUserPreferenceArtist(artist.getArtistID(), false));
+                    event -> {
+                        DBTools.storeUserPreferenceArtist(artist.getArtistID(), false);
+
+                        //replace
+                        if (type == 0){
+                            Artist a = SpotifyTools.searchArtists("John", 1).get(0);
+                            ArtistPane replacement =
+                                    new ArtistPane(
+                                            a, mainController, navbarController,
+                                            playerController, parentContainer, childIndex, type
+                                    );
+                            replaceAtTheEnd(replacement);
+                        }
+                        deleteSelf();
+            });
 
             artistNameLabel.addEventHandler(MouseEvent.MOUSE_ENTERED,
                     event -> artistNameLabel.setStyle("-fx-underline: true"));
@@ -114,6 +144,30 @@ public class ArtistPane {
             });
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Replace this artistPane with another artistPane at the end
+     *
+     * @param artistPane new ArtistPane to be set
+     */
+    private void replaceAtTheEnd(ArtistPane artistPane) {
+        HBox hBox = ((HBox) (parentContainer.getContent()));
+        hBox.getChildren().add(artistPane.asPane());
+    }
+
+    /**
+     * Delete this pane
+     */
+    private void deleteSelf() {
+        HBox hBox = ((HBox) (parentContainer.getContent()));
+        hBox.getChildren().remove(this.asPane());
+
+        //update the indices of the other trackpanes in the same container
+        ObservableList<Node> children = hBox.getChildren();
+        for (int i = 0; i < children.size(); i++) {
+            children.get(i).setId(i + "");
         }
     }
 

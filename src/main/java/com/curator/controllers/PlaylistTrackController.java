@@ -1,6 +1,7 @@
 package com.curator.controllers;
 
 import com.curator.models.Playlist;
+import com.curator.models.Track;
 import com.curator.tools.DBTools;
 import com.curator.views.TrackListVBox;
 import javafx.fxml.FXML;
@@ -13,8 +14,6 @@ import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import com.curator.models.*;
 
 public class PlaylistTrackController implements Initializable {
     private PlayerController playerController;

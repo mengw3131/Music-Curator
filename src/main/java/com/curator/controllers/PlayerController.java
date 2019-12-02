@@ -1,7 +1,6 @@
 package com.curator.controllers;
 
-import com.curator.models.*;
-
+import com.curator.models.Track;
 import com.curator.views.Icons;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -17,7 +16,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-import javax.swing.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 

@@ -19,12 +19,12 @@
             <Font size="11.0" />
          </font>
       </Label>
-      <ImageView fx:id="firstImageView" disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="firstImageView" disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="48.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icons/other/play.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="secondImageView" disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="secondImageView" disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icons/heart.png" />
          </image>
@@ -32,11 +32,6 @@
       <ImageView fx:id="thirdImageView" disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icons/copy.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="fourthImageView" disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="100.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../icons/dislike.png" />
          </image>
       </ImageView>
    </children>
