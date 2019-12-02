@@ -9,13 +9,9 @@ import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
 import com.wrapper.spotify.model_objects.specification.*;
 import com.wrapper.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
-import javafx.embed.swing.SwingFXUtils;
 
-import javax.imageio.ImageIO;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.concurrent.CompletableFuture;
 
 //import static com.wrapper.spotify.SpotifyApi.getAccessToken;
 
@@ -99,9 +95,9 @@ public class SpotifyTools {
      * @param sArtists array of wrapper's object ArtistSimplified
      * @return ArrayList of com.com.curator.com.curator.models.Artist objects
      */
-    public static ArrayList<com.curator.models.Artist> toArtist(ArtistSimplified[] sArtists) {
-        ArrayList<com.curator.models.Artist> artists = new ArrayList<>();
-        for (com.wrapper.spotify.model_objects.specification.ArtistSimplified sArtist : sArtists) {
+    public static ArrayList<Artist> toArtist(ArtistSimplified[] sArtists) {
+        ArrayList<Artist> artists = new ArrayList<>();
+        for (ArtistSimplified sArtist : sArtists) {
             artists.add(toArtist(sArtist));
         }
         return artists;
@@ -113,9 +109,9 @@ public class SpotifyTools {
      * @param sAlbums array of wrapper's object AlbumSimplified
      * @return ArrayList of com.com.curator.com.curator.models.Album objects
      */
-    public static ArrayList<com.curator.models.AlbumSimple> toAlbumSimple(AlbumSimplified[] sAlbums) {
-        ArrayList<com.curator.models.AlbumSimple> albums = new ArrayList<>();
-        for (com.wrapper.spotify.model_objects.specification.AlbumSimplified sAlbum : sAlbums) {
+    public static ArrayList<AlbumSimple> toAlbumSimple(AlbumSimplified[] sAlbums) {
+        ArrayList<AlbumSimple> albums = new ArrayList<>();
+        for (AlbumSimplified sAlbum : sAlbums) {
             albums.add(toAlbumSimple(sAlbum));
         }
         return albums;
@@ -144,7 +140,7 @@ public class SpotifyTools {
      * @param track wrapper's object com.curator.models.Track
      * @return AudioFeatures object corresponding to the wrapper's com.curator.models.Track object
      */
-    public static AudioFeatures getAudioFeatures(com.wrapper.spotify.model_objects.specification.Track track) {
+    public static AudioFeatures getAudioFeatures(Track track) {
         return getAudioFeatures(track.getId());
     }
 
@@ -275,10 +271,10 @@ public class SpotifyTools {
     public static ArrayList<com.curator.models.Track> searchTracks(String query, int limit) {
         ArrayList<com.curator.models.Track> trackArr = new ArrayList<>();
         try {
-            Paging<com.wrapper.spotify.model_objects.specification.Track> tracks_paging =
+            Paging<Track> tracks_paging =
                     api.searchTracks(query).limit(limit).build().execute();
 
-            for (com.wrapper.spotify.model_objects.specification.Track track : tracks_paging.getItems()) {
+            for (Track track : tracks_paging.getItems()) {
                 trackArr.add(new com.curator.models.Track(track));
             }
             return trackArr;
@@ -298,8 +294,8 @@ public class SpotifyTools {
      * @param limit # of desired result, max 50
      * @return arrayList of Artist
      */
-    public static ArrayList<com.curator.models.Artist> searchArtists(String query, int limit) {
-        ArrayList<com.curator.models.Artist> artistArr = new ArrayList<>();
+    public static ArrayList<Artist> searchArtists(String query, int limit) {
+        ArrayList<Artist> artistArr = new ArrayList<>();
         try {
             Paging<com.wrapper.spotify.model_objects.specification.Artist> artists_paging =
                     api.searchArtists(query).limit(limit).build().execute();
@@ -349,7 +345,7 @@ public class SpotifyTools {
     public static ArrayList<com.curator.models.Track> getArtistTopTracks(String artistID) {
         ArrayList<com.curator.models.Track> tracks = new ArrayList<>();
         try {
-            for (com.wrapper.spotify.model_objects.specification.Track track :
+            for (Track track :
                     api.getArtistsTopTracks(artistID, CountryCode.US).build().execute()) {
                 tracks.add(new com.curator.models.Track(track));
             }
@@ -373,7 +369,7 @@ public class SpotifyTools {
         ArrayList<com.curator.models.Album> albums = new ArrayList<>();
 
         try {
-            for (com.wrapper.spotify.model_objects.specification.AlbumSimplified album
+            for (AlbumSimplified album
                     : api.getArtistsAlbums(artistID).build().execute().getItems()) {
                 albums.add(getAlbum(album.getId()));
             }
@@ -403,7 +399,7 @@ public class SpotifyTools {
          * @return ArrayList of javafx.scene.image.Image
          */
         public static ArrayList<javafx.scene.image.Image> toImage
-        (com.wrapper.spotify.model_objects.specification.Image[]images){
+        (Image[]images){
             ArrayList<javafx.scene.image.Image> imageArr = new ArrayList<>();
             for (Image image : images) {
                 imageArr.add(toImage(image.getUrl()));
@@ -416,7 +412,7 @@ public class SpotifyTools {
          * @param artistArr array of com.curator.models.Artist
          * @return comma-separated strings of the names of the artists
          */
-        public static String toString (ArrayList < Artist > artistArr) {
+        public static String toString (ArrayList <Artist> artistArr) {
             StringBuilder sb = new StringBuilder();
             for (Artist artist : artistArr) {
                 sb.append(artist.getName()).append(", ");

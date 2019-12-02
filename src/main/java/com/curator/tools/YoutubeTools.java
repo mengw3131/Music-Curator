@@ -1,8 +1,6 @@
 package com.curator.tools;
 
-import javafx.concurrent.Task;
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -162,8 +160,8 @@ public class YoutubeTools {
      * <p>
      * Returns true if interpreter is initialized successfully
      */
-    public static boolean initializeInterpreter() {
-        System.out.print("Initializing interpreter... ");
+    public static boolean initialize() {
+        System.out.println("Initializing interpreter... ");
         try {
             if (i == null) {
                 i = new PythonInterpreter();

@@ -29,7 +29,7 @@ public class Main extends Application {
      */
     @java.lang.Override
     public void start(Stage stage) throws Exception {
-        YoutubeTools.initializeInterpreter();
+        YoutubeTools.initialize();
         DBTools.initialize("user");
 
         Parent root = new FXMLLoader(getClass().getResource("/views/main.fxml")).load();
