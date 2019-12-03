@@ -1,7 +1,6 @@
 package com.curator.controllers;
 
 import com.curator.models.Album;
-import com.curator.models.AlbumSimple;
 import com.curator.models.Artist;
 import com.curator.models.Track;
 import com.curator.tools.SpotifyTools;
@@ -95,7 +94,7 @@ public class DiscoverController implements Initializable {
             loadResults(tracks);
         }
 
-        ArrayList<AlbumSimple> albums = SpotifyTools.searchAlbums(query, 8);
+        ArrayList<Album> albums = SpotifyTools.searchAlbums(query, 8);
         if (albums.size() == 0) {
             albumLabel.setText("No albums found");
         } else {
@@ -121,7 +120,7 @@ public class DiscoverController implements Initializable {
         if (items.get(0) instanceof Track) {
             trackVBox.getChildren().clear();
             trackVBox.getChildren().add(pane);
-        } else if (items.get(0) instanceof AlbumSimple || items.get(0) instanceof Album) {
+        } else if (items.get(0) instanceof Album || items.get(0) instanceof Album) {
             albumVBox.getChildren().clear();
             albumVBox.getChildren().add(pane);
         } else if (items.get(0) instanceof Artist) {

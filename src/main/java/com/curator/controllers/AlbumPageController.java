@@ -1,8 +1,6 @@
 package com.curator.controllers;
 
 import com.curator.models.Album;
-import com.curator.models.AlbumSimple;
-import com.curator.tools.SpotifyTools;
 import com.curator.views.TrackListVBox;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -56,18 +54,6 @@ public class AlbumPageController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    }
-
-    /**
-     * Convert AlbumSimple to Album then display it
-     *
-     * @param albumSimple album to be displayed on page
-     */
-    public void setAlbum(AlbumSimple albumSimple) {
-        this.album = SpotifyTools.getAlbum(albumSimple.getAlbumID());
-        if (this.album != null){
-            setAlbum(this.album);
-        }
     }
 
     /**

@@ -2,7 +2,7 @@ package com.curator.views;
 
 import com.curator.controllers.*;
 import com.curator.models.Album;
-import com.curator.models.AlbumSimple;
+//import com.curator.models.AlbumSimple;
 import com.curator.models.Track;
 import com.curator.tools.DBTools;
 import com.curator.tools.SpotifyTools;
@@ -29,12 +29,12 @@ public class AlbumPane {
     private int childIndex;
     private int type;
 
-    public AlbumPane(AlbumSimple album, MainController mainController, NavbarController navbarController,
-                     PlayerController playerController, ItemScrollPane parentContainer,
-                     int childIndex, int type) {
-        this(SpotifyTools.getAlbum(album.getAlbumID()), mainController,
-                navbarController, playerController, parentContainer, childIndex, type);
-    }
+//    public AlbumPane(AlbumSimple album, MainController mainController, NavbarController navbarController,
+//                     PlayerController playerController, ItemScrollPane parentContainer,
+//                     int childIndex, int type) {
+//        this(SpotifyTools.getAlbum(album.getAlbumID()), mainController,
+//                navbarController, playerController, parentContainer, childIndex, type);
+//    }
 
     public AlbumPane(Album album, MainController mainController, NavbarController navbarController,
                      PlayerController playerController, ItemScrollPane parentContainer,
@@ -116,7 +116,7 @@ public class AlbumPane {
                         //replace
                         if (type == 0){
                             //TODO: GET REPLACEMENT FROM THE RECOMMENDER
-                            AlbumSimple a = SpotifyTools.searchAlbums("hello world", 1).get(0);
+                            Album a = SpotifyTools.searchAlbums("hello world", 1).get(0);
                             AlbumPane replacement = new AlbumPane(a, mainController,
                                     navbarController, playerController, parentContainer, childIndex,
                                     type);

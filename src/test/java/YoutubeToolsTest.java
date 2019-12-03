@@ -18,7 +18,7 @@ public class YoutubeToolsTest {
 
     @BeforeAll
     public static void initialize() {
-        YoutubeTools.initializeInterpreter();
+        YoutubeTools.initialize();
     }
 
     @Test

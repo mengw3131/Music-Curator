@@ -44,7 +44,7 @@ public class SongRecommender {
 
 		this.runRecommender(25);
 
-		DBTools.addRecommendedTracks(userRecs);
+		DBTools.storeRecommendationTrack(userRecs);
 	}
 
 	// Methods
@@ -100,7 +100,8 @@ public class SongRecommender {
 			userArtists.add(song.getArtists().get(0));
 		}
 		for (Artist artist : userArtists) {
-			relatedArtists.add(SpotifyTools.getRelatedArtists());
+			relatedArtists
+					.add(SpotifyTools.getRelatedArtists(artist.getArtistID()));
 		}
 		for (ArrayList<Artist> list : relatedArtists) {
 			for (Artist artist : list) {
@@ -148,12 +149,12 @@ public class SongRecommender {
 		tempoScore /= userLikesSize;
 		valenceScore /= userLikesSize;
 		userLikesMetrics.put("Acousticness", acousticScore);
-		userLikesMetrics.put("Danceability", acousticScore);
-		userLikesMetrics.put("Energy", acousticScore);
-		userLikesMetrics.put("Instrumentalness", acousticScore);
-		userLikesMetrics.put("Loudness", acousticScore);
-		userLikesMetrics.put("Tempo", acousticScore);
-		userLikesMetrics.put("Valence", acousticScore);
+		userLikesMetrics.put("Danceability", danceScore);
+		userLikesMetrics.put("Energy", energyScore);
+		userLikesMetrics.put("Instrumentalness", instrumentalScore);
+		userLikesMetrics.put("Loudness", loudScore);
+		userLikesMetrics.put("Tempo", tempoScore);
+		userLikesMetrics.put("Valence", valenceScore);
 	}
 
 	/**

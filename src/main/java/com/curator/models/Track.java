@@ -19,10 +19,12 @@ import javafx.scene.media.Media;
 public class Track {
 	private ArrayList<Artist> artists; // the list of artists on the track
 	private String artistsNames; // the list of artists on the track
-	private AlbumSimple album; // the album of the song
+    private Album album;
 	private Image image;
 	private Media media;
 	private String trackName; // name of the song
+
+	private int ranking; //ranking
 
 	// wrapper objects
 	private AudioFeatures features;
@@ -114,9 +116,9 @@ public class Track {
 	/**
 	 * @return album The object for the album that the song is on
 	 */
-	public AlbumSimple getAlbum() {
-		if (album == null) {
-			this.album = SpotifyTools.toAlbumSimple(sTrack.getAlbum());
+	public Album getAlbum() {
+		if (album == null){
+			this.album = SpotifyTools.getAlbum(sTrack.getAlbum().getId());
 		}
 		return album;
 	}
@@ -136,6 +138,10 @@ public class Track {
 	public int getPopularity() {
 		return sTrack.getPopularity();
 	}
+
+    public int getRanking(){ return ranking; }
+
+	public void setRanking(int ranking){ this.ranking = ranking; }
 
 	/**
 	 * Return image of the track.

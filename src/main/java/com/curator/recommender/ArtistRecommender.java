@@ -8,6 +8,7 @@ import java.util.TreeMap;
 
 import com.curator.models.Artist;
 import com.curator.models.Track;
+import com.curator.tools.DBTools;
 
 /**
  * 
@@ -44,6 +45,10 @@ public class ArtistRecommender {
 		this.artistResults = new HashMap<>();
 		this.artistResultsRanked = new TreeMap<>(Collections.reverseOrder());
 		this.userArtistRecs = new ArrayList<>();
+
+		this.runRecommender();
+
+		DBTools.storeRecommendationArtist(userArtistRecs);
 	}
 
 	// Methods
@@ -92,7 +97,11 @@ public class ArtistRecommender {
 	 * @return songInputs The list of songs by the user-liked artists
 	 */
 	public void artistsToSongs() {
-		// TODO place top 5 most popular songs by each artist into songInputs
+		for (Artist artist : userArtistLikes) {
+			for (Track song : artist.getTracks()) {
+				songInputs.add(song);
+			}
+		}
 	}
 
 	/**
@@ -120,14 +129,9 @@ public class ArtistRecommender {
 	 *                 similarity scores
 	 */
 	public void bestRecommendations() {
-		int count = 0;
 		for (Map.Entry<Integer, Artist> entry : artistResultsRanked
 				.entrySet()) {
-			if (count >= 5) {
-				break;
-			}
 			userArtistRecs.add(entry.getValue());
-			count++;
 		}
 	}
 

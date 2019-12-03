@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -41,35 +43,38 @@ public class WelcomeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        exitButton.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                stage.close();
+        exitButton.setOnMousePressed(event -> stage.close());
+
+        usernameTextField.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)){
             }
         });
 
 
-        okButton.setOnMousePressed(new EventHandler<MouseEvent>() {
+
+        okButton.setOnMousePressed(new EventHandler<>() {
             @Override
             public void handle(MouseEvent event) {
                 DBTools.initialize(usernameTextField.getText());
 
                 boolean isNewUser = DBTools.getLoginCount() == 1;
-                System.out.println("is New user is ");
 
                 /*
                 If is a new user, show survey which music user likes
                  */
-                if (isNewUser){
+                if (isNewUser) {
+                    System.out.println(DBTools.getUserId() + " is a new user");
+
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/survey.fxml"));
                     try {
                         stage.setScene(new Scene(loader.load()));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
                     SurveyController surveyController = loader.getController();
                     surveyController.setStage(stage);
+                    stage.setHeight(600);
+                    stage.setMinWidth(600);
 
                     stage.setTitle("Music Curator");
                     stage.show();

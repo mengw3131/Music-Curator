@@ -3,7 +3,6 @@ package com.curator.controllers;
 import com.curator.models.Album;
 import com.curator.models.Artist;
 import com.curator.models.Track;
-import com.curator.models.TrackSimple;
 import com.curator.tools.SpotifyTools;
 import com.curator.views.ItemScrollPane;
 import com.curator.views.TrackListVBox;
@@ -149,9 +148,7 @@ public class ArtistPageController implements Initializable {
     private void setTracks(ArrayList<Track> tracks) {
         this.tracks = tracks;
         for (int i = 0; i < 3; i++) {
-            for (TrackSimple t : albums.get(0).getTracks()) {
-                tracks.add(SpotifyTools.getTrack(t.getTrackID()));
-            }
+            tracks.addAll(albums.get(0).getTracks());
         }
     }
 

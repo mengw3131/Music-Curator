@@ -6,8 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.curator.models.AlbumSimple;
+import com.curator.models.Album;
 import com.curator.models.Track;
+import com.curator.tools.DBTools;
 
 /**
  * 
@@ -22,29 +23,33 @@ import com.curator.models.Track;
  * 
  */
 public class AlbumRecommender {
-	ArrayList<AlbumSimple> userAlbumLikes; // stores the user provided albums
+	ArrayList<Album> userAlbumLikes; // stores the user provided albums
 	ArrayList<Track> songInputs; // the songs on the albums in userAlbumLikes
 	ArrayList<Track> songRecs; // stores the top results from SongRecommender
 								// run on songs by the user-provided albums
-	HashMap<AlbumSimple, Integer> albumResults; // stores the albums of the
-												// songs
+	HashMap<Album, Integer> albumResults; // stores the albums of the
+											// songs
 	// in songRecs as well as the number
 	// of songs on that album in
 	// songRecs
-	TreeMap<Integer, AlbumSimple> albumResultsRanked; // stores a sorted list of
-														// the
+	TreeMap<Integer, Album> albumResultsRanked; // stores a sorted list of
+												// the
 	// albums in albumResults,
 	// sorted by number of songs in
 	// songRecs
-	ArrayList<AlbumSimple> userAlbumRecs; // a list of the albums with the best
+	ArrayList<Album> userAlbumRecs; // a list of the albums with the best
 	// similarity scores
 
 	// Constructor
-	public AlbumRecommender(ArrayList<AlbumSimple> userAlbumLikes) {
+	public AlbumRecommender(ArrayList<Album> userAlbumLikes) {
 		this.userAlbumLikes = userAlbumLikes;
 		this.albumResults = new HashMap<>();
 		this.albumResultsRanked = new TreeMap<>(Collections.reverseOrder());
 		this.userAlbumRecs = new ArrayList<>();
+
+		this.runRecommender();
+
+		DBTools.storeRecommendationAlbum(userAlbumRecs);
 	}
 
 	// Methods
@@ -54,7 +59,7 @@ public class AlbumRecommender {
 	 * @return userAlbumLikes The list of recommended albums and their
 	 *         similarity scores
 	 */
-	public ArrayList<AlbumSimple> getUserAlbumLikes() {
+	public ArrayList<Album> getUserAlbumLikes() {
 		return userAlbumLikes;
 	}
 
@@ -64,7 +69,7 @@ public class AlbumRecommender {
 	 * 
 	 * @param userAlbumLikes The list of user-provided albums
 	 */
-	public void setUserAlbumLikes(ArrayList<AlbumSimple> userAlbumLikes) {
+	public void setUserAlbumLikes(ArrayList<Album> userAlbumLikes) {
 		this.userAlbumLikes = userAlbumLikes;
 	}
 
@@ -73,7 +78,7 @@ public class AlbumRecommender {
 	 * @return userAlbumRecs The list of recommended albums and their similarity
 	 *         scores
 	 */
-	public ArrayList<AlbumSimple> getUserAlbumRecs() {
+	public ArrayList<Album> getUserAlbumRecs() {
 		return userAlbumRecs;
 	}
 
@@ -85,7 +90,11 @@ public class AlbumRecommender {
 	 * @param songInputs      The list of songs on the user-liked albums
 	 */
 	public void albumsToSongs() {
-		// TODO place all songs from each user-provided album into songInputs
+		for (Album album : userAlbumLikes) {
+			for (Track song : album.getTracks()) {
+				songInputs.add(song);
+			}
+		}
 	}
 
 	/**
@@ -99,7 +108,7 @@ public class AlbumRecommender {
 					(key, val) -> val + 1);
 			albumResults.putIfAbsent(song.getAlbum(), 1);
 		}
-		for (Map.Entry<AlbumSimple, Integer> entry : albumResults.entrySet()) {
+		for (Map.Entry<Album, Integer> entry : albumResults.entrySet()) {
 			albumResultsRanked.put(entry.getValue(), entry.getKey());
 		}
 	}
@@ -113,14 +122,8 @@ public class AlbumRecommender {
 	 *                 similarity scores
 	 */
 	public void bestRecommendations() {
-		int count = 0;
-		for (Map.Entry<Integer, AlbumSimple> entry : albumResultsRanked
-				.entrySet()) {
-			if (count >= 5) {
-				break;
-			}
+		for (Map.Entry<Integer, Album> entry : albumResultsRanked.entrySet()) {
 			userAlbumRecs.add(entry.getValue());
-			count++;
 		}
 	}
 
@@ -132,7 +135,7 @@ public class AlbumRecommender {
 	 * the albums of the songs in the list of recommended songs.
 	 * 
 	 */
-	public ArrayList<AlbumSimple> runRecommender() {
+	public ArrayList<Album> runRecommender() {
 		albumsToSongs();
 		SongRecommender songRecommender = new SongRecommender(songInputs);
 		songRecs = songRecommender.runRecommender(200);

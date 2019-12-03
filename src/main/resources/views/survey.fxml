@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="mainScrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="com.curator.controllers.SurveyController">
+<ScrollPane fx:id="mainScrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.curator.controllers.SurveyController">
    <content>
       <VBox fx:id="mainVBox" alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0">
          <children>
@@ -60,7 +60,7 @@
                   </FlowPane>
                   <Button fx:id="okButton" mnemonicParsing="false" text="Curate Music for Me">
                      <VBox.margin>
-                        <Insets top="100.0" />
+                        <Insets bottom="50.0" top="100.0" />
                      </VBox.margin>
                   </Button>
                </children>

@@ -1,8 +1,6 @@
 package com.curator.tools;
 
-import com.curator.models.AlbumSimple;
 import com.curator.models.Artist;
-import com.curator.models.TrackSimple;
 import com.neovisionaries.i18n.CountryCode;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
@@ -12,8 +10,7 @@ import com.wrapper.spotify.requests.authorization.client_credentials.ClientCrede
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-//import static com.wrapper.spotify.SpotifyApi.getAccessToken;
+import java.util.Collections;
 
 
 /**
@@ -31,6 +28,33 @@ public class SpotifyTools {
     private SpotifyTools() {
     }
 
+    public static ArrayList<com.curator.models.Track> getRelatedTracks(String trackId){
+        Artist artist = getTrack(trackId).getArtists().get(0);
+        ArrayList<Artist> relatedArtist = getRelatedArtists(artist.getArtistID());
+        ArrayList<com.curator.models.Track> relatedTracks = new ArrayList<>();
+
+        for (Artist a: relatedArtist) {
+            relatedTracks.addAll(getArtistTopTracks(a.getArtistID()));
+        }
+        Collections.shuffle(relatedTracks);
+        return relatedTracks;
+    }
+
+    public static ArrayList<Artist> getRelatedArtists(String artistId){
+        ArrayList<Artist> artists = new ArrayList<>();
+        try {
+            for (com.wrapper.spotify.model_objects.specification.Artist artist:
+            api.getArtistsRelatedArtists(artistId).build().execute()) {
+                artists.add(new Artist(artist));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        return artists;
+    }
+
 
     /**
      * Return api instance
@@ -41,42 +65,20 @@ public class SpotifyTools {
         return api;
     }
 
-    /**
-     * Given array of wrapper's object TrackSimplified, convert to ArrayList of com.com.curator.com.curator.models.TrackSimple objects
-     *
-     * @param sTracks array of wrapper's object TrackSimplified
-     * @return arrayList of com.com.curator.com.curator.models.TrackSimple objects
-     */
-    public static ArrayList<TrackSimple> toTrackSimple(TrackSimplified[] sTracks) {
-        ArrayList<TrackSimple> trackSimple = new ArrayList<>();
-        for (TrackSimplified sTrack : sTracks) {
-            trackSimple.add(toTrackSimple(sTrack));
+
+    public static ArrayList<com.curator.models.Track> toTracks(TrackSimplified[] tsArr){
+        ArrayList<com.curator.models.Track> tracks = new ArrayList<>();
+        for (TrackSimplified ts: tsArr) {
+            tracks.add(getTrack(ts.getId()));
         }
-        return trackSimple;
+        return tracks;
     }
 
     /**
-     * Given wrapper's TrackSimplified object, convert to com.com.curator.com.curator.models.TrackSimple objects
-     *
-     * @param sTrack wrapper's TrackSimplified object
-     * @return com.com.curator.com.curator.models.TrackSimple objects
-     */
-    public static TrackSimple toTrackSimple(TrackSimplified sTrack) {
-        try {
-            return new TrackSimple(api.getTrack(sTrack.getId()).build().execute());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * Given wrapper's object ArtistSimplified, convert to com.com.curator.com.curator.models.Artist object
+     * Given wrapper's object ArtistSimplified, convert to com.curator.models.Artist object
      *
      * @param sArtist wrapper's object ArtistSimplified
-     * @return com.com.curator.com.curator.models.Artist object of
+     * @return com.curator.models.Artist object of
      */
     public static com.curator.models.Artist toArtist(ArtistSimplified sArtist) {
         try {
@@ -90,10 +92,10 @@ public class SpotifyTools {
     }
 
     /**
-     * Given array of wrapper's object ArtistSimplified, convert to ArrayList of com.com.curator.com.curator.models.Artist objects
+     * Given array of wrapper's object ArtistSimplified, convert to ArrayList of com.curator.models.Artist objects
      *
      * @param sArtists array of wrapper's object ArtistSimplified
-     * @return ArrayList of com.com.curator.com.curator.models.Artist objects
+     * @return ArrayList of com.curator.models.Artist objects
      */
     public static ArrayList<Artist> toArtist(ArtistSimplified[] sArtists) {
         ArrayList<Artist> artists = new ArrayList<>();
@@ -101,37 +103,6 @@ public class SpotifyTools {
             artists.add(toArtist(sArtist));
         }
         return artists;
-    }
-
-    /**
-     * Given array of wrapper's object AlbumSimplified, convert to ArrayList of com.com.curator.com.curator.models.Album objects
-     *
-     * @param sAlbums array of wrapper's object AlbumSimplified
-     * @return ArrayList of com.com.curator.com.curator.models.Album objects
-     */
-    public static ArrayList<AlbumSimple> toAlbumSimple(AlbumSimplified[] sAlbums) {
-        ArrayList<AlbumSimple> albums = new ArrayList<>();
-        for (AlbumSimplified sAlbum : sAlbums) {
-            albums.add(toAlbumSimple(sAlbum));
-        }
-        return albums;
-    }
-
-    /**
-     * Given wrapper's object AlbumSimplified, convert to com.com.curator.com.curator.models.Album object
-     *
-     * @param sAlbum wrapper's object AlbumSimplified
-     * @return com.com.curator.com.curator.models.Album object
-     */
-    public static com.curator.models.AlbumSimple toAlbumSimple(AlbumSimplified sAlbum) {
-        try {
-            return new AlbumSimple(api.getAlbum(sAlbum.getId()).build().execute());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     /**
@@ -145,7 +116,7 @@ public class SpotifyTools {
     }
 
     /**
-     * Given com.com.curator com.curator.models.Track object, get its AudioFeatures object
+     * Given com.curator.models.Track object, get its AudioFeatures object
      *
      * @param track com.curator.models.Track object
      * @return AudioFeatures object of the com.curator.models.Track object
@@ -153,17 +124,6 @@ public class SpotifyTools {
     public static AudioFeatures getAudioFeatures(com.curator.models.Track track) {
         return getAudioFeatures(track.getTrackID());
     }
-
-    /**
-     * Given com.com.curator com.curator.models.Track object, get its AudioFeatures object
-     *
-     * @param trackSimple com.com.curator com.curator.models.TrackSimple object
-     * @return AudioFeatures object of the com.curator.models.Track object
-     */
-    public static AudioFeatures getAudioFeatures(TrackSimple trackSimple) {
-        return getAudioFeatures(trackSimple.getTrackID());
-    }
-
 
     /**
      * Given Spotify track id, return its AudioFeatures object
@@ -313,20 +273,20 @@ public class SpotifyTools {
     }
 
     /**
-     * Given query string and limit, search and return results as arrayList of AlbumSimple
+     * Given query string and limit, search and return results as arrayList of Album
      *
      * @param query string query, e.g. Rondo Alla Turca Mozart
      * @param limit # of desired results, max 50
-     * @return arrayList of AlbumSimple
+     * @return arrayList of Album
      */
-    public static ArrayList<AlbumSimple> searchAlbums(String query, int limit) {
-        ArrayList<AlbumSimple> albumSimpleArr = new ArrayList<>();
+    public static ArrayList<com.curator.models.Album> searchAlbums(String query, int limit) {
+        ArrayList<com.curator.models.Album> albums = new ArrayList<>();
         try {
             Paging<AlbumSimplified> albumsSimplified_paging = api.searchAlbums(query).limit(limit).build().execute();
             for (AlbumSimplified sAlbumSimplified : albumsSimplified_paging.getItems()) {
-                albumSimpleArr.add(toAlbumSimple(sAlbumSimplified));
+                albums.add(getAlbum(sAlbumSimplified.getId()));
             }
-            return albumSimpleArr;
+            return albums;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SpotifyWebApiException e) {
@@ -334,6 +294,8 @@ public class SpotifyTools {
         }
         return null;
     }
+
+
 
 
     /**
