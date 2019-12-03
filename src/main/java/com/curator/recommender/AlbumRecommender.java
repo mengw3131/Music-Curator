@@ -40,12 +40,25 @@ public class AlbumRecommender {
 	ArrayList<Album> userAlbumRecs; // a list of the albums with the best
 	// similarity scores
 
-	// Constructor
-	public AlbumRecommender(ArrayList<Album> userAlbumLikes) {
-		this.userAlbumLikes = userAlbumLikes;
+	// Constructors
+	public AlbumRecommender() {
 		this.albumResults = new HashMap<>();
 		this.albumResultsRanked = new TreeMap<>(Collections.reverseOrder());
 		this.userAlbumRecs = new ArrayList<>();
+
+		this.userAlbumLikes = DBTools.getUserLikedAlbum();
+
+		this.runRecommender();
+
+		DBTools.storeRecommendationAlbum(userAlbumRecs);
+	}
+
+	public AlbumRecommender(ArrayList<Album> userAlbums) {
+		this.albumResults = new HashMap<>();
+		this.albumResultsRanked = new TreeMap<>(Collections.reverseOrder());
+		this.userAlbumRecs = new ArrayList<>();
+
+		this.userAlbumLikes = userAlbums;
 
 		this.runRecommender();
 

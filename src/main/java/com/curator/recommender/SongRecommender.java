@@ -36,7 +36,18 @@ public class SongRecommender {
 	ArrayList<Track> userRecs; // stores the songs with the best similarity
 								// scores
 
-	// Constructor
+	// Constructors
+	public SongRecommender() {
+		this.songPoolScored = new TreeMap<>();
+		this.userLikesMetrics = new HashMap<>();
+
+		this.userLikes = DBTools.getUserLikedSongs();
+
+		this.runRecommender(25);
+
+		DBTools.storeRecommendationTrack(userRecs);
+	}
+
 	public SongRecommender(ArrayList<Track> songInputs) {
 		this.userLikes = songInputs;
 		this.songPoolScored = new TreeMap<>();
