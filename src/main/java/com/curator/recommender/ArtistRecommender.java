@@ -24,7 +24,7 @@ import com.curator.tools.DBTools;
  */
 public class ArtistRecommender {
 	ArrayList<Artist> userArtistLikes; // stores the user provided artists
-	ArrayList<Track> songInputs; // the most popular songs by the artists in
+	ArrayList<Track> songInputs = new ArrayList<>(); // the most popular songs by the artists in
 									// userArtistLikes
 	ArrayList<Track> songRecs; // stores the top results from SongRecommender
 								// run on songs by the user-provided artists

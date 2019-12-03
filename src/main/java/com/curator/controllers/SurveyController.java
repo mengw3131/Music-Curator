@@ -2,6 +2,7 @@ package com.curator.controllers;
 
 import com.curator.models.*;
 import com.curator.tools.DBTools;
+import com.curator.tools.RecTools;
 import com.curator.tools.SpotifyTools;
 import com.curator.views.SurveyButton;
 import javafx.event.EventHandler;
@@ -12,7 +13,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
@@ -46,23 +46,18 @@ public class SurveyController implements Initializable {
     @FXML
     private Label trackQuestionLabel;
 
+    @FXML
+    private Label welcomeLabel;
+
 
     private HashSet<String> uniqueArtistsID = new HashSet<String>();
     private HashSet<String> uniqueTracksID = new HashSet<String>();
 
-    public void showArtistQuestionLabel(){
-        artistQuestionLabel.setOpacity(1);
-
-    }
-    public void showTrackQuestionLabel(){
-        trackQuestionLabel.setOpacity(1);
-    }
-    public void showOkButton(){
-        okButton.setVisible(true);
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        welcomeLabel.setText("Hi, " + DBTools.getUserId() + "!");
+
         okButton.setVisible(false);
 
         populateGenre();
@@ -70,9 +65,15 @@ public class SurveyController implements Initializable {
         okButton.setOnMousePressed(new EventHandler<>() {
             @Override
             public void handle(MouseEvent event) {
+                System.out.println("Storing your picks");
                 storePicks();
 
-                //RUN RECOMMENDER HERE
+                //Run recommender
+                System.out.println("Curating recommendation...");
+//                RecTools.runAlbumRecommender();
+//                RecTools.runArtistRecommender();
+//                RecTools.runSongRecommender();
+                System.out.println("Fetching data...");
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main.fxml"));
                 try {
@@ -135,6 +136,20 @@ public class SurveyController implements Initializable {
                                 trackFlowPane, this, 2, track.getTrackID()));
             }
         }
+    }
+
+
+    public void showArtistQuestionLabel(){
+        artistQuestionLabel.setOpacity(1);
+
+    }
+
+    public void showTrackQuestionLabel(){
+        trackQuestionLabel.setOpacity(1);
+    }
+
+    public void showOkButton(){
+        okButton.setVisible(true);
     }
 
     public void setStage(Stage stage) {

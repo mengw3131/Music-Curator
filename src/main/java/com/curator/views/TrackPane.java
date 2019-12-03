@@ -3,6 +3,7 @@ package com.curator.views;
 import com.curator.controllers.*;
 import com.curator.models.Track;
 import com.curator.tools.DBTools;
+import com.curator.tools.RecTools;
 import com.curator.tools.SpotifyTools;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -121,9 +122,8 @@ public class TrackPane {
                         DBTools.storeUserPreferenceTracks(track.getTrackID(), false);
 
                         //TODO: GET REPLACEMENT FROM THE RECOMMENDER
-
-                        Track t = SpotifyTools.searchTracks("hello world", 1).get(0);
-                        TrackPane replacement = new TrackPane(t, mainController,
+                        TrackPane replacement =
+                                new TrackPane(RecTools.popTrack(), mainController,
                                 navbarController, playerController, parentContainer, childIndex);
                         replaceAtTheEnd(replacement);
                         deleteSelf();

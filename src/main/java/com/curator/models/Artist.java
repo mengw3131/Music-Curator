@@ -17,7 +17,7 @@ public class Artist {
 	private ArrayList<Track> tracks;
 	private com.wrapper.spotify.model_objects.specification.Artist sArtist;
 
-	private int ranking;
+	private int ranking = -1;
 
 	/**
 	 * Construct com.curator.models.Artist object from wrapper's com.curator.models.Artist object

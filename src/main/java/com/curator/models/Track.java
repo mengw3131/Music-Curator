@@ -24,7 +24,9 @@ public class Track {
 	private Media media;
 	private String trackName; // name of the song
 
-	private int ranking; //ranking
+	private int ranking = -1; //ranking
+
+	private boolean analysisRan = false;
 
 	// wrapper objects
 	private AudioFeatures features;
@@ -205,6 +207,7 @@ public class Track {
 	 */
 	private void setAudioFeatures() {
 		this.features = SpotifyTools.getAudioFeatures(getTrackID());
+		analysisRan = true;
 	}
 
 	/**
@@ -212,8 +215,11 @@ public class Track {
 	 *         song is acoustic
 	 */
 	public double getAcousticness() {
-		if (this.features == null) {
+		if (this.features == null && !analysisRan){
 			setAudioFeatures();
+			return getAcousticness();
+		} else if(this.features == null) {
+		    return 0;
 		}
 		return features.getAcousticness();
 	}
@@ -222,8 +228,11 @@ public class Track {
 	 * @return danceability How danceable the song is (0.0 - 1.0)
 	 */
 	public double getDanceability() {
-		if (this.features == null) {
+		if (this.features == null && !analysisRan){
 			setAudioFeatures();
+			return getDanceability();
+		} else if(this.features == null) {
+			return 0;
 		}
 		return features.getDanceability();
 	}
@@ -232,8 +241,11 @@ public class Track {
 	 * @return energy How loud/fast/noisy the song is (0.0 - 1.0)
 	 */
 	public double getEnergy() {
-		if (this.features == null) {
+		if (this.features == null && !analysisRan){
 			setAudioFeatures();
+			return getEnergy();
+		} else if(this.features == null) {
+			return 0;
 		}
 		return features.getEnergy();
 	}
@@ -243,8 +255,11 @@ public class Track {
 	 *         vocals (0.0 - 1.0)
 	 */
 	public double getInstrumentalness() {
-		if (this.features == null) {
+		if (this.features == null && !analysisRan){
 			setAudioFeatures();
+			return getInstrumentalness();
+		} else if(this.features == null) {
+			return 0;
 		}
 		return features.getInstrumentalness();
 	}
@@ -253,8 +268,11 @@ public class Track {
 	 * @return loudness Loudness of the song in decibels
 	 */
 	public double getLoudness() {
-		if (this.features == null) {
+		if (this.features == null && !analysisRan){
 			setAudioFeatures();
+			return getLoudness();
+		} else if(this.features == null) {
+			return 0;
 		}
 		return features.getLoudness();
 	}
@@ -263,8 +281,11 @@ public class Track {
 	 * @return tempo Tempo of the song (Beats per minute)
 	 */
 	public double getTempo() {
-		if (this.features == null) {
+		if (this.features == null && !analysisRan){
 			setAudioFeatures();
+			return getTempo();
+		} else if(this.features == null) {
+			return 0;
 		}
 		return features.getTempo();
 	}
@@ -273,8 +294,11 @@ public class Track {
 	 * @return valence The measure of the positiveness of a song (0.0 - 1.0)
 	 */
 	public double getValence() {
-		if (this.features == null) {
+		if (this.features == null && !analysisRan){
 			setAudioFeatures();
+			return getValence();
+		} else if(this.features == null) {
+			return 0;
 		}
 		return features.getValence();
 	}

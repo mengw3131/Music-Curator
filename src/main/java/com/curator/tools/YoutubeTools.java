@@ -188,6 +188,7 @@ public class YoutubeTools {
                         "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
                 );
             }
+            System.out.println("Done initializing interpreter");
             return true;
         } catch (Exception e) {
             e.printStackTrace();
