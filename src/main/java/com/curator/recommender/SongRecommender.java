@@ -117,14 +117,19 @@ public class SongRecommender {
 					.add(SpotifyTools.getRelatedArtists(artist.getArtistID()));
 		}
 		for (ArrayList<Artist> list : relatedArtists) {
+			int artistCount = 0;
 			for (Artist artist : list) {
-				int count = 0;
+				int songCount = 0;
 				for (Track song : SpotifyTools
 						.getArtistTopTracks(artist.getArtistID())) {
 					songPool.add(song);
+					songCount++;
+					if (songCount > 4) {
+						break;
+					}
 				}
-				count++;
-				if (count > 2) {
+				artistCount++;
+				if (artistCount > 2) {
 					break;
 				}
 			}
