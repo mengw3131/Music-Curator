@@ -2,6 +2,7 @@ package com.curator.controllers;
 
 import com.curator.models.*;
 import com.curator.tools.DBTools;
+import com.curator.tools.SpotifyTools;
 import com.curator.views.SurveyButton;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -10,10 +11,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,26 +37,42 @@ public class SurveyController implements Initializable {
 
     private Stage stage;
 
+    @FXML
+    private Label genreQuestionLabel;
+
+    @FXML
+    private Label artistQuestionLabel;
+
+    @FXML
+    private Label trackQuestionLabel;
+
 
     private HashSet<String> uniqueArtistsID = new HashSet<String>();
     private HashSet<String> uniqueTracksID = new HashSet<String>();
 
+    public void showArtistQuestionLabel(){
+        artistQuestionLabel.setOpacity(1);
+
+    }
+    public void showTrackQuestionLabel(){
+        trackQuestionLabel.setOpacity(1);
+    }
+    public void showOkButton(){
+        okButton.setVisible(true);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        genreFlowPane.setHgap(5);
-        artistFlowPane.setHgap(5);
-        trackFlowPane.setHgap(5);
+        okButton.setVisible(false);
 
-        genreFlowPane.setVgap(5);
-        artistFlowPane.setVgap(5);
-        trackFlowPane.setVgap(5);
-
-        populateGenre(Genre.getMajorGenreList());
+        populateGenre();
 
         okButton.setOnMousePressed(new EventHandler<>() {
             @Override
             public void handle(MouseEvent event) {
                 storePicks();
+
+                //RUN RECOMMENDER HERE
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main.fxml"));
                 try {
@@ -63,6 +80,7 @@ public class SurveyController implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
                 stage.setHeight(600);
                 stage.setMinWidth(1300);
                 stage.setTitle("Music Curator");
@@ -83,13 +101,18 @@ public class SurveyController implements Initializable {
             SurveyButton btn = (SurveyButton) node;
             if (btn.isSelected()) {
                 DBTools.storeUserPreferenceTracks(btn.getItemId(), true);
+
+                //store track's album
+                DBTools.storeUserPreferenceAlbum(
+                        SpotifyTools.getTrack(btn.getItemId()).getAlbum().getAlbumID(), true);
             }
         }
     }
 
-    public void populateGenre(ArrayList<String> genres) {
-        for (String genre : genres) {
-            genreFlowPane.getChildren().add(new SurveyButton(genre, genreFlowPane, this, 0, ""));
+    public void populateGenre() {
+        for (Genre genre : Genre.values()) {
+            genreFlowPane.getChildren().add(new SurveyButton(genre.id,
+                    genreFlowPane, this, 0, ""));
         }
     }
 

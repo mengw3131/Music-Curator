@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="mainScrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.curator.controllers.SurveyController">
+<ScrollPane fx:id="mainScrollPane" maxHeight="-Infinity" maxWidth="600.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.curator.controllers.SurveyController">
    <content>
       <VBox fx:id="mainVBox" alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0">
          <children>
@@ -22,30 +22,17 @@
             </Label>
             <VBox fx:id="surveyVBox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label text="What genre do you prefer?">
+                  <Label fx:id="genreQuestionLabel" text="What genre do you prefer?">
                      <font>
                         <Font size="19.0" />
                      </font>
                   </Label>
-                  <FlowPane fx:id="genreFlowPane" prefHeight="200.0" prefWidth="200.0">
+                  <FlowPane fx:id="genreFlowPane" columnHalignment="CENTER" hgap="5.0" maxWidth="540.0" prefHeight="200.0" prefWidth="200.0" vgap="5.0">
                      <VBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </VBox.margin>
                   </FlowPane>
-                  <Label text="Which artists do you like?">
-                     <font>
-                        <Font size="19.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="30.0" />
-                     </VBox.margin>
-                  </Label>
-                  <FlowPane fx:id="artistFlowPane" prefHeight="200.0" prefWidth="200.0">
-                     <VBox.margin>
-                        <Insets left="30.0" right="30.0" />
-                     </VBox.margin>
-                  </FlowPane>
-                  <Label text="Which of the following tracks do you like?">
+                  <Label fx:id="artistQuestionLabel" opacity="0.0" text="Which artists do you like?">
                      <font>
                         <Font size="19.0" />
                      </font>
@@ -53,12 +40,25 @@
                         <Insets top="30.0" />
                      </VBox.margin>
                   </Label>
-                  <FlowPane fx:id="trackFlowPane" prefHeight="200.0" prefWidth="200.0">
+                  <FlowPane fx:id="artistFlowPane" hgap="5.0" maxWidth="540.0" prefHeight="200.0" prefWidth="200.0" vgap="5.0">
                      <VBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </VBox.margin>
                   </FlowPane>
-                  <Button fx:id="okButton" mnemonicParsing="false" text="Curate Music for Me">
+                  <Label fx:id="trackQuestionLabel" opacity="0.0" text="Which of the following songs do you like?">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </Label>
+                  <FlowPane fx:id="trackFlowPane" hgap="5.0" maxWidth="540.0" prefHeight="200.0" prefWidth="200.0" vgap="5.0">
+                     <VBox.margin>
+                        <Insets left="30.0" right="30.0" />
+                     </VBox.margin>
+                  </FlowPane>
+                  <Button fx:id="okButton" mnemonicParsing="false" text="Curate Music for Me" textFill="#000000fa">
                      <VBox.margin>
                         <Insets bottom="50.0" top="100.0" />
                      </VBox.margin>

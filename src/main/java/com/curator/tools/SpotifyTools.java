@@ -1,10 +1,13 @@
 package com.curator.tools;
 
 import com.curator.models.Artist;
+import com.curator.models.Genre;
 import com.neovisionaries.i18n.CountryCode;
 import com.wrapper.spotify.SpotifyApi;
+import com.wrapper.spotify.enums.ModelObjectType;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
+import com.wrapper.spotify.model_objects.special.SearchResult;
 import com.wrapper.spotify.model_objects.specification.*;
 import com.wrapper.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
 
@@ -28,6 +31,34 @@ public class SpotifyTools {
     private SpotifyTools() {
     }
 
+    /**
+     * Given Genre, returns artists of that genre.
+     * @param genre Genre object, e.g. Genre.POP
+     * @param limit number of artists to fetch
+     * @return ArrayList of artists of the genre
+     */
+    public static ArrayList<com.curator.models.Artist> getArtistByGenre(Genre genre, int limit){
+        ArrayList<com.curator.models.Artist> artists = new ArrayList<>();
+        try {
+            com.wrapper.spotify.model_objects.specification.Artist[] sArtists =
+                    api.searchItem("genre:" + genre,
+                    ModelObjectType.ARTIST.getType()).limit(limit).build()
+                    .execute().getArtists().getItems();
+
+            for (int i = 0; i < sArtists.length; i++) {
+                artists.add(new Artist(sArtists[i]));
+            }
+        } catch (SpotifyWebApiException | IOException exception){
+            exception.printStackTrace();
+        }
+        return artists;
+    }
+
+    /**
+     * Given a track, returns arrayList of tracks that are similar
+     * @param trackId the trackId of the track to be compared
+     * @return arrayList of similar tracks
+     */
     public static ArrayList<com.curator.models.Track> getRelatedTracks(String trackId){
         Artist artist = getTrack(trackId).getArtists().get(0);
         ArrayList<Artist> relatedArtist = getRelatedArtists(artist.getArtistID());
@@ -40,6 +71,11 @@ public class SpotifyTools {
         return relatedTracks;
     }
 
+    /**
+     * Given artists with artistId, returns related artists
+     * @param artistId artistsId of the artist to be searched
+     * @return ArrayList of related artists
+     */
     public static ArrayList<Artist> getRelatedArtists(String artistId){
         ArrayList<Artist> artists = new ArrayList<>();
         try {

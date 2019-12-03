@@ -3,290 +3,408 @@ package com.curator.models;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
-public class Genre {
-    private static HashMap<String, String[]> map = new HashMap<>();
-    private static boolean initialized = false;
+public enum Genre {
+    ACOUSTIC("acoustic"),
 
-    private static ArrayList<String> majorGenreList = new ArrayList<>();
+    AFROBEAT("afrobeat"),
 
-    private Genre() {}
+    ALTROCK("alt-rock"),
 
-    public static boolean isMajorGenre(String genre){
-        if (!initialized){
+    ALTERNATIVE("alternative"),
+
+    AMBIENT("ambient"),
+
+    ANIME("anime"),
+
+    BLACKMETAL("black-metal"),
+
+    BLUEGRASS("bluegrass"),
+
+    BLUES("blues"),
+
+    BOSSANOVA("bossanova"),
+
+    BRAZIL("brazil"),
+
+    BREAKBEAT("breakbeat"),
+
+    BRITISH("british"),
+
+    CANTOPOP("cantopop"),
+
+    CHICAGOHOUSE("chicago-house"),
+
+    CHILDREN("children"),
+
+    CHILL("chill"),
+
+    CLASSICAL("classical"),
+
+    CLUB("club"),
+
+    COMEDY("comedy"),
+
+    COUNTRY("country"),
+
+    DANCE("dance"),
+
+    DANCEHALL("dancehall"),
+
+    DEATHMETAL("death-metal"),
+
+    DEEPHOUSE("deep-house"),
+
+    DETROITTECHNO("detroit-techno"),
+
+    DISCO("disco"),
+
+    DISNEY("disney"),
+
+    DRUMANDBASS("drum-and-bass"),
+
+    DUB("dub"),
+
+    DUBSTEP("dubstep"),
+
+    EDM("edm"),
+
+    ELECTRO("electro"),
+
+    ELECTRONIC("electronic"),
+
+    EMO("emo"),
+
+    FOLK("folk"),
+
+    FORRO("forro"),
+
+    FRENCH("french"),
+
+    FUNK("funk"),
+
+    GARAGE("garage"),
+
+    GERMAN("german"),
+
+    GOSPEL("gospel"),
+
+    GOTH("goth"),
+
+    GRINDCORE("grindcore"),
+
+    GROOVE("groove"),
+
+    GRUNGE("grunge"),
+
+    GUITAR("guitar"),
+
+    HAPPY("happy"),
+
+    HARDROCK("hard-rock"),
+
+    HARDCORE("hardcore"),
+
+    HARDSTYLE("hardstyle"),
+
+    HEAVYMETAL("heavy-metal"),
+
+    HIPHOP("hip-hop"),
+
+    HOLIDAYS("holidays"),
+
+    HONKYTONK("honky-tonk"),
+
+    HOUSE("house"),
+
+    IDM("idm"),
+
+    INDIAN("indian"),
+
+    INDIE("indie"),
+
+    INDIEPOP("indie-pop"),
+
+    INDUSTRIAL("industrial"),
+
+    IRANIAN("iranian"),
+
+    JDANCE("j-dance"),
+
+    JIDOL("j-idol"),
+
+    JPOP("j-pop"),
+
+    JROCK("j-rock"),
+
+    JAZZ("jazz"),
+
+    KPOP("k-pop"),
+
+    KIDS("kids"),
+
+    LATIN("latin"),
+
+    LATINO("latino"),
+
+    MALAY("malay"),
+
+    MANDOPOP("mandopop"),
+
+    METAL("metal"),
+
+    METALMISC("metal-misc"),
+
+    METALCORE("metalcore"),
+
+    MINIMALTECHNO("minimal-techno"),
+
+    MOVIES("movies"),
+
+    MPB("mpb"),
+
+    NEWAGE("new-age"),
+
+    NEWRELEASE("new-release"),
+
+    OPERA("opera"),
+
+    PAGODE("pagode"),
+
+    PARTY("party"),
+
+    PHILIPPINESOPM("philippines-opm"),
+
+    PIANO("piano"),
+
+    POP("pop"),
+
+    POPFILM("pop-film"),
+
+    POSTDUBSTEP("post-dubstep"),
+
+    POWERPOP("power-pop"),
+
+    PROGRESSIVEHOUSE("progressive-house"),
+
+    PSYCHROCK("psych-rock"),
+
+    PUNK("punk"),
+
+    PUNKROCK("punk-rock"),
+
+    RNB("r-n-b"),
+
+    RAINYDAY("rainy-day"),
+
+    REGGAE("reggae"),
+
+    REGGAETON("reggaeton"),
+
+    ROADTRIP("road-trip"),
+
+    ROCK("rock"),
+
+    ROCKNROLL("rock-n-roll"),
+
+    ROCKABILLY("rockabilly"),
+
+    ROMANCE("romance"),
+
+    SAD("sad"),
+
+    SALSA("salsa"),
+
+    SAMBA("samba"),
+
+    SERTANEJO("sertanejo"),
+
+    SHOWTUNES("show-tunes"),
+
+    SINGERSONGWRITER("singer-songwriter"),
+
+    SKA("ska"),
+
+    SLEEP("sleep"),
+
+    SONGWRITER("songwriter"),
+
+    SOUL("soul"),
+
+    SOUNDTRACKS("soundtracks"),
+
+    SPANISH("spanish"),
+
+    STUDY("study"),
+
+    SUMMER("summer"),
+
+    SWEDISH("swedish"),
+
+    SYNTHPOP("synth-pop"),
+
+    TANGO("tango"),
+
+    TECHNO("techno"),
+
+    TRANCE("trance"),
+
+    TRIPHOP("trip-hop"),
+
+    TURKISH("turkish"),
+
+    WORKOUT("work-out"),
+
+    WORLDMUSIC("world-music");
+
+    public String id;
+
+    Genre(String genre) {
+        this.id = genre;
+    }
+
+    @Override
+    public String toString() {
+        return id;
+    }
+
+    private static HashMap<String, Genre> hm = new HashMap<>();
+
+    public static Genre getGenreFromId(String genre){
+        if (hm.size() == 0) {
             init();
         }
-        return majorGenreList.contains(genre);
+        return hm.get(genre);
     }
 
-    public static ArrayList<String> getMajorGenreList() {
-        if (!initialized){
-            init();
-        }
-        return majorGenreList;
+    private static void init(){
+        hm.put("acoustic", Genre.ACOUSTIC);
+        hm.put("afrobeat", Genre.AFROBEAT);
+        hm.put("alternative", Genre.ALTERNATIVE);
+        hm.put("alt-rock", Genre.ALTROCK);
+        hm.put("ambient", Genre.AMBIENT);
+        hm.put("anime", Genre.ANIME);
+        hm.put("black-metal", Genre.BLACKMETAL);
+        hm.put("bluegrass", Genre.BLUEGRASS);
+        hm.put("blues", Genre.BLUES);
+        hm.put("bossanova", Genre.BOSSANOVA);
+        hm.put("brazil", Genre.BRAZIL);
+        hm.put("breakbeat", Genre.BREAKBEAT);
+        hm.put("british", Genre.BRITISH);
+        hm.put("cantopop", Genre.CANTOPOP);
+        hm.put("chicago-house", Genre.CHICAGOHOUSE);
+        hm.put("children", Genre.CHILDREN);
+        hm.put("chill", Genre.CHILL);
+        hm.put("classical", Genre.CLASSICAL);
+        hm.put("club", Genre.CLUB);
+        hm.put("comedy", Genre.COMEDY);
+        hm.put("country", Genre.COUNTRY);
+        hm.put("dance", Genre.DANCE);
+        hm.put("dancehall", Genre.DANCEHALL);
+        hm.put("death-metal", Genre.DEATHMETAL);
+        hm.put("deep-house", Genre.DEEPHOUSE);
+        hm.put("detroit-techno", Genre.DETROITTECHNO);
+        hm.put("disco", Genre.DISCO);
+        hm.put("disney", Genre.DISNEY);
+        hm.put("drum-and-bass", Genre.DRUMANDBASS);
+        hm.put("dub", Genre.DUB);
+        hm.put("dubstep", Genre.DUBSTEP);
+        hm.put("edm", Genre.EDM);
+        hm.put("electro", Genre.ELECTRO);
+        hm.put("electronic", Genre.ELECTRONIC);
+        hm.put("emo", Genre.EMO);
+        hm.put("folk", Genre.FOLK);
+        hm.put("forro", Genre.FORRO);
+        hm.put("french", Genre.FRENCH);
+        hm.put("funk", Genre.FUNK);
+        hm.put("garage", Genre.GARAGE);
+        hm.put("german", Genre.GERMAN);
+        hm.put("gospel", Genre.GOSPEL);
+        hm.put("goth", Genre.GOTH);
+        hm.put("grindcore", Genre.GRINDCORE);
+        hm.put("groove", Genre.GROOVE);
+        hm.put("grunge", Genre.GRUNGE);
+        hm.put("guitar", Genre.GUITAR);
+        hm.put("happy", Genre.HAPPY);
+        hm.put("hardcore", Genre.HARDCORE);
+        hm.put("hard-rock", Genre.HARDROCK);
+        hm.put("hardstyle", Genre.HARDSTYLE);
+        hm.put("heavy-metal", Genre.HEAVYMETAL);
+        hm.put("hip-hop", Genre.HIPHOP);
+        hm.put("holidays", Genre.HOLIDAYS);
+        hm.put("honky-tonk", Genre.HONKYTONK);
+        hm.put("house", Genre.HOUSE);
+        hm.put("idm", Genre.IDM);
+        hm.put("indian", Genre.INDIAN);
+        hm.put("indie", Genre.INDIE);
+        hm.put("indie-pop", Genre.INDIEPOP);
+        hm.put("industrial", Genre.INDUSTRIAL);
+        hm.put("iranian", Genre.IRANIAN);
+        hm.put("jazz", Genre.JAZZ);
+        hm.put("j-dance", Genre.JDANCE);
+        hm.put("j-idol", Genre.JIDOL);
+        hm.put("j-pop", Genre.JPOP);
+        hm.put("j-rock", Genre.JROCK);
+        hm.put("kids", Genre.KIDS);
+        hm.put("k-pop", Genre.KPOP);
+        hm.put("latin", Genre.LATIN);
+        hm.put("latino", Genre.LATINO);
+        hm.put("malay", Genre.MALAY);
+        hm.put("mandopop", Genre.MANDOPOP);
+        hm.put("metal", Genre.METAL);
+        hm.put("metalcore", Genre.METALCORE);
+        hm.put("metal-misc", Genre.METALMISC);
+        hm.put("minimal-techno", Genre.MINIMALTECHNO);
+        hm.put("movies", Genre.MOVIES);
+        hm.put("mpb", Genre.MPB);
+        hm.put("new-age", Genre.NEWAGE);
+        hm.put("new-release", Genre.NEWRELEASE);
+        hm.put("opera", Genre.OPERA);
+        hm.put("pagode", Genre.PAGODE);
+        hm.put("party", Genre.PARTY);
+        hm.put("philippines-opm", Genre.PHILIPPINESOPM);
+        hm.put("piano", Genre.PIANO);
+        hm.put("pop", Genre.POP);
+        hm.put("pop-film", Genre.POPFILM);
+        hm.put("post-dubstep", Genre.POSTDUBSTEP);
+        hm.put("power-pop", Genre.POWERPOP);
+        hm.put("progressive-house", Genre.PROGRESSIVEHOUSE);
+        hm.put("psych-rock", Genre.PSYCHROCK);
+        hm.put("punk", Genre.PUNK);
+        hm.put("punk-rock", Genre.PUNKROCK);
+        hm.put("rainy-day", Genre.RAINYDAY);
+        hm.put("reggae", Genre.REGGAE);
+        hm.put("reggaeton", Genre.REGGAETON);
+        hm.put("r-n-b", Genre.RNB);
+        hm.put("road-trip", Genre.ROADTRIP);
+        hm.put("rock", Genre.ROCK);
+        hm.put("rockabilly", Genre.ROCKABILLY);
+        hm.put("rock-n-roll", Genre.ROCKNROLL);
+        hm.put("romance", Genre.ROMANCE);
+        hm.put("sad", Genre.SAD);
+        hm.put("salsa", Genre.SALSA);
+        hm.put("samba", Genre.SAMBA);
+        hm.put("sertanejo", Genre.SERTANEJO);
+        hm.put("show-tunes", Genre.SHOWTUNES);
+        hm.put("singer-songwriter", Genre.SINGERSONGWRITER);
+        hm.put("ska", Genre.SKA);
+        hm.put("sleep", Genre.SLEEP);
+        hm.put("songwriter", Genre.SONGWRITER);
+        hm.put("soul", Genre.SOUL);
+        hm.put("soundtracks", Genre.SOUNDTRACKS);
+        hm.put("spanish", Genre.SPANISH);
+        hm.put("study", Genre.STUDY);
+        hm.put("summer", Genre.SUMMER);
+        hm.put("swedish", Genre.SWEDISH);
+        hm.put("synth-pop", Genre.SYNTHPOP);
+        hm.put("tango", Genre.TANGO);
+        hm.put("techno", Genre.TECHNO);
+        hm.put("trance", Genre.TRANCE);
+        hm.put("trip-hop", Genre.TRIPHOP);
+        hm.put("turkish", Genre.TURKISH);
+        hm.put("work-out", Genre.WORKOUT);
+        hm.put("world-music", Genre.WORLDMUSIC);
     }
 
-    public static ArrayList getMinorGenre(String majorGenre){
-        if (!initialized){
-            init();
-        }
-        ArrayList minorGenreList = new ArrayList();
-        if (majorGenreList.contains(majorGenre)){
-            minorGenreList.addAll(Arrays.asList(map.get(majorGenre)));
-        }
-        return minorGenreList;
-    }
-
-
-    private static void init() {
-        map.put("Alternative", new String[]{
-                "Alternative Rock",
-                "College Rock",
-                "Experimental Rock",
-                "Goth Rock",
-                "Grunge",
-                "Hardcore Punk",
-                "Hard Rock",
-                "Indie Rock",
-                "New Wave",
-                "Progressive Rock",
-                "Punk",
-                "Shoegaze",
-                "Steampunk"
-        });
-        map.put("Anime", new String[]{
-        });
-        map.put("Blues", new String[]{
-                "Acoustic Blues",
-                "Chicago Blues",
-                "Classic Blues",
-                "Contemporary Blues",
-                "Country Blues",
-                "Delta Blues",
-                "Electric Blues",
-        });
-        map.put("Children’s Music", new String[]{
-                "Lullabies",
-                "Sing-Along",
-                "Stories",
-        });
-        map.put("Classical", new String[]{
-                "Avant-Garde",
-                "Baroque",
-                "Chamber Music",
-                "Chant",
-                "Choral",
-                "Classical Crossover",
-                "Early Music",
-                "High Classical",
-                "Impressionist",
-                "Medieval",
-                "Minimalism",
-                "Modern Composition",
-                "Opera",
-                "Orchestral",
-                "Renaissance",
-                "Romantic",
-                "Wedding Music",
-        });
-        map.put("Country", new String[]{
-                "Alternative Country",
-                "Americana",
-                "Bluegrass",
-                "Contemporary Bluegrass",
-                "Contemporary Country",
-                "Country Gospel",
-                "Honky Tonk",
-                "Outlaw Country",
-                "Traditional Bluegrass",
-                "Traditional Country",
-                "Urban Cowboy",
-        });
-        map.put("Dance/EMD", new String[]{
-                "Breakbeat",
-                "Dubstep",
-                "Exercise",
-                "Garage",
-                "Hardcore",
-                "Hard Dance",
-                "Hi-NRG / Eurodance",
-                "House",
-                "Jackin House",
-                "Jungle/Drum’n'bass",
-                "Techno",
-                "Trance",
-        });
-        map.put("Easy Listening", new String[]{
-                "Bop",
-                "Lounge",
-                "Swing",
-        });
-        map.put("Electronic", new String[]{
-                "Ambient",
-                "Crunk",
-                "Downtempo",
-                "Electro",
-                "Electronica",
-                "Electronic Rock",
-                "IDM/Experimental",
-                "Industrial",
-        });
-        map.put("Hip-Hop/Rap", new String[]{
-                "Alternative Rap",
-                "Bounce",
-                "Dirty South",
-                "East Coast Rap",
-                "Gangsta Rap",
-                "Hardcore Rap",
-                "Hip-Hop",
-                "Latin Rap",
-                "Old School Rap",
-                "Rap",
-                "Underground Rap",
-                "West Coast Rap",
-        });
-        map.put("Holiday", new String[]{
-                "Chanukah",
-                "Christmas",
-                "Christmas: Children’s",
-                "Christmas: Classic",
-                "Christmas: Classical",
-                "Christmas: Jazz",
-                "Christmas: Modern",
-                "Christmas: Pop",
-                "Christmas: R&B",
-                "Christmas: Religious",
-                "Christmas: Rock",
-                "Easter",
-                "Halloween",
-                "Holiday: Other",
-                "Thanksgiving",
-        });
-        map.put("Inspirational - Christian & Gospel", new String[]{
-                "CCM",
-                "Christian Metal",
-                "Christian Pop",
-                "Christian Rap",
-                "Christian Rock",
-                "Classic Christian",
-                "Contemporary Gospel",
-                "Gospel",
-                "Christian & Gospel",
-                "Praise & Worship",
-                "Qawwali",
-                "Southern Gospel",
-                "Traditional Gospel",
-        });
-        map.put("Jazz", new String[]{
-                "Acid Jazz",
-                "Avant-Garde Jazz",
-                "Big Band",
-                "Blue Note",
-                "Contemporary Jazz",
-                "Cool",
-                "Crossover Jazz",
-                "Dixieland",
-                "Ethio-jazz",
-                "Fusion",
-                "Hard Bop",
-                "Latin Jazz",
-                "Mainstream Jazz",
-                "Ragtime",
-                "Smooth Jazz",
-                "Trad Jazz",
-        });
-        map.put("Latino", new String[]{
-                "Alternativo & Rock Latino",
-                "Baladas y Boleros",
-                "Brazilian",
-                "Contemporary Latin",
-                "Latin Jazz",
-                "Pop Latino",
-                "Raíces",
-                "Reggaeton y Hip-Hop",
-                "Regional Mexicano",
-                "Salsa y Tropical",
-        });
-        map.put("New Age", new String[]{
-                "Environmental",
-                "Healing",
-                "Meditation",
-                "Nature",
-                "Relaxation",
-                "Travel",
-        });
-        map.put("Pop", new String[]{
-                "Adult Contemporary",
-                "Britpop",
-                "Pop/Rock",
-                "Soft Rock",
-                "Teen Pop",
-        });
-        map.put("R&B/Soul", new String[]{
-                "Contemporary R & B",
-                "Disco",
-                "Doo Wop",
-                "Funk",
-                "Motown",
-                "Neo-Soul",
-                "Quiet Storm",
-                "Soul",
-        });
-        map.put("Reggae", new String[]{
-                "Dance hall",
-                "Dub",
-                "Roots Reggae",
-                "Ska",
-        });
-        map.put("Rock", new String[]{
-                "Adult Alternative",
-                "American Trad Rock",
-                "Arena Rock",
-                "Blues-Rock",
-                "British Invasion",
-                "Death Metal/Black Metal",
-                "Glam Rock",
-                "Hair Metal",
-                "Hard Rock",
-                "Metal",
-                "Jam Bands",
-                "Prog-Rock/Art Rock",
-                "Psychedelic",
-                "Rock & Roll",
-                "Rockabilly",
-                "Roots Rock",
-                "Singer/Songwriter",
-                "Southern Rock",
-                "Surf",
-                "Tex-Mex",
-        });
-        map.put("Singer/Songwriter", new String[]{
-                "Alternative Folk",
-                "Contemporary Folk",
-                "Contemporary Singer/Songwriter",
-                "Folk-Rock",
-                "New Acoustic",
-                "Traditional Folk",
-        });
-        map.put("Tex-Mex/Tejano", new String[]{
-                "Chicano",
-                "Classic",
-                "Conjunto",
-                "Conjunto Progressive",
-                "New Mex",
-                "Tex-Mex",
-        });
-        map.put("Vocal", new String[]{
-                "Barbershop",
-                "Doo-wop",
-                "Standards",
-                "Traditional Pop",
-                "Vocal Jazz",
-                "Vocal Pop",
-        });
-
-
-        majorGenreList.addAll(map.keySet());
-        initialized = true;
-    }
 }

@@ -19,89 +19,87 @@ public class SurveyButton extends Button {
     private String id;
     private int type;
 
-    public String getItemId(){
+    public String getItemId() {
         return id;
     }
 
-    public int getItemType(){
+    public int getItemType() {
         return type;
     }
 
-    public boolean isSelected(){
+    public boolean isSelected() {
         return selected;
     }
 
     public SurveyButton(String text, FlowPane parentContainer, SurveyController surveyController,
-                        int type, String id){
+                        int type, String id) {
         this.surveyController = surveyController;
         this.parent = parentContainer;
         this.id = id;
 
-        setText(text);
+        if (text.length() > 60){
+            setText(text.substring(0,60) + "...");
+        } else {
+            setText(text);
+        }
         setStyle("-fx-background-color: none");
         setAlignment(Pos.CENTER);
 
         setOnMouseEntered(event -> {
-            if (!selected){
+            if (!selected) {
                 setStyle("-fx-background-color: #B0B0B0");
             }
         });
 
         setOnMouseExited(event -> {
-            if (!selected){
+            if (!selected) {
                 setStyle("-fx-background-color: none");
             }
         });
 
         setOnMousePressed(event -> {
-            if (selected){
+            if (selected) {
                 setStyle("-fx-background-color: none");
             } else {
-                System.out.println("User likes " + text + " id: " + id);
                 setStyle("-fx-background-color: #B0B0B0");
 
-                //Genre type
-                if (type == 0){
-                    if (Genre.isMajorGenre(text)){
-                        ArrayList minorGenre = Genre.getMinorGenre(text);
-                        surveyController.populateGenre(minorGenre);
-                        ArrayList<Artist> artists = SpotifyTools.searchArtists(text, 2);
+                //Genre type button
+                if (type == 0) {
+                    surveyController.showArtistQuestionLabel();
 
+                    surveyController.populateArtist(SpotifyTools.getArtistByGenre(
+                            Genre.getGenreFromId(text), 15));
 
+                //Artist type button
+                } else if (type == 1) {
+                    surveyController.showTrackQuestionLabel();
 
-                        if (artists != null && artists.size() == 2) {
-                            for (int i = 0; i < 2; i++) {
-                                artists.addAll(SpotifyTools.getRelatedArtists(artists.get(0).getArtistID()));
-                            }
-                        }
-                        surveyController.populateArtist(artists);
-                    }
-                //Artist type
-                } else if (type == 1){
                     ArrayList<com.curator.models.Artist> artists = SpotifyTools.getRelatedArtists(id);
                     surveyController.populateArtist(artists);
-
 
                     ArrayList<Track> tracks = new ArrayList<>();
                     for (int i1 = 0; i1 < artists.size(); i1++) {
                         Artist artist = artists.get(i1);
                         ArrayList<Track> topTracks = SpotifyTools.getArtistTopTracks(artist.getArtistID());
                         for (int i2 = 0; i2 < topTracks.size(); i2++) {
-                            if (i2 == 5) {
+                            //how many top tracks to show for each related artists
+                            if (i2 == 3) {
                                 break;
                             }
                             tracks.add(topTracks.get(i2));
                         }
-                        if (i1 == 5){
+                        //how many related artists to show
+                        if (i1 == 5) {
                             break;
                         }
                     }
                     surveyController.populateTrack(tracks);
+                //track type button
+                } else if (type == 2) {
+                    surveyController.showOkButton();
                 }
             }
             selected = !selected;
         });
-
-
     }
 }

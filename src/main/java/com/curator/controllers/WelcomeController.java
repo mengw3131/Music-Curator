@@ -74,7 +74,7 @@ public class WelcomeController implements Initializable {
                     SurveyController surveyController = loader.getController();
                     surveyController.setStage(stage);
                     stage.setHeight(600);
-                    stage.setMinWidth(600);
+                    stage.setWidth(600);
 
                     stage.setTitle("Music Curator");
                     stage.show();

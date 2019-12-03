@@ -29,7 +29,7 @@ public class SongRecommender {
 	// and their similarity scores (ordered by similarity
 	// score)
 	ArrayList<Track> songPool; // stores the narrowed-down pool of songs from
-								// Spotify from the same genre as the
+								// Spotify from the same id as the
 								// user-provided songs
 	HashMap<String, Double> userLikesMetrics; // stores the average song metrics
 												// of all the songs in userLikes

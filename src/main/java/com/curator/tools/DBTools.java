@@ -13,6 +13,11 @@ public class DBTools {
     private static ResultSet rs;
     private static String USER_ID;
 
+    private static String[] tableNames = new String[]{
+            "User_Preference_Album", "User_Preference_Artist", "User_Preference_Song",
+            "playlist", "playlist_meta", "rec_album", "rec_artist", "rec_track", "user_meta",
+    };
+
     private DBTools() {
     }
 
@@ -57,7 +62,7 @@ public class DBTools {
      | Field       | Type        | Null | Key | Default | Extra          |
      +-------------+-------------+------+-----+---------+----------------+
      | id          | int(11)     | NO   | PRI | NULL    | auto_increment |
-     | username    | varchar(50) | NO   |     | NULL    |                |
+     | user_id     | varchar(50) | NO   |     | NULL    |                |
      | login_count | int(11)     | NO   |     | 0       |                |
      +-------------+-------------+------+-----+---------+----------------+
     */
@@ -65,7 +70,7 @@ public class DBTools {
      * Add current user to database
      */
     public static void addNewUser() {
-        String q = "INSERT INTO user_meta (username, login_count) VALUES(?, ?);";
+        String q = "INSERT INTO user_meta (user_id, login_count) VALUES(?, ?);";
         try {
             PreparedStatement stmt = conn.prepareStatement(q);
             stmt.setString(1, USER_ID);
@@ -84,7 +89,7 @@ public class DBTools {
      */
     public static void incrementLoginCount() {
         try {
-            String q = "UPDATE user_meta SET login_count = ? WHERE username = ?;";
+            String q = "UPDATE user_meta SET login_count = ? WHERE user_id = ?;";
             PreparedStatement stmt = conn.prepareStatement(q);
             stmt.setInt(1, getLoginCount() + 1);
             stmt.setString(2, USER_ID);
@@ -100,7 +105,7 @@ public class DBTools {
      */
     public static int getLoginCount() {
         try {
-            String q = "SELECT login_count FROM user_meta WHERE username = ?;";
+            String q = "SELECT login_count FROM user_meta WHERE user_id = ?;";
             PreparedStatement preStSong = conn.prepareStatement(q);
             preStSong.setString(1, USER_ID);
             rs = preStSong.executeQuery();
@@ -120,7 +125,7 @@ public class DBTools {
      * @return true if current user is a new user
      */
     public static boolean isNewUser() {
-        String q = "SELECT EXISTS(SELECT username FROM user_meta WHERE username = ? LIMIT 1);";
+        String q = "SELECT EXISTS(SELECT user_id FROM user_meta WHERE user_id = ? LIMIT 1);";
         try {
             PreparedStatement preStPlaylistExist = conn.prepareStatement(q);
             preStPlaylistExist.setString(1, USER_ID);
@@ -155,7 +160,7 @@ public class DBTools {
     | Field        | Type        | Null | Key | Default | Extra          |
     +--------------+-------------+------+-----+---------+----------------+
     | id           | int(11)     | NO   | PRI | NULL    | auto_increment |
-    | User_id      | varchar(45) | NO   |     | NULL    |                |
+    | user_id      | varchar(45) | NO   |     | NULL    |                |
     | Album_id     | varchar(45) | NO   |     | NULL    |                |
     | Like/Dislike | tinyint(4)  | NO   |     | NULL    |                |
     +--------------+-------------+------+-----+---------+----------------+
@@ -165,7 +170,7 @@ public class DBTools {
     | Field        | Type        | Null | Key | Default | Extra          |
     +--------------+-------------+------+-----+---------+----------------+
     | id           | int(11)     | NO   | PRI | NULL    | auto_increment |
-    | User_id      | varchar(45) | NO   |     | NULL    |                |
+    | user_id      | varchar(45) | NO   |     | NULL    |                |
     | Track_id     | varchar(45) | NO   |     | NULL    |                |
     | Like/Dislike | tinyint(4)  | NO   |     | NULL    |                |
     +--------------+-------------+------+-----+---------+----------------+
@@ -175,7 +180,7 @@ public class DBTools {
     | Field        | Type        | Null | Key | Default | Extra          |
     +--------------+-------------+------+-----+---------+----------------+
     | id           | int(11)     | NO   | PRI | NULL    | auto_increment |
-    | User_id      | varchar(45) | NO   |     | NULL    |                |
+    | user_id      | varchar(45) | NO   |     | NULL    |                |
     | Artist_id    | varchar(45) | NO   |     | NULL    |                |
     | Like/Dislike | tinyint(4)  | NO   |     | NULL    |                |
     +--------------+-------------+------+-----+---------+----------------+
@@ -194,7 +199,7 @@ public class DBTools {
             } else {
                 System.out.print("success");
             }
-            PreparedStatement preStSong = conn.prepareStatement("SELECT Track_id FROM User_Preference_Song WHERE `Like/Dislike` = '1' AND User_id = ?");
+            PreparedStatement preStSong = conn.prepareStatement("SELECT Track_id FROM User_Preference_Song WHERE `Like/Dislike` = '1' AND user_id = ?");
             preStSong.setString(1, USER_ID);
             rs = preStSong.executeQuery();
             while (rs.next()) {
@@ -218,7 +223,7 @@ public class DBTools {
         ArrayList<Artist> userLikedArtist = new ArrayList<>();
         String artistID = "";
         try {
-            PreparedStatement preStArtist = conn.prepareStatement("SELECT Artist_id FROM User_Preference_Artist WHERE `Like/Dislike` = '1' AND User_id = ?");
+            PreparedStatement preStArtist = conn.prepareStatement("SELECT Artist_id FROM User_Preference_Artist WHERE `Like/Dislike` = '1' AND user_id = ?");
             preStArtist.setString(1, USER_ID);
             rs = preStArtist.executeQuery();
             while (rs.next()) {
@@ -240,7 +245,7 @@ public class DBTools {
         ArrayList<Album> userLikedAlbum = new ArrayList<>();
         String albumID = "";
         try {
-            PreparedStatement preStAlbum = conn.prepareStatement("SELECT Album_id FROM User_Preference_Album WHERE `Like/Dislike` = '1' AND User_id = ?");
+            PreparedStatement preStAlbum = conn.prepareStatement("SELECT Album_id FROM User_Preference_Album WHERE `Like/Dislike` = '1' AND user_id = ?");
             preStAlbum.setString(1, USER_ID);
             rs = preStAlbum.executeQuery();
             while (rs.next()) {
@@ -262,7 +267,7 @@ public class DBTools {
         ArrayList<Track> userDislikedSongs = new ArrayList<>();
         String trackID = "";
         try {
-            PreparedStatement preStSong1 = conn.prepareStatement("SELECT Track_id FROM User_Preference_Song WHERE `Like/Dislike` = '0' AND User_id = ?");
+            PreparedStatement preStSong1 = conn.prepareStatement("SELECT Track_id FROM User_Preference_Song WHERE `Like/Dislike` = '0' AND user_id = ?");
             preStSong1.setString(1, USER_ID);
             rs = preStSong1.executeQuery();
             while (rs.next()) {
@@ -285,7 +290,7 @@ public class DBTools {
         ArrayList<Artist> userDislikedArtist = new ArrayList<>();
         String artistID = "";
         try {
-            PreparedStatement preStArtist1 = conn.prepareStatement("SELECT Artist_id FROM User_Preference_Artist WHERE `Like/Dislike` = '0' AND User_id = ?");
+            PreparedStatement preStArtist1 = conn.prepareStatement("SELECT Artist_id FROM User_Preference_Artist WHERE `Like/Dislike` = '0' AND user_id = ?");
             preStArtist1.setString(1, USER_ID);
             rs = preStArtist1.executeQuery();
             while (rs.next()) {
@@ -307,7 +312,7 @@ public class DBTools {
         ArrayList<Album> userDislikedAlbum = new ArrayList<>();
         String albumID = "";
         try {
-            PreparedStatement preStAlbum = conn.prepareStatement("SELECT Album_id FROM User_Preference_Album WHERE `Like/Dislike` = '0' AND User_id = ?");
+            PreparedStatement preStAlbum = conn.prepareStatement("SELECT Album_id FROM User_Preference_Album WHERE `Like/Dislike` = '0' AND user_id = ?");
             preStAlbum.setString(1, USER_ID);
             rs = preStAlbum.executeQuery();
             while (rs.next()) {
@@ -331,7 +336,7 @@ public class DBTools {
             updateTrackPreference(like, trackID);
         } else {
             try {
-                PreparedStatement preSt1 = conn.prepareStatement("INSERT INTO User_Preference_Song (User_id, Track_id, `Like/Dislike`) VALUES(?,?,?);");
+                PreparedStatement preSt1 = conn.prepareStatement("INSERT INTO User_Preference_Song (user_id, Track_id, `Like/Dislike`) VALUES(?,?,?);");
                 preSt1.setString(1, USER_ID);
                 preSt1.setString(2, trackID);
                 preSt1.setBoolean(3, like);
@@ -352,7 +357,7 @@ public class DBTools {
             updateArtistPreference(like, artistID);
         } else {
             try {
-                PreparedStatement preSt2 = conn.prepareStatement("INSERT INTO User_Preference_Artist (User_id, Artist_id, `Like/Dislike`) VALUES(?,?,?);");
+                PreparedStatement preSt2 = conn.prepareStatement("INSERT INTO User_Preference_Artist (user_id, Artist_id, `Like/Dislike`) VALUES(?,?,?);");
                 preSt2.setString(1, USER_ID);
                 preSt2.setString(2, artistID);
                 preSt2.setBoolean(3, like);
@@ -372,7 +377,7 @@ public class DBTools {
             updateAlbumPreference(like, albumID);
         } else {
             try {
-                String q = "INSERT INTO User_Preference_Album (User_id, Album_id, `Like/Dislike`) VALUES(?,?,?);";
+                String q = "INSERT INTO User_Preference_Album (user_id, Album_id, `Like/Dislike`) VALUES(?,?,?);";
                 PreparedStatement preSt3 = conn.prepareStatement(q);
                 preSt3.setString(1, USER_ID);
                 preSt3.setString(2, albumID);
@@ -412,7 +417,7 @@ public class DBTools {
      * @return true if  track exists in preference song table, otherwise false
      */
     private static boolean isTrackExistInUPSong(String trackId) {
-        String q = "SELECT EXISTS(SELECT Track_id FROM User_Preference_Song WHERE User_id = ? " +
+        String q = "SELECT EXISTS(SELECT Track_id FROM User_Preference_Song WHERE user_id = ? " +
                 "AND Track_id = ? LIMIT 1);";
         return isItemExistInTable(trackId, q);
     }
@@ -425,7 +430,7 @@ public class DBTools {
      */
     private static boolean isAlbumExistInUPAlbum(String albumId) {
         String q = "SELECT EXISTS(SELECT Album_id FROM User_Preference_Album " +
-                "WHERE User_id = ? AND Album_id = ? LIMIT 1);";
+                "WHERE user_id = ? AND Album_id = ? LIMIT 1);";
         return isItemExistInTable(albumId, q);
     }
 
@@ -437,7 +442,7 @@ public class DBTools {
      */
     private static boolean isArtistExistInUPArtist(String artistId) {
         String q = "SELECT EXISTS(SELECT Artist_id FROM User_Preference_Artist " +
-                "WHERE User_id = ? AND Artist_id = ? LIMIT 1);";
+                "WHERE user_id = ? AND Artist_id = ? LIMIT 1);";
         return isItemExistInTable(artistId, q);
     }
 
@@ -468,7 +473,7 @@ public class DBTools {
      */
     private static void updateTrackPreference(boolean newPreference, String trackId) {
         String q = "UPDATE User_Preference_Artist SET `Like/Dislike` = ? " +
-                "WHERE Artist_id = ? AND User_id = ?";
+                "WHERE Artist_id = ? AND user_id = ?";
         updateItemPreference(newPreference, trackId, q);
     }
 
@@ -481,7 +486,7 @@ public class DBTools {
      */
     private static void updateAlbumPreference(boolean newPreference, String albumId) {
         String q = "UPDATE User_Preference_Album SET `Like/Dislike` = ? " +
-                "WHERE Album_id = ? AND User_id = ?";
+                "WHERE Album_id = ? AND user_id = ?";
         updateItemPreference(newPreference, albumId, q);
     }
 
@@ -494,7 +499,7 @@ public class DBTools {
      */
     private static void updateArtistPreference(boolean newPreference, String artistId) {
         String q = "UPDATE User_Preference_Artist SET `Like/Dislike` = ? " +
-                "WHERE Artist_id = ? AND User_id = ?";
+                "WHERE Artist_id = ? AND user_id = ?";
         updateItemPreference(newPreference, artistId, q);
     }
 
@@ -631,7 +636,7 @@ public class DBTools {
 
         ArrayList<String> tracksID = new ArrayList<>();
         try {
-            String q = "SELECT track_id FROM playlist WHERE User_id = ? AND playlist_id = ?;";
+            String q = "SELECT track_id FROM playlist WHERE user_id = ? AND playlist_id = ?;";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.setString(1, USER_ID);
             ps.setString(2, playlist.getId() + "");
@@ -897,7 +902,7 @@ public class DBTools {
         }
 
         try {
-            String q = "SELECT name FROM playlist_meta WHERE User_id = ? AND playlist_id = ?;";
+            String q = "SELECT name FROM playlist_meta WHERE user_id = ? AND playlist_id = ?;";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.setString(1, USER_ID);
             ps.setString(2, playlist_id);
@@ -1206,6 +1211,43 @@ public class DBTools {
 
     public static void deleteRecommendationTrack(String albumId) {
 
+    }
+
+
+    /**
+     * Remove current user.
+     *
+     * USE CAUTION.
+     *
+     */
+    public static void removeUser(){
+        PreparedStatement stmt = null;
+        for (String table: tableNames) {
+            try {
+                stmt = conn.prepareStatement("DELETE FROM " + table + " WHERE user_id = ?;");
+                stmt.setString(1, USER_ID);
+                stmt.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Remove ALL data in all tables
+     *
+     * USE CAUTION
+     */
+    public static void cleanDB(){
+        PreparedStatement stmt = null;
+        for (String table: tableNames) {
+            try {
+                stmt = conn.prepareStatement("DELETE FROM " + table + ";");
+                stmt.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
