@@ -24,8 +24,9 @@ public class DBTools {
                 conn = DriverManager.getConnection("jdbc:mysql://music-curator-user-preference.cd6o4ckow0r1.us-east-2.rds.amazonaws.com:3306/music_curator_user_preference?user=admin&password=musiccurator");
                 System.out.println("Connection Successful. Logged in as " + USER_ID);
 
-                if (isNewUser()){
+                if (isNewUser()) {
                     addNewUser();
+
                     //initialize dummy data
                     storePlaylist(new Playlist("New Playlist"));
                 } else {
@@ -37,10 +38,53 @@ public class DBTools {
         }
     }
 
+    public static String getUserId() {
+        return USER_ID;
+    }
 
-    public static int incrementLoginCount(){
+    // ==========================================================================
+    // ==========================================================================
+    //
+    // USER META METHODS
+    //
+    // ==========================================================================
+    // ==========================================================================
+
+
+    /*
+     describe user_meta;
+     +-------------+-------------+------+-----+---------+----------------+
+     | Field       | Type        | Null | Key | Default | Extra          |
+     +-------------+-------------+------+-----+---------+----------------+
+     | id          | int(11)     | NO   | PRI | NULL    | auto_increment |
+     | username    | varchar(50) | NO   |     | NULL    |                |
+     | login_count | int(11)     | NO   |     | 0       |                |
+     +-------------+-------------+------+-----+---------+----------------+
+    */
+    /**
+     * Add current user to database
+     */
+    public static void addNewUser() {
+        String q = "INSERT INTO user_meta (username, login_count) VALUES(?, ?);";
         try {
-            String q =  "UPDATE user_meta SET login_count = ? WHERE username = ?;";
+            PreparedStatement stmt = conn.prepareStatement(q);
+            stmt.setString(1, USER_ID);
+            stmt.setInt(2, 1);
+            stmt.execute();
+            System.out.println("Added new user: " + USER_ID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Increase the login count of the current user by one
+     * @return
+     */
+    public static void incrementLoginCount() {
+        try {
+            String q = "UPDATE user_meta SET login_count = ? WHERE username = ?;";
             PreparedStatement stmt = conn.prepareStatement(q);
             stmt.setInt(1, getLoginCount() + 1);
             stmt.setString(2, USER_ID);
@@ -48,12 +92,15 @@ public class DBTools {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0;
     }
 
-    public static int getLoginCount(){
+    /**
+     * Return the number of times the user has logged in
+     * @return number of logins by the user
+     */
+    public static int getLoginCount() {
         try {
-            String q =  "SELECT login_count FROM user_meta WHERE username = ?;";
+            String q = "SELECT login_count FROM user_meta WHERE username = ?;";
             PreparedStatement preStSong = conn.prepareStatement(q);
             preStSong.setString(1, USER_ID);
             rs = preStSong.executeQuery();
@@ -66,20 +113,13 @@ public class DBTools {
         return 0;
     }
 
-    public static void addNewUser(){
-        String q = "INSERT INTO user_meta (username, login_count) VALUES(?, ?);";
-        try {
-            PreparedStatement stmt = conn.prepareStatement(q);
-            stmt.setString(1, USER_ID);
-            stmt.setInt(2, 1);
-            stmt.execute();
-            System.out.println("Added new user: " + USER_ID);
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
 
-    public static boolean isNewUser(){
+
+    /**
+     * Check if current user is a new user
+     * @return true if current user is a new user
+     */
+    public static boolean isNewUser() {
         String q = "SELECT EXISTS(SELECT username FROM user_meta WHERE username = ? LIMIT 1);";
         try {
             PreparedStatement preStPlaylistExist = conn.prepareStatement(q);
@@ -88,15 +128,58 @@ public class DBTools {
             rs = preStPlaylistExist.executeQuery();
             rs.next();
             if (rs.getInt(1) == 1) {
-                System.out.println(USER_ID + " is not a new user");
+//                System.out.println(USER_ID + " is not a new user");
                 return false;
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(USER_ID + " is a new user");
+//        System.out.println(USER_ID + " is a new user");
         return true;
     }
+
+
+
+    // ==========================================================================
+    // ==========================================================================
+    //
+    // USER PREFERENCE TABLES METHODS
+    //
+    // ==========================================================================
+    // ==========================================================================
+
+
+    /*
+    describe User_Preference_Album;
+    +--------------+-------------+------+-----+---------+----------------+
+    | Field        | Type        | Null | Key | Default | Extra          |
+    +--------------+-------------+------+-----+---------+----------------+
+    | id           | int(11)     | NO   | PRI | NULL    | auto_increment |
+    | User_id      | varchar(45) | NO   |     | NULL    |                |
+    | Album_id     | varchar(45) | NO   |     | NULL    |                |
+    | Like/Dislike | tinyint(4)  | NO   |     | NULL    |                |
+    +--------------+-------------+------+-----+---------+----------------+
+
+    describe User_Preference_Song;
+    +--------------+-------------+------+-----+---------+----------------+
+    | Field        | Type        | Null | Key | Default | Extra          |
+    +--------------+-------------+------+-----+---------+----------------+
+    | id           | int(11)     | NO   | PRI | NULL    | auto_increment |
+    | User_id      | varchar(45) | NO   |     | NULL    |                |
+    | Track_id     | varchar(45) | NO   |     | NULL    |                |
+    | Like/Dislike | tinyint(4)  | NO   |     | NULL    |                |
+    +--------------+-------------+------+-----+---------+----------------+
+
+    describe User_Preference_Artist;
+    +--------------+-------------+------+-----+---------+----------------+
+    | Field        | Type        | Null | Key | Default | Extra          |
+    +--------------+-------------+------+-----+---------+----------------+
+    | id           | int(11)     | NO   | PRI | NULL    | auto_increment |
+    | User_id      | varchar(45) | NO   |     | NULL    |                |
+    | Artist_id    | varchar(45) | NO   |     | NULL    |                |
+    | Like/Dislike | tinyint(4)  | NO   |     | NULL    |                |
+    +--------------+-------------+------+-----+---------+----------------+
+     */
 
     /*
      * Returns an ArrayList of user liked songs by passing in the USER_ID
@@ -360,9 +443,10 @@ public class DBTools {
 
     /**
      * Update user's preference on item
+     *
      * @param newPreference like (true) or dislike (false)
-     * @param itemId artistId/trackId/albumId
-     * @param q SQL query to update user's preference
+     * @param itemId        artistId/trackId/albumId
+     * @param q             SQL query to update user's preference
      */
     private static void updateItemPreference(boolean newPreference, String itemId, String q) {
         try {
@@ -378,8 +462,9 @@ public class DBTools {
 
     /**
      * Update user's track preference
+     *
      * @param newPreference like (true) or dislike (false)
-     * @param trackId trackId of the track to be updated
+     * @param trackId       trackId of the track to be updated
      */
     private static void updateTrackPreference(boolean newPreference, String trackId) {
         String q = "UPDATE User_Preference_Artist SET `Like/Dislike` = ? " +
@@ -390,8 +475,9 @@ public class DBTools {
 
     /**
      * Update user's album preference
+     *
      * @param newPreference like (true) or dislike (false)
-     * @param albumId albumId of the album to be updated
+     * @param albumId       albumId of the album to be updated
      */
     private static void updateAlbumPreference(boolean newPreference, String albumId) {
         String q = "UPDATE User_Preference_Album SET `Like/Dislike` = ? " +
@@ -402,8 +488,9 @@ public class DBTools {
 
     /**
      * Update user's artist preference
+     *
      * @param newPreference like (true) or dislike (false)
-     * @param artistId artistId of the artist to be updated
+     * @param artistId      artistId of the artist to be updated
      */
     private static void updateArtistPreference(boolean newPreference, String artistId) {
         String q = "UPDATE User_Preference_Artist SET `Like/Dislike` = ? " +
@@ -861,6 +948,266 @@ public class DBTools {
         return isPlaylistExist(playlist.getId());
     }
 
+    // ==========================================================================
+    // ==========================================================================
+    //
+    // RECOMMENDATION TABLES METHODS
+    //
+    // ==========================================================================
+    // ==========================================================================
+
+    /*
+    describe rec_artist;
+   +-----------+-------------+------+-----+---------+----------------+
+   | Field     | Type        | Null | Key | Default | Extra          |
+   +-----------+-------------+------+-----+---------+----------------+
+   | id        | int(11)     | NO   | PRI | NULL    | auto_increment |
+   | user_id   | varchar(50) | NO   |     | NULL    |                |
+   | artist_id | varchar(50) | NO   |     | NULL    |                |
+   | ranking   | int(11)     | NO   |     | 0       |                |
+   +-----------+-------------+------+-----+---------+----------------+
+
+    describe rec_track;
+   +----------+-------------+------+-----+---------+----------------+
+   | Field    | Type        | Null | Key | Default | Extra          |
+   +----------+-------------+------+-----+---------+----------------+
+   | id       | int(11)     | NO   | PRI | NULL    | auto_increment |
+   | user_id  | varchar(50) | NO   |     | NULL    |                |
+   | track_id | varchar(50) | NO   |     | NULL    |                |
+   | ranking  | int(11)     | NO   |     | 0       |                |
+   +----------+-------------+------+-----+---------+----------------+
+
+    describe rec_album;
+   +----------+-------------+------+-----+---------+----------------+
+   | Field    | Type        | Null | Key | Default | Extra          |
+   +----------+-------------+------+-----+---------+----------------+
+   | id       | int(11)     | NO   | PRI | NULL    | auto_increment |
+   | user_id  | varchar(50) | NO   |     | NULL    |                |
+   | album_id | varchar(50) | NO   |     | NULL    |                |
+   | ranking  | int(11)     | NO   |     | 0       |                |
+   +----------+-------------+------+-----+---------+----------------+
+   */
+
+    /**
+     * Get recommendation/curated tracks for the user
+     * @param qty number of tracks to fetch
+     * @return ArrayList of recommended tracks
+     */
+    public static ArrayList<Track> getRecommendationTrack(int qty) {
+        String q = "SELECT track_id FROM rec_track WHERE user_id = ? LIMIT ?;";
+        ArrayList<Track> tracks = new ArrayList<>();
+        PreparedStatement ps;
+        try {
+            ps = conn.prepareStatement(q);
+            ps.setString(1, USER_ID);
+            ps.setInt(2, qty);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                tracks.add(SpotifyTools.getTrack(rs.getString("track_id")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tracks;
+    }
+
+    /**
+     * Get recommendation/curated albums for the user
+     * @param qty number of albums to fetch
+     * @return ArrayList of recommended albums
+     */
+    public static ArrayList<Album> getRecommendationAlbum(int qty) {
+        String q = "SELECT album_id FROM rec_album WHERE user_id = ? LIMIT ?;";
+        ArrayList<Album> albums = new ArrayList<>();
+        PreparedStatement ps;
+        try {
+            ps = conn.prepareStatement(q);
+            ps.setString(1, USER_ID);
+            ps.setInt(2, qty);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                albums.add(SpotifyTools.getAlbum(rs.getString("album_id")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return albums;
+    }
+
+    /**
+     * Get recommendation/curated artists for the user
+     * @param qty number of artists to fetch
+     * @return ArrayList of recommended artists
+     */
+    public static ArrayList<Artist> getRecommendationArtist(int qty) {
+        String q = "SELECT artist_id FROM rec_artist WHERE user_id = ? LIMIT ?;";
+        ArrayList<Artist> artists = new ArrayList<>();
+        PreparedStatement ps;
+        try {
+            ps = conn.prepareStatement(q);
+            ps.setString(1, USER_ID);
+            ps.setInt(2, qty);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                artists.add(SpotifyTools.getArtist(rs.getString("artist_id")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return artists;
+    }
+
+    /**
+     * Store recommended artists/albums/tracks to database
+     * @param item artists/albums/tracks object
+     * @param q SQL query to store the items
+     */
+    private static void storeRecommendationItem(Object item, String q) {
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement(q);
+            stmt.setString(1, USER_ID);
+            if (item instanceof Track) {
+                Track track = (Track) item;
+                stmt.setString(2, track.getTrackID());
+                stmt.setInt(3, track.getRanking());
+
+            } else if (item instanceof Album) {
+                Album album = (Album) item;
+                stmt.setString(2, album.getAlbumID());
+                stmt.setInt(3, album.getRanking());
+
+            } else if (item instanceof Artist) {
+                Artist artist = (Artist) item;
+                stmt.setString(2, artist.getArtistID());
+                stmt.setInt(3, artist.getRanking());
+            }
+            stmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Store recommended tracks to database
+     * @param tracks recommended tracks to be stored
+     */
+    public static void storeRecommendationTrack(ArrayList<Track> tracks) {
+        String q = "INSERT INTO rec_track (user_id, track_id, ranking) VALUES(?, ?, ?);";
+
+        for (Track track : tracks) {
+            if (! isTrackExistInRecTable(track)) {
+                storeRecommendationItem(track, q);
+            }
+        }
+    }
+
+    /**
+     * Store recommended albums to database
+     * @param albums recommended tracks to be stored
+     */
+    public static void storeRecommendationAlbum(ArrayList<Album> albums) {
+        String q = "INSERT INTO rec_album (user_id, album_id, ranking) VALUES(?, ?, ?);";
+        for (Album album : albums) {
+            if (! isAlbumExistInRecTable(album)) {
+                storeRecommendationItem(album, q);
+            }
+        }
+    }
+
+    /**
+     * Store recommended artists to database
+     * @param artists recommended artists to be stored
+     */
+    public static void storeRecommendationArtist(ArrayList<Artist> artists) {
+        String q = "INSERT INTO rec_artist (user_id, artist_id, ranking) VALUES(?, ?, ?);";
+        for (Artist artist : artists) {
+            if (! isArtistExistInRecTable(artist)) {
+                storeRecommendationItem(artists, q);
+            }
+        }
+    }
+
+    /**
+     * Checks whether artist/album/track has been previously stored
+     * @param item artist/album/track to be checked
+     * @param q SQL query to check for item existence
+     * @return true if artist/album/track exists in recommendation table, false otherwise
+     */
+    private static boolean isItemInRecommendationTable(Object item, String q) {
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement(q);
+            stmt.setString(1, USER_ID);
+            if (item instanceof Track) {
+                Track track = (Track) item;
+                stmt.setString(2, track.getTrackID());
+
+            } else if (item instanceof Album) {
+                Album album = (Album) item;
+                stmt.setString(2, album.getAlbumID());
+
+            } else if (item instanceof Artist) {
+                Artist artist = (Artist) item;
+                stmt.setString(2, artist.getArtistID());
+            }
+            rs = stmt.executeQuery();
+            rs.next();
+            if (rs.getInt(1) == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Checks whether the track exists in the recommendation table
+     * @param track the track to be checked
+     * @return true if the track exists in the recommendation table, false otherwise
+     */
+    public static boolean isTrackExistInRecTable(Track track) {
+        String q = "SELECT EXISTS(SELECT track_id FROM rec_track WHERE user_id = ? AND track_id = ? LIMIT 1);";
+        return isItemInRecommendationTable(track, q);
+    }
+
+    /**
+     * Checks whether the album exists in the recommendation table
+     * @param album the album to be checked
+     * @return true if the album exists in the recommendation table, false otherwise
+     */
+    public static boolean isAlbumExistInRecTable(Album album) {
+        String q = "SELECT EXISTS(SELECT album_id FROM rec_album WHERE user_id = ? AND album_id = ? LIMIT 1);";
+        return isItemInRecommendationTable(album, q);
+    }
+
+
+    /**
+     * Checks whether the artist exists in the recommendation table
+     * @param artist the artist to be checked
+     * @return true if the artist exists in the recommendation table, false otherwise
+     */
+    public static boolean isArtistExistInRecTable(Artist artist) {
+        String q = "SELECT EXISTS(SELECT album_id FROM rec_artist WHERE user_id = ? AND album_id = ? LIMIT 1);";
+        return isItemInRecommendationTable(artist, q);
+    }
+
+
+
+    public static void deleteRecommendationArtist(String artistId) {
+
+    }
+
+    public static void deleteRecommendationAlbum(String albumId) {
+
+    }
+
+    public static void deleteRecommendationTrack(String albumId) {
+
+    }
+
 
     /**
      * Terminate DB connection session
@@ -874,7 +1221,4 @@ public class DBTools {
         }
     }
 
-    public static String getUserId() {
-        return USER_ID;
-    }
 }

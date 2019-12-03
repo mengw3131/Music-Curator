@@ -4,7 +4,7 @@ import com.curator.controllers.MainController;
 import com.curator.controllers.NavbarController;
 import com.curator.controllers.PlayerController;
 import com.curator.models.Album;
-import com.curator.models.AlbumSimple;
+//import com.curator.models.AlbumSimple;
 import com.curator.models.Artist;
 import com.curator.models.Track;
 import javafx.scene.control.ScrollPane;
@@ -25,12 +25,6 @@ public class ItemScrollPane extends ScrollPane {
                         new TrackPane((Track) item, mainController, navbarController,
                         playerController, this, i);
                 hBox.getChildren().add(newTrackPane.asPane());
-            }
-        } else if (items.get(0) instanceof AlbumSimple) {
-            for (int i = 0; i < items.size(); i++) {
-                T item = items.get(i);
-                hBox.getChildren().add(new AlbumPane((AlbumSimple) item, mainController,
-                        navbarController, playerController, this, i, type).asPane());
             }
         } else if (items.get(0) instanceof Album) {
             for (int i = 0; i < items.size(); i++) {

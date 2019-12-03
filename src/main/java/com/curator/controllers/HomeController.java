@@ -1,8 +1,6 @@
 package com.curator.controllers;
 
-import com.curator.models.AlbumSimple;
-import com.curator.models.Artist;
-import com.curator.models.Track;
+import com.curator.models.*;
 import com.curator.tools.DBTools;
 import com.curator.tools.SpotifyTools;
 import com.curator.views.ItemScrollPane;
@@ -26,7 +24,7 @@ public class HomeController implements Initializable {
     private NavbarController navbarController;
 
     private ArrayList<Track> tracks;
-    private ArrayList<AlbumSimple> albums;
+    private ArrayList<com.curator.models.Album> albums;
     private ArrayList<Artist> artists;
 
     @FXML
@@ -91,9 +89,10 @@ public class HomeController implements Initializable {
      *
      * @param albums ArrayList of albums to be displayed
      */
-    public void setAlbums(ArrayList<AlbumSimple> albums) {
+    public void setAlbums(ArrayList<Album> albums) {
         this.albums = albums;
     }
+
 
     /**
      * Set the artists to be displayed
@@ -144,7 +143,7 @@ public class HomeController implements Initializable {
         //set the location of each pane, depending of the item's type
         if (items.get(0) instanceof Track) {
             trackVBox.getChildren().setAll(pane);
-        } else if (items.get(0) instanceof AlbumSimple) {
+        } else if (items.get(0) instanceof Album) {
             albumVBox.getChildren().setAll(pane);
         } else if (items.get(0) instanceof Artist) {
             artistVBox.getChildren().setAll(pane);

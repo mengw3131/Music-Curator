@@ -13,10 +13,12 @@ import javafx.scene.image.Image;
  *
  */
 public class Album {
-	private ArrayList<TrackSimple> tracks; // the list of tracks on the album
+	private ArrayList<Track> tracks; // the list of tracks on the album
 	private ArrayList<Artist> artists;     // the list of artists on the album
 	private String artistsNames;           // the list of artists' name on the album
 	private ArrayList<Image> images;
+
+	private int ranking;
 
 	private com.wrapper.spotify.model_objects.specification.Album sAlbum;    //wrapper's object
 	/**
@@ -72,12 +74,12 @@ public class Album {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return tracks The list of song objects on the album
 	 */
-	public ArrayList<TrackSimple> getTracks() {
+	public ArrayList<Track> getTracks() {
 		if (tracks == null){
-			this.tracks = SpotifyTools.toTrackSimple(sAlbum.getTracks().getItems());
+			this.tracks = SpotifyTools.toTracks(sAlbum.getTracks().getItems());
 		}
 		return tracks;
 	}
@@ -101,4 +103,9 @@ public class Album {
 		}
 		return artistsNames;
 	}
+
+	public int getRanking(){ return ranking; }
+
+	public void setRanking(int ranking){ this.ranking = ranking; }
+
 }

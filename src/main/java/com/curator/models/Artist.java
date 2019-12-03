@@ -17,6 +17,8 @@ public class Artist {
 	private ArrayList<Track> tracks;
 	private com.wrapper.spotify.model_objects.specification.Artist sArtist;
 
+	private int ranking;
+
 	/**
 	 * Construct com.curator.models.Artist object from wrapper's com.curator.models.Artist object
 	 * @param sArtist spotify wrapper's com.curator.models.Artist object
@@ -80,4 +82,8 @@ public class Artist {
 		}
 		return this.tracks;
 	}
+
+	public int getRanking(){ return ranking; }
+
+	public void setRanking(int ranking){ this.ranking = ranking; }
 }

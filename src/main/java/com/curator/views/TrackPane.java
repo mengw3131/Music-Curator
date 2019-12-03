@@ -121,6 +121,7 @@ public class TrackPane {
                         DBTools.storeUserPreferenceTracks(track.getTrackID(), false);
 
                         //TODO: GET REPLACEMENT FROM THE RECOMMENDER
+
                         Track t = SpotifyTools.searchTracks("hello world", 1).get(0);
                         TrackPane replacement = new TrackPane(t, mainController,
                                 navbarController, playerController, parentContainer, childIndex);
