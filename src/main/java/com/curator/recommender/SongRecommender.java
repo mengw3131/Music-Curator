@@ -2,10 +2,14 @@ package com.curator.recommender;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.curator.models.Artist;
 import com.curator.models.Track;
+import com.curator.tools.DBTools;
+import com.curator.tools.SpotifyTools;
 
 /**
  * 
@@ -37,6 +41,10 @@ public class SongRecommender {
 		this.userLikes = songInputs;
 		this.songPoolScored = new TreeMap<>();
 		this.userLikesMetrics = new HashMap<>();
+
+		this.runRecommender(25);
+
+		DBTools.addRecommendedTracks(userRecs);
 	}
 
 	// Methods
@@ -49,6 +57,14 @@ public class SongRecommender {
 		return userLikes;
 	}
 
+	public HashMap<String, Double> getUserLikesMetrics() {
+		return userLikesMetrics;
+	}
+
+	public ArrayList<Track> getUserRecs() {
+		return userRecs;
+	}
+
 	/**
 	 * 
 	 * @return songPool The ArrayList of Songs from which recommendations will
@@ -57,8 +73,6 @@ public class SongRecommender {
 	public ArrayList<Track> getSongPool() {
 		return songPool;
 	}
-
-	// TODO add getters for missing
 
 	/**
 	 * 
@@ -70,19 +84,36 @@ public class SongRecommender {
 	}
 
 	/**
-	 * Places the genres of the different songs in userLikes into a
-	 * comma-separated string. Inputs the string into the Spotify Seed Searcher.
-	 * Places the results into the songPool ArrayList.
+	 * Places the artists of the different songs in userLikes into an ArrayList.
+	 * Retrieves the related artists of the user-provided artists. Retrieves the
+	 * top songs of those artists. Places the results into the songPool
+	 * ArrayList.
 	 * 
 	 * @param userLikes The list of user-liked songs
 	 * @param songPool  The list of songs that will be ranked by similarity
 	 *                  score
 	 */
-	public void searchByGenres() {
-		// TODO retrieve the genres of each song in userLikes
-		// TODO seed search with genres in userLikes (limit?)
-		// TODO place search results in songPool
+	public void searchByRelatedArtists() {
+		ArrayList<Artist> userArtists = new ArrayList<>();
+		List<ArrayList<Artist>> relatedArtists = new ArrayList<ArrayList<Artist>>();
+		for (Track song : userLikes) {
+			userArtists.add(song.getArtists().get(0));
+		}
+		for (Artist artist : userArtists) {
+			relatedArtists.add(SpotifyTools.getRelatedArtists());
+		}
+		for (ArrayList<Artist> list : relatedArtists) {
+			for (Artist artist : list) {
+				for (Track song : SpotifyTools
+						.getArtistTopTracks(artist.getArtistID())) {
+					songPool.add(song);
+				}
+
+			}
+		}
 	}
+
+	// add a "recommender tools" thing in tools
 
 	/**
 	 * Calculates the average song feature scores for the user-liked songs.
@@ -171,10 +202,8 @@ public class SongRecommender {
 	 * Loads the tracks from songPool into a TreeMap with the similarity score
 	 * for the track.
 	 * 
-	 * @param songPool       The list of songs that will be ranked by similarity
-	 *                       score
-	 * @param songRecs The TreeMap containing songs and their similarity
-	 *                       scores
+	 * @param songPool The list of songs that will be ranked by similarity score
+	 * @param songRecs The TreeMap containing songs and their similarity scores
 	 */
 	public void loadRecScores() {
 		for (Track song : songPool) {
@@ -186,10 +215,9 @@ public class SongRecommender {
 	 * Iterates through the TreeMap songPoolScored to return the songs with the
 	 * best (lowest value) similarity scores.
 	 * 
-	 * @param songRecs The TreeMap containing songs and their similarity
-	 *                       scores
-	 * @param userRecs       The ArrayList containing the songs with the best
-	 *                       similarity scores
+	 * @param songRecs The TreeMap containing songs and their similarity scores
+	 * @param userRecs The ArrayList containing the songs with the best
+	 *                 similarity scores
 	 */
 	public void bestRecommendations(int listSize) {
 		int count = 0;
@@ -204,7 +232,7 @@ public class SongRecommender {
 
 	public ArrayList<Track> runRecommender(int listSize) {
 		averageUserLikesMetrics();
-		searchByGenres();
+		searchByRelatedArtists();
 		loadRecScores();
 		bestRecommendations(listSize);
 		return userRecs;
