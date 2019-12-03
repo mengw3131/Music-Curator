@@ -18,7 +18,7 @@ public class Album {
 	private String artistsNames;           // the list of artists' name on the album
 	private ArrayList<Image> images;
 
-	private int ranking;
+	private int ranking = -1;
 
 	private com.wrapper.spotify.model_objects.specification.Album sAlbum;    //wrapper's object
 	/**

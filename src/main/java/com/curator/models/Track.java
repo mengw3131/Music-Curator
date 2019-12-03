@@ -24,7 +24,7 @@ public class Track {
 	private Media media;
 	private String trackName; // name of the song
 
-	private int ranking; //ranking
+	private int ranking = -1; //ranking
 
 	// wrapper objects
 	private AudioFeatures features;

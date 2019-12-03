@@ -2,6 +2,7 @@ package com.curator.controllers;
 
 import com.curator.models.*;
 import com.curator.tools.DBTools;
+import com.curator.tools.RecTools;
 import com.curator.tools.SpotifyTools;
 import com.curator.views.ItemScrollPane;
 import javafx.fxml.FXML;
@@ -61,9 +62,8 @@ public class HomeController implements Initializable {
         initProperty();
 
         //NOTE: DISPLAY RECOMMENDATION MODEL RESULTS HERE
-        setTracks(SpotifyTools.searchTracks("Art Tatum", 10));
-        setAlbums(SpotifyTools.searchAlbums("Oscar Peterson", 8));
-        setArtists(SpotifyTools.searchArtists("John", 8));
+
+
     }
 
     /**
@@ -71,7 +71,9 @@ public class HomeController implements Initializable {
      */
     private void initProperty() {
         topRecommendationVBox.prefWidthProperty().bind(mainScrollPane.widthProperty());
-        topBorderPane.visibleProperty().addListener(((observable, oldValue, newValue) -> { loadAll(); }));
+        topBorderPane.visibleProperty().addListener(((observable, oldValue, newValue) -> {
+            loadAll();
+        }));
     }
 
 
@@ -124,9 +126,18 @@ public class HomeController implements Initializable {
      * Loads all item to be displayed
      */
     private void loadAll() {
+        if (tracks == null) {
+            setTracks(RecTools.popTracks(21));
+        }
         loadItems(tracks);
-        loadItems(artists);
+        if (albums == null) {
+            setAlbums(RecTools.popAlbums(21));
+        }
         loadItems(albums);
+        if (artists == null) {
+            setArtists(RecTools.popArtists(21));
+        }
+        loadItems(artists);
     }
 
     /**
@@ -136,17 +147,39 @@ public class HomeController implements Initializable {
      * @param items ArrayList of Track, AlbumSimple, or Artist
      */
     private void loadItems(ArrayList items) {
-        ScrollPane pane = new ItemScrollPane(items, mainController, navbarController, playerController,
-                0);
-        pane.prefWidthProperty().bind(mainScrollPane.widthProperty());
+        System.out.println("loading items ");
+        //if there are recommended items
+        if (items.size() != 0) {
+            ArrayList<ScrollPane> panes = new ArrayList<>();
+            ScrollPane pane;
 
-        //set the location of each pane, depending of the item's type
-        if (items.get(0) instanceof Track) {
-            trackVBox.getChildren().setAll(pane);
-        } else if (items.get(0) instanceof Album) {
-            albumVBox.getChildren().setAll(pane);
-        } else if (items.get(0) instanceof Artist) {
-            artistVBox.getChildren().setAll(pane);
+            //each row contains 7 item, store in panes array list
+            int n = 7;
+            int itemSize = items.size();
+            for (int i = 0; i < itemSize; i += n) {
+                if (i + n < itemSize) {
+                    pane = new ItemScrollPane(new ArrayList(items.subList(i, i + n)),
+                            mainController, navbarController, playerController, 0);
+                    pane.prefWidthProperty().bind(mainScrollPane.widthProperty());
+                    panes.add(pane);
+                } else {
+                    pane = new ItemScrollPane(new ArrayList(items.subList(i, itemSize)),
+                            mainController, navbarController, playerController, 0);
+                    pane.prefWidthProperty().bind(mainScrollPane.widthProperty());
+                    panes.add(pane);
+                    break;
+                }
+            }
+
+            //set the location of each pane, depending of the item's type
+            if (items.get(0) instanceof Track) {
+                trackVBox.getChildren().setAll(panes);
+            } else if (items.get(0) instanceof Album) {
+                albumVBox.getChildren().setAll(panes);
+            } else if (items.get(0) instanceof Artist) {
+                artistVBox.getChildren().setAll(panes);
+            }
         }
+        System.out.println("done loading items");
     }
 }

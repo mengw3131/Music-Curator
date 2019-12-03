@@ -7,6 +7,7 @@ import com.curator.controllers.PlayerController;
 import com.curator.models.Artist;
 import com.curator.models.Track;
 import com.curator.tools.DBTools;
+import com.curator.tools.RecTools;
 import com.curator.tools.SpotifyTools;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -106,10 +107,10 @@ public class ArtistPane {
 
                         //replace
                         if (type == 0){
-                            Artist a = SpotifyTools.searchArtists("John", 1).get(0);
+//                            Artist a = SpotifyTools.searchArtists("John", 1).get(0);
                             ArtistPane replacement =
                                     new ArtistPane(
-                                            a, mainController, navbarController,
+                                            RecTools.popArtist(), mainController, navbarController,
                                             playerController, parentContainer, childIndex, type
                                     );
                             replaceAtTheEnd(replacement);

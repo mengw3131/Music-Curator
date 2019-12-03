@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -60,11 +59,9 @@ public class WelcomeController implements Initializable {
                 boolean isNewUser = DBTools.getLoginCount() == 1;
 
                 /*
-                If is a new user, show survey which music user likes
+                If is a new user, show survey which music the user likes
                  */
                 if (isNewUser) {
-                    System.out.println(DBTools.getUserId() + " is a new user");
-
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/survey.fxml"));
                     try {
                         stage.setScene(new Scene(loader.load()));

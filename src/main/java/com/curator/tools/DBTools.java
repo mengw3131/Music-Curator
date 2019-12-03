@@ -1129,7 +1129,7 @@ public class DBTools {
         String q = "INSERT INTO rec_artist (user_id, artist_id, ranking) VALUES(?, ?, ?);";
         for (Artist artist : artists) {
             if (! isArtistExistInRecTable(artist)) {
-                storeRecommendationItem(artists, q);
+                storeRecommendationItem(artist, q);
             }
         }
     }
@@ -1139,8 +1139,7 @@ public class DBTools {
      * @param item artist/album/track to be checked
      * @param q SQL query to check for item existence
      * @return true if artist/album/track exists in recommendation table, false otherwise
-     */
-    private static boolean isItemInRecommendationTable(Object item, String q) {
+     */ private static boolean isItemInRecommendationTable(Object item, String q) {
         PreparedStatement stmt = null;
         try {
             stmt = conn.prepareStatement(q);
@@ -1195,7 +1194,7 @@ public class DBTools {
      * @return true if the artist exists in the recommendation table, false otherwise
      */
     public static boolean isArtistExistInRecTable(Artist artist) {
-        String q = "SELECT EXISTS(SELECT album_id FROM rec_artist WHERE user_id = ? AND album_id = ? LIMIT 1);";
+        String q = "SELECT EXISTS(SELECT artist_id FROM rec_artist WHERE user_id = ? AND artist_id = ? LIMIT 1);";
         return isItemInRecommendationTable(artist, q);
     }
 

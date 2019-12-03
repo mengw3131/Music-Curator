@@ -12,7 +12,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
@@ -46,23 +45,18 @@ public class SurveyController implements Initializable {
     @FXML
     private Label trackQuestionLabel;
 
+    @FXML
+    private Label welcomeLabel;
+
 
     private HashSet<String> uniqueArtistsID = new HashSet<String>();
     private HashSet<String> uniqueTracksID = new HashSet<String>();
 
-    public void showArtistQuestionLabel(){
-        artistQuestionLabel.setOpacity(1);
-
-    }
-    public void showTrackQuestionLabel(){
-        trackQuestionLabel.setOpacity(1);
-    }
-    public void showOkButton(){
-        okButton.setVisible(true);
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        welcomeLabel.setText("Hi, " + DBTools.getUserId() + "!");
+
         okButton.setVisible(false);
 
         populateGenre();
@@ -135,6 +129,20 @@ public class SurveyController implements Initializable {
                                 trackFlowPane, this, 2, track.getTrackID()));
             }
         }
+    }
+
+
+    public void showArtistQuestionLabel(){
+        artistQuestionLabel.setOpacity(1);
+
+    }
+
+    public void showTrackQuestionLabel(){
+        trackQuestionLabel.setOpacity(1);
+    }
+
+    public void showOkButton(){
+        okButton.setVisible(true);
     }
 
     public void setStage(Stage stage) {

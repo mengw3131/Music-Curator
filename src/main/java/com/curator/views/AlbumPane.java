@@ -5,6 +5,7 @@ import com.curator.models.Album;
 //import com.curator.models.AlbumSimple;
 import com.curator.models.Track;
 import com.curator.tools.DBTools;
+import com.curator.tools.RecTools;
 import com.curator.tools.SpotifyTools;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -28,13 +29,6 @@ public class AlbumPane {
     private ItemScrollPane parentContainer;
     private int childIndex;
     private int type;
-
-//    public AlbumPane(AlbumSimple album, MainController mainController, NavbarController navbarController,
-//                     PlayerController playerController, ItemScrollPane parentContainer,
-//                     int childIndex, int type) {
-//        this(SpotifyTools.getAlbum(album.getAlbumID()), mainController,
-//                navbarController, playerController, parentContainer, childIndex, type);
-//    }
 
     public AlbumPane(Album album, MainController mainController, NavbarController navbarController,
                      PlayerController playerController, ItemScrollPane parentContainer,
@@ -116,8 +110,9 @@ public class AlbumPane {
                         //replace
                         if (type == 0){
                             //TODO: GET REPLACEMENT FROM THE RECOMMENDER
-                            Album a = SpotifyTools.searchAlbums("hello world", 1).get(0);
-                            AlbumPane replacement = new AlbumPane(a, mainController,
+//                            Album a = SpotifyTools.searchAlbums("hello world", 1).get(0);
+                            AlbumPane replacement =
+                                    new AlbumPane(RecTools.popAlbum(), mainController,
                                     navbarController, playerController, parentContainer, childIndex,
                                     type);
                             replaceAtTheEnd(replacement);
