@@ -23,10 +23,13 @@ import com.curator.tools.DBTools;
  * 
  */
 public class AlbumRecommender {
-	ArrayList<Album> userAlbumLikes = new ArrayList<>(); // stores the user provided albums
-	ArrayList<Track> songInputs  = new ArrayList<>(); // the songs on the albums in userAlbumLikes
-	ArrayList<Track> songRecs  = new ArrayList<>(); // stores the top results from SongRecommender
-								// run on songs by the user-provided albums
+	ArrayList<Album> userAlbumLikes = new ArrayList<>(); // stores the user
+															// provided albums
+	ArrayList<Track> songInputs = new ArrayList<>(); // the songs on the albums
+														// in userAlbumLikes
+	ArrayList<Track> songRecs = new ArrayList<>(); // stores the top results
+													// from SongRecommender
+	// run on songs by the user-provided albums
 	HashMap<Album, Integer> albumResults; // stores the albums of the
 											// songs
 	// in songRecs as well as the number
@@ -48,7 +51,6 @@ public class AlbumRecommender {
 
 		this.userAlbumLikes = DBTools.getUserLikedAlbum();
 
-
 		this.runRecommender();
 
 		DBTools.storeRecommendationAlbum(userAlbumRecs);
@@ -62,6 +64,20 @@ public class AlbumRecommender {
 		this.userAlbumLikes = userAlbums;
 
 		this.runRecommender();
+
+		DBTools.storeRecommendationAlbum(userAlbumRecs);
+	}
+
+	// Special constructor to use during user creation
+	public AlbumRecommender(ArrayList<Track> songResults, boolean newUser) {
+		this.albumResults = new HashMap<>();
+		this.albumResultsRanked = new TreeMap<>(Collections.reverseOrder());
+		this.userAlbumRecs = new ArrayList<>();
+
+		this.songRecs = songResults;
+
+		this.recSongsToAlbums();
+		this.bestRecommendations();
 
 		DBTools.storeRecommendationAlbum(userAlbumRecs);
 	}
@@ -152,7 +168,7 @@ public class AlbumRecommender {
 	public ArrayList<Album> runRecommender() {
 		albumsToSongs();
 		SongRecommender songRecommender = new SongRecommender(songInputs);
-		songRecs = songRecommender.runRecommender(200);
+		songRecs = songRecommender.runRecommender(25);
 		recSongsToAlbums();
 		bestRecommendations();
 		return userAlbumRecs;

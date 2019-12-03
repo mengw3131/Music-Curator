@@ -24,8 +24,9 @@ import com.curator.tools.DBTools;
  */
 public class ArtistRecommender {
 	ArrayList<Artist> userArtistLikes; // stores the user provided artists
-	ArrayList<Track> songInputs = new ArrayList<>(); // the most popular songs by the artists in
-									// userArtistLikes
+	ArrayList<Track> songInputs = new ArrayList<>(); // the most popular songs
+														// by the artists in
+	// userArtistLikes
 	ArrayList<Track> songRecs; // stores the top results from SongRecommender
 								// run on songs by the user-provided artists
 	HashMap<Artist, Integer> artistResults; // stores the artists of the songs
@@ -60,6 +61,20 @@ public class ArtistRecommender {
 		this.userArtistLikes = userArtists;
 
 		this.runRecommender();
+
+		DBTools.storeRecommendationArtist(userArtistRecs);
+	}
+
+	// Special constructor to use during user creation
+	public ArtistRecommender(ArrayList<Track> songResults, boolean newUser) {
+		this.artistResults = new HashMap<>();
+		this.artistResultsRanked = new TreeMap<>(Collections.reverseOrder());
+		this.userArtistRecs = new ArrayList<>();
+
+		this.songRecs = songResults;
+
+		this.recSongsToArtists();
+		this.bestRecommendations();
 
 		DBTools.storeRecommendationArtist(userArtistRecs);
 	}
@@ -166,7 +181,7 @@ public class ArtistRecommender {
 	public ArrayList<Artist> runRecommender() {
 		artistsToSongs();
 		SongRecommender songRecommender = new SongRecommender(songInputs);
-		songRecs = songRecommender.runRecommender(100);
+		songRecs = songRecommender.runRecommender(25);
 		recSongsToArtists();
 		bestRecommendations();
 		return userArtistRecs;

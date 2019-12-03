@@ -136,8 +136,6 @@ public class SongRecommender {
 		}
 	}
 
-	// add a "recommender tools" thing in tools
-
 	/**
 	 * Calculates the average song feature scores for the user-liked songs.
 	 * 
