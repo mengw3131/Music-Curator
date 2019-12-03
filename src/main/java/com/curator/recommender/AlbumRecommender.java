@@ -23,9 +23,9 @@ import com.curator.tools.DBTools;
  * 
  */
 public class AlbumRecommender {
-	ArrayList<Album> userAlbumLikes; // stores the user provided albums
-	ArrayList<Track> songInputs; // the songs on the albums in userAlbumLikes
-	ArrayList<Track> songRecs; // stores the top results from SongRecommender
+	ArrayList<Album> userAlbumLikes = new ArrayList<>(); // stores the user provided albums
+	ArrayList<Track> songInputs  = new ArrayList<>(); // the songs on the albums in userAlbumLikes
+	ArrayList<Track> songRecs  = new ArrayList<>(); // stores the top results from SongRecommender
 								// run on songs by the user-provided albums
 	HashMap<Album, Integer> albumResults; // stores the albums of the
 											// songs
@@ -40,12 +40,26 @@ public class AlbumRecommender {
 	ArrayList<Album> userAlbumRecs; // a list of the albums with the best
 	// similarity scores
 
-	// Constructor
-	public AlbumRecommender(ArrayList<Album> userAlbumLikes) {
-		this.userAlbumLikes = userAlbumLikes;
+	// Constructors
+	public AlbumRecommender() {
 		this.albumResults = new HashMap<>();
 		this.albumResultsRanked = new TreeMap<>(Collections.reverseOrder());
 		this.userAlbumRecs = new ArrayList<>();
+
+		this.userAlbumLikes = DBTools.getUserLikedAlbum();
+
+
+		this.runRecommender();
+
+		DBTools.storeRecommendationAlbum(userAlbumRecs);
+	}
+
+	public AlbumRecommender(ArrayList<Album> userAlbums) {
+		this.albumResults = new HashMap<>();
+		this.albumResultsRanked = new TreeMap<>(Collections.reverseOrder());
+		this.userAlbumRecs = new ArrayList<>();
+
+		this.userAlbumLikes = userAlbums;
 
 		this.runRecommender();
 

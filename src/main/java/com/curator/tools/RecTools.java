@@ -1,8 +1,10 @@
 package com.curator.tools;
 
 import java.util.ArrayList;
-
 import com.curator.models.*;
+import com.curator.recommender.AlbumRecommender;
+import com.curator.recommender.ArtistRecommender;
+import com.curator.recommender.SongRecommender;
 
 /**
  * 
@@ -13,10 +15,64 @@ import com.curator.models.*;
  *
  */
 public class RecTools {
-	// TODO Still needed? because right now recommender object just pushes all
-    // of its results to the database
 
-    //Keeps all the current
+    // prevents instance creation
+    private RecTools() {
+    }
+
+    // Methods
+
+    /**
+     * A method to run the Song Recommender on the user liked songs in the
+     * database. Stores recommendations in the user's recommendation database.
+     */
+    public static void runSongRecommender() {
+        new SongRecommender();
+    }
+
+    /**
+     * A method to run the Song Recommender on a user provided list of liked
+     * songs. Stores recommendations in the user's recommendation database.
+     */
+    public static void runSongRecommender(ArrayList<Track> songInputs) {
+        new SongRecommender(songInputs);
+    }
+
+    /**
+     * A method to run the Artist Recommender on the user liked artist in the
+     * database. Stores recommendations in the user's recommendation database.
+     */
+    public static void runArtistRecommender() {
+        new ArtistRecommender();
+    }
+
+    /**
+     * A method to run the Artist Recommender on a user provided list of liked
+     * artists. Stores recommendations in the user's recommendation database.
+     */
+    public static void runArtistRecommender(ArrayList<Artist> artistInputs) {
+        new ArtistRecommender(artistInputs);
+    }
+
+    /**
+     * A method to run the Album Recommender on the user liked albums in the
+     * database. Stores recommendations in the user's recommendation database.
+     */
+    public static void runAlbumRecommender() {
+        new AlbumRecommender();
+    }
+
+    /**
+     * A method to run the Album Recommender on a user provided list of liked
+     * albums. Stores recommendations in the user's recommendation database.
+     */
+    public static void runAlbumRecommender(ArrayList<Album> albumInputs) {
+        new AlbumRecommender(albumInputs);
+    }
+
+
+
+
     private static int INIT_SIZE = 150;
     private static int MIN_THRESHOLD = 30;
     private static ArrayList<Track> trackQueue = new ArrayList<>();

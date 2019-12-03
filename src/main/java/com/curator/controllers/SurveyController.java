@@ -2,6 +2,7 @@ package com.curator.controllers;
 
 import com.curator.models.*;
 import com.curator.tools.DBTools;
+import com.curator.tools.RecTools;
 import com.curator.tools.SpotifyTools;
 import com.curator.views.SurveyButton;
 import javafx.event.EventHandler;
@@ -64,9 +65,15 @@ public class SurveyController implements Initializable {
         okButton.setOnMousePressed(new EventHandler<>() {
             @Override
             public void handle(MouseEvent event) {
+                System.out.println("Storing your picks");
                 storePicks();
 
-                //RUN RECOMMENDER HERE
+                //Run recommender
+                System.out.println("Curating recommendation...");
+//                RecTools.runAlbumRecommender();
+//                RecTools.runArtistRecommender();
+//                RecTools.runSongRecommender();
+                System.out.println("Fetching data...");
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main.fxml"));
                 try {

@@ -27,11 +27,6 @@ public class Main extends Application {
      */
     @java.lang.Override
     public void start(Stage stage) {
-        //Dummy recommendations
-//        DBTools.initialize("islong");  //enter this username in welcome screen
-//        DBTools.storeRecommendationArtist(SpotifyTools.getArtistByGenre(Genre.JAZZ, 20));
-//        DBTools.storeRecommendationAlbum(SpotifyTools.searchAlbums("jazz", 21));
-//        DBTools.storeRecommendationTrack(SpotifyTools.searchTracks("jazz", 30));
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/welcome.fxml"));
         Scene scene = null;

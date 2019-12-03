@@ -1,9 +1,6 @@
 package com.curator.tools;
 
-import com.curator.models.Album;
-import com.curator.models.Artist;
-import com.curator.models.Playlist;
-import com.curator.models.Track;
+import com.curator.models.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -32,8 +29,16 @@ public class DBTools {
                 if (isNewUser()) {
                     addNewUser();
 
+
                     //initialize dummy data
                     storePlaylist(new Playlist("New Playlist"));
+
+                    // !!! DUMMY RECOMMENDATION: COMMENT THIS OUT WHEN USING THE REAL MODEL
+                    DBTools.storeRecommendationArtist(SpotifyTools.getArtistByGenre(Genre.JAZZ, 20));
+                    DBTools.storeRecommendationAlbum(SpotifyTools.searchAlbums("jazz", 21));
+                    DBTools.storeRecommendationTrack(SpotifyTools.searchTracks("jazz", 30));
+
+
                 } else {
                     incrementLoginCount();
                 }
@@ -66,6 +71,7 @@ public class DBTools {
      | login_count | int(11)     | NO   |     | 0       |                |
      +-------------+-------------+------+-----+---------+----------------+
     */
+
     /**
      * Add current user to database
      */
@@ -85,6 +91,7 @@ public class DBTools {
 
     /**
      * Increase the login count of the current user by one
+     *
      * @return
      */
     public static void incrementLoginCount() {
@@ -101,6 +108,7 @@ public class DBTools {
 
     /**
      * Return the number of times the user has logged in
+     *
      * @return number of logins by the user
      */
     public static int getLoginCount() {
@@ -119,9 +127,9 @@ public class DBTools {
     }
 
 
-
     /**
      * Check if current user is a new user
+     *
      * @return true if current user is a new user
      */
     public static boolean isNewUser() {
@@ -142,7 +150,6 @@ public class DBTools {
 //        System.out.println(USER_ID + " is a new user");
         return true;
     }
-
 
 
     // ==========================================================================
@@ -995,6 +1002,7 @@ public class DBTools {
 
     /**
      * Get recommendation/curated tracks for the user
+     *
      * @param qty number of tracks to fetch
      * @return ArrayList of recommended tracks
      */
@@ -1018,6 +1026,7 @@ public class DBTools {
 
     /**
      * Get recommendation/curated albums for the user
+     *
      * @param qty number of albums to fetch
      * @return ArrayList of recommended albums
      */
@@ -1041,6 +1050,7 @@ public class DBTools {
 
     /**
      * Get recommendation/curated artists for the user
+     *
      * @param qty number of artists to fetch
      * @return ArrayList of recommended artists
      */
@@ -1064,8 +1074,9 @@ public class DBTools {
 
     /**
      * Store recommended artists/albums/tracks to database
+     *
      * @param item artists/albums/tracks object
-     * @param q SQL query to store the items
+     * @param q    SQL query to store the items
      */
     private static void storeRecommendationItem(Object item, String q) {
         PreparedStatement stmt = null;
@@ -1096,13 +1107,14 @@ public class DBTools {
 
     /**
      * Store recommended tracks to database
+     *
      * @param tracks recommended tracks to be stored
      */
     public static void storeRecommendationTrack(ArrayList<Track> tracks) {
         String q = "INSERT INTO rec_track (user_id, track_id, ranking) VALUES(?, ?, ?);";
 
         for (Track track : tracks) {
-            if (! isTrackExistInRecTable(track)) {
+            if (!isTrackExistInRecTable(track)) {
                 storeRecommendationItem(track, q);
             }
         }
@@ -1110,12 +1122,13 @@ public class DBTools {
 
     /**
      * Store recommended albums to database
+     *
      * @param albums recommended tracks to be stored
      */
     public static void storeRecommendationAlbum(ArrayList<Album> albums) {
         String q = "INSERT INTO rec_album (user_id, album_id, ranking) VALUES(?, ?, ?);";
         for (Album album : albums) {
-            if (! isAlbumExistInRecTable(album)) {
+            if (!isAlbumExistInRecTable(album)) {
                 storeRecommendationItem(album, q);
             }
         }
@@ -1123,12 +1136,13 @@ public class DBTools {
 
     /**
      * Store recommended artists to database
+     *
      * @param artists recommended artists to be stored
      */
     public static void storeRecommendationArtist(ArrayList<Artist> artists) {
         String q = "INSERT INTO rec_artist (user_id, artist_id, ranking) VALUES(?, ?, ?);";
         for (Artist artist : artists) {
-            if (! isArtistExistInRecTable(artist)) {
+            if (!isArtistExistInRecTable(artist)) {
                 storeRecommendationItem(artist, q);
             }
         }
@@ -1136,10 +1150,12 @@ public class DBTools {
 
     /**
      * Checks whether artist/album/track has been previously stored
+     *
      * @param item artist/album/track to be checked
-     * @param q SQL query to check for item existence
+     * @param q    SQL query to check for item existence
      * @return true if artist/album/track exists in recommendation table, false otherwise
-     */ private static boolean isItemInRecommendationTable(Object item, String q) {
+     */
+    private static boolean isItemInRecommendationTable(Object item, String q) {
         PreparedStatement stmt = null;
         try {
             stmt = conn.prepareStatement(q);
@@ -1169,6 +1185,7 @@ public class DBTools {
 
     /**
      * Checks whether the track exists in the recommendation table
+     *
      * @param track the track to be checked
      * @return true if the track exists in the recommendation table, false otherwise
      */
@@ -1179,6 +1196,7 @@ public class DBTools {
 
     /**
      * Checks whether the album exists in the recommendation table
+     *
      * @param album the album to be checked
      * @return true if the album exists in the recommendation table, false otherwise
      */
@@ -1190,6 +1208,7 @@ public class DBTools {
 
     /**
      * Checks whether the artist exists in the recommendation table
+     *
      * @param artist the artist to be checked
      * @return true if the artist exists in the recommendation table, false otherwise
      */
@@ -1197,7 +1216,6 @@ public class DBTools {
         String q = "SELECT EXISTS(SELECT artist_id FROM rec_artist WHERE user_id = ? AND artist_id = ? LIMIT 1);";
         return isItemInRecommendationTable(artist, q);
     }
-
 
 
     public static void deleteRecommendationArtist(String artistId) {
@@ -1215,13 +1233,12 @@ public class DBTools {
 
     /**
      * Remove current user.
-     *
+     * <p>
      * USE CAUTION.
-     *
      */
-    public static void removeUser(){
+    public static void removeUser() {
         PreparedStatement stmt = null;
-        for (String table: tableNames) {
+        for (String table : tableNames) {
             try {
                 stmt = conn.prepareStatement("DELETE FROM " + table + " WHERE user_id = ?;");
                 stmt.setString(1, USER_ID);
@@ -1234,12 +1251,12 @@ public class DBTools {
 
     /**
      * Remove ALL data in all tables
-     *
+     * <p>
      * USE CAUTION
      */
-    public static void cleanDB(){
+    public static void cleanDB() {
         PreparedStatement stmt = null;
-        for (String table: tableNames) {
+        for (String table : tableNames) {
             try {
                 stmt = conn.prepareStatement("DELETE FROM " + table + ";");
                 stmt.execute();

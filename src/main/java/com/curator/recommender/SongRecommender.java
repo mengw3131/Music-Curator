@@ -28,15 +28,26 @@ public class SongRecommender {
 											// database
 	// and their similarity scores (ordered by similarity
 	// score)
-	ArrayList<Track> songPool; // stores the narrowed-down pool of songs from
+	ArrayList<Track> songPool = new ArrayList<>(); // stores the narrowed-down pool of songs from
 								// Spotify from the same id as the
 								// user-provided songs
 	HashMap<String, Double> userLikesMetrics; // stores the average song metrics
 												// of all the songs in userLikes
-	ArrayList<Track> userRecs; // stores the songs with the best similarity
+	ArrayList<Track> userRecs = new ArrayList<>(); // stores the songs with the best similarity
 								// scores
 
-	// Constructor
+	// Constructors
+	public SongRecommender() {
+		this.songPoolScored = new TreeMap<>();
+		this.userLikesMetrics = new HashMap<>();
+
+		this.userLikes = DBTools.getUserLikedSongs();
+
+		this.runRecommender(25);
+
+		DBTools.storeRecommendationTrack(userRecs);
+	}
+
 	public SongRecommender(ArrayList<Track> songInputs) {
 		this.userLikes = songInputs;
 		this.songPoolScored = new TreeMap<>();
@@ -132,6 +143,7 @@ public class SongRecommender {
 		double loudScore = 0;
 		double tempoScore = 0;
 		double valenceScore = 0;
+
 		for (Track song : userLikes) {
 			acousticScore += song.getAcousticness();
 			danceScore += song.getDanceability();
