@@ -86,4 +86,17 @@ public class Artist {
 	public int getRanking(){ return ranking; }
 
 	public void setRanking(int ranking){ this.ranking = ranking; }
+
+	@Override
+	public boolean equals(Object obj) {
+		if (! (obj instanceof Artist)){
+			return false;
+		}
+		return this.getArtistID().equals(((Artist) obj).getArtistID());
+	}
+
+	@Override
+	public String toString() {
+		return "Artist " + getName() + " with id " + getArtistID();
+	}
 }

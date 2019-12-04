@@ -1,7 +1,6 @@
 package com.curator.tools;
 
 import com.curator.models.*;
-import com.wrapper.spotify.model_objects.specification.AudioFeatures;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -32,13 +31,12 @@ public class DBTools {
 
 
                     //initialize dummy data
-                    storePlaylist(new Playlist("New Playlist"));
+//                    storePlaylist(new Playlist("New Playlist"));
 
                     // !!! DUMMY RECOMMENDATION: COMMENT THIS OUT WHEN USING THE REAL MODEL
 //                    DBTools.storeRecommendationArtist(SpotifyTools.getArtistByGenre(Genre.JAZZ, 20));
 //                    DBTools.storeRecommendationAlbum(SpotifyTools.searchAlbums("jazz", 21));
 //                    DBTools.storeRecommendationTrack(SpotifyTools.searchTracks("jazz", 30));
-
 
                 } else {
                     incrementLoginCount();
@@ -48,11 +46,6 @@ public class DBTools {
             }
         }
     }
-
-
-
-
-
 
     public static String getUserId() {
         return USER_ID;
@@ -88,12 +81,12 @@ public class DBTools {
             stmt.setString(1, USER_ID);
             stmt.setInt(2, 1);
             stmt.execute();
+
             System.out.println("Added new user: " + USER_ID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
 
     /**
      * Increase the login count of the current user by one
@@ -123,13 +116,14 @@ public class DBTools {
             PreparedStatement preStSong = conn.prepareStatement(q);
             preStSong.setString(1, USER_ID);
             rs = preStSong.executeQuery();
-            while (rs.next()) {
+            if (rs.next()){
                 return rs.getInt(1);
             }
+            rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0;
+        return -1;
     }
 
 
@@ -545,7 +539,6 @@ public class DBTools {
     public static void storePlaylist(Playlist playlist) {
         if (isPlaylistExist(playlist)) {
             System.out.println("Playlist " + playlist.getId() + " already exists.");
-            return;
         } else {
             storePlaylistMeta(playlist);
 
@@ -913,7 +906,6 @@ public class DBTools {
         if (!isPlaylistExist(playlist_id)) {
             return null;
         }
-
         try {
             String q = "SELECT name FROM playlist_meta WHERE user_id = ? AND playlist_id = ?;";
             PreparedStatement ps = conn.prepareStatement(q);
@@ -1211,7 +1203,6 @@ public class DBTools {
         return isItemInRecommendationTable(album, q);
     }
 
-
     /**
      * Checks whether the artist exists in the recommendation table
      *
@@ -1271,7 +1262,6 @@ public class DBTools {
             }
         }
     }
-
 
     /**
      * Terminate DB connection session

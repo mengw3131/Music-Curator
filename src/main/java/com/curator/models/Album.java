@@ -68,7 +68,7 @@ public class Album {
 	 */
 	public ArrayList<Artist> getArtists() {
 	    if (artists == null){
-			this.artists = SpotifyTools.toArtist(sAlbum.getArtists());
+			this.artists = SpotifyTools.toArtists(sAlbum.getArtists());
 		}
 		return artists;
 	}
@@ -99,7 +99,7 @@ public class Album {
 	 */
 	public String getArtistsNames() {
 		if (artistsNames == null){
-			this.artistsNames = SpotifyTools.toString(sAlbum.getArtists());
+			this.artistsNames = SpotifyTools.toArtistName(sAlbum.getArtists());
 		}
 		return artistsNames;
 	}
@@ -108,4 +108,18 @@ public class Album {
 
 	public void setRanking(int ranking){ this.ranking = ranking; }
 
+
+	@Override
+	public boolean equals(Object obj) {
+		if (! (obj instanceof Album)){
+			return false;
+		}
+		return this.getAlbumID().equals(((Album) obj).getAlbumID());
+
+	}
+
+	@Override
+	public String toString() {
+		return "Album " + getName() + " by " + getArtistsNames() + " with id " + getAlbumID();
+	}
 }

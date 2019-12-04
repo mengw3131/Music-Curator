@@ -46,9 +46,9 @@ public class Playlist {
 
     /**
      * Constructs a Playlist with multiple tracks and custom id
-     * @param name
-     * @param tracks
-     * @param id
+     * @param name name of the playlist
+     * @param tracks the tracks to be added in the playlist
+     * @param id custom playlist id
      */
     public Playlist(String name, ArrayList<Track> tracks, String id){
         this.id =  id;
@@ -131,5 +131,19 @@ public class Playlist {
      */
     public String getId() {
         return id;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (! (obj instanceof Playlist)){
+            return false;
+        }
+        return this.id.equals(((Playlist) obj).id);
+    }
+
+    @Override
+    public String toString() {
+        return "Playlist " + getName() + " with id " + id + " of size " + tracks.size();
     }
 }

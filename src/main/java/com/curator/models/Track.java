@@ -77,7 +77,7 @@ public class Track {
 	 * @return artists com.curator.models.Artist of the track
 	 */
 	public ArrayList<Artist> getArtists() {
-		this.artists = SpotifyTools.toArtist(sTrack.getArtists());
+		this.artists = SpotifyTools.toArtists(sTrack.getArtists());
 
 		return artists;
 	}
@@ -301,5 +301,30 @@ public class Track {
 			return 0;
 		}
 		return features.getValence();
+	}
+
+	/**
+	 * Returns the AudioFeatures object of the track
+	 * @return
+	 */
+	public AudioFeatures getAudioFeatures() {
+		if (!analysisRan){
+			setAudioFeatures();
+		}
+		return features;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (! (obj instanceof Track)){
+			return false;
+		}
+		return this.getTrackID().equals(((Track) obj).getTrackID());
+	}
+
+	@Override
+	public String toString() {
+		return "Track " + getTrackName() + " in album " + getAlbumName() + " by " +
+				getArtistsNames() + " with id " + getTrackID();
 	}
 }

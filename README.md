@@ -1,4 +1,5 @@
 # Music Curator
+Official Page: https://upenn-cit599.github.io/final-project-music-curator/
 
 ![alt test](screenshots/home.png)
 

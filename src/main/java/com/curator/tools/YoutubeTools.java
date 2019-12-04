@@ -35,125 +35,6 @@ public class YoutubeTools {
     private YoutubeTools() {
     }
 
-
-    /**
-     * Given '+'-separated query containing keywords, fetch Youtube first page results unique video id.
-     * Better matches have lower index on the array list.
-     *
-     * @return Youtube video ids of the first page
-     */
-    public static ArrayList<String> getIDsOfBestMatchVideos(String query) {
-        String url = "https://www.youtube.com/results?search_query=" + query;
-        ArrayList<String> results = new ArrayList<String>();
-        HashMap<String, String> uniqueLinks = new HashMap<>();
-
-        try {
-            //Get html of the query
-            HttpClient client = HttpClients.createDefault();
-            HttpResponse response = client.execute(new HttpGet(url));
-            String doc = new BasicResponseHandler().handleResponse(response);
-            Matcher m = p.matcher(doc);
-
-            //for every /watch?v=id urls
-            while (m.find()) {
-                String link = m.group().replace("/watch?v=", "");
-
-                if (uniqueLinks.get(link) == null) {
-                    uniqueLinks.put(link, "");
-                    results.add(link);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return results;
-    }
-
-    /**
-     * TODO: if not finish downloading and user click another music, stop
-     * TODO: if possible find a way to stream instead of download
-     * TODO: hide python outputs
-     * <p>
-     * Given youtube video id, download music file to
-     * default folder (named as videoid.mp3), then return Media object
-     *
-     * @return Sound object
-     */
-    public static Media getMediaFileFromYoutubeId(String id) {
-        return getMediaFileFromYoutubeId(id, DEFAULT_OUT_PATH);
-    }
-
-
-    public static Media getMediaFileFromYoutubeId(String id, String outputFolder) {
-        if (!isMediaFileExists(id, outputFolder)) {
-            //ydl configs. 'outtmpl': sets output dir and filename.
-            i.exec("ydl_opts = {" +
-                    "'outtmpl':'" + outputFolder + id + ".%(ext)s'," +
-                    "'format':'bestaudio/best', " +
-                    "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
-            );
-            i.exec("with youtube_dl.YoutubeDL(ydl_opts) as ydl: ydl.download(['https://www.youtube.com/watch?v=" + id + "'])");
-        }
-        return new Media(new File(outputFolder + id + ".mp3").toURI().toString());
-    }
-
-    /**
-     * Given '+'-separated keywords, get best matching video from youtube and download as .mp3,
-     * then return Sound object connected to the music file
-     * <p>
-     * Convenience method for both of getIDsOfBestMatchVideos and getMediaFileFromYoutubeId.
-     *
-     * @param query '+'-separated keywords
-     * @return Sound object of the music file
-     */
-    public static Media getMusicFileFromQuery(String query) {
-
-        for (String link : getIDsOfBestMatchVideos(query)) {
-
-            //if video is 10 minutes or shorter, proceed, otherwise check the next best match
-            if (Integer.valueOf(getVideoMeta(link).get("duration").toString()) <= MAX_AUDIO_LENGTH_SECOND) {
-                return getMediaFileFromYoutubeId(link);
-            }
-            System.out.println(link + " is too long! Checking next best");
-        }
-        return getMediaFileFromYoutubeId(getIDsOfBestMatchVideos(query).get(0));
-    }
-
-    /**
-     * Given multiple keywords, replace space with '+' and, join all by '+'
-     *
-     * @param keywords query keywords, e.g. track name, artist name etc
-     * @return youtube query string
-     */
-    public static String createYoutubeQuery(String... keywords) {
-        StringBuilder s = new StringBuilder();
-        for (String keyword : keywords) {
-            s.append(keyword.replace(" ", "+")).append("+");
-        }
-        String res = s.toString();
-        return res.substring(0, res.length() - 1);
-    }
-
-    /**
-     * Checks if [id].mp3 exists in default local location
-     *
-     * @param id - youtube video id
-     * @return true if exists in local
-     */
-    public static boolean isMediaFileExists(String id) {
-        return isMediaFileExists(id, DEFAULT_OUT_PATH);
-    }
-
-    /**
-     * Checks if [id].mp3 exists in local
-     *
-     * @param id - youtube video id
-     * @return true if exists in local
-     */
-    public static boolean isMediaFileExists(String id, String folderPath) {
-        return new File(folderPath + id + ".mp3").exists();
-    }
-
     /**
      * Initialize python interpreter and import necessary modules.
      * Called before app launches to eliminate first load wait time during use.
@@ -197,20 +78,144 @@ public class YoutubeTools {
     }
 
     /**
-     * Get Youtube video meta data, given video id
+     * Given multiple keywords, replace space with '+' and, join all by '+'
      *
-     * @param id
-     * @return PyDictionary containing meta data
+     * @param keywords query keywords, e.g. track name, artist name etc
+     * @return youtube query string
+     */
+    public static String createYoutubeQuery(String... keywords) {
+        StringBuilder s = new StringBuilder();
+        for (String keyword : keywords) {
+            s.append(keyword.replace(" ", "+")).append("+");
+        }
+        String res = s.toString();
+        return res.substring(0, res.length() - 1);
+    }
+
+    /**
+     * Given '+'-separated query containing keywords, fetch Youtube first page results unique video id.
+     * Better matches have lower index on the array list.
+     *
+     * @return Youtube video ids of the first page
+     */
+    public static ArrayList<String> getIDsOfBestMatchVideos(String query) {
+        String url = "https://www.youtube.com/results?search_query=" + query;
+        ArrayList<String> results = new ArrayList<>();
+        HashMap<String, String> uniqueLinks = new HashMap<>();
+
+        try {
+            //Get html of the query
+            HttpClient client = HttpClients.createDefault();
+            HttpResponse response = client.execute(new HttpGet(url));
+            String doc = new BasicResponseHandler().handleResponse(response);
+            Matcher m = p.matcher(doc);
+
+            //for every /watch?v=id urls
+            while (m.find()) {
+                String link = m.group().replace("/watch?v=", "");
+
+                if (uniqueLinks.get(link) == null) {
+                    uniqueLinks.put(link, "");
+                    results.add(link);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return results;
+    }
+
+    /**
+     * Given youtube video id, download music file to
+     * default folder (named as videoid.mp3), then return Media object
+     *
+     * @return Sound object
+     */
+    public static Media getMediaFileFromYoutubeId(String id) {
+        return getMediaFileFromYoutubeId(id, DEFAULT_OUT_PATH);
+    }
+
+    /**
+     * Given Youtube video id, download music file to
+     * specified folder (named as videoid.mp3), then return Media object
+     *
+     * @param id the Youtube video id,
+     * @param outputFolder destination folder of the downloaded media file
+     * @return a Media object of the video
+     */
+    public static Media getMediaFileFromYoutubeId(String id, String outputFolder) {
+        if (!isMediaFileExists(id, outputFolder)) {
+            //ydl configs. 'outtmpl': sets output dir and filename.
+            i.exec("ydl_opts = {" +
+                    "'outtmpl':'" + outputFolder + id + ".%(ext)s'," +
+                    "'format':'bestaudio/best', " +
+                    "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
+            );
+            i.exec("with youtube_dl.YoutubeDL(ydl_opts) as ydl: ydl.download(['https://www.youtube.com/watch?v=" + id + "'])");
+        }
+        return new Media(new File(outputFolder + id + ".mp3").toURI().toString());
+    }
+
+    /**
+     * Given '+'-separated keywords, get best matching video from youtube and download as .mp3,
+     * then return Sound object connected to the music file
+     * <p>
+     * Convenience method for both of getIDsOfBestMatchVideos and getMediaFileFromYoutubeId.
+     *
+     * @param query '+'-separated keywords
+     * @return Sound object of the music file
+     */
+    public static Media getMusicFileFromQuery(String query) {
+
+        for (String link : getIDsOfBestMatchVideos(query)) {
+
+            //if video is 10 minutes or shorter, proceed, otherwise check the next best match
+            if (Integer.valueOf(getVideoMeta(link).get("duration").toString()) <= MAX_AUDIO_LENGTH_SECOND) {
+                return getMediaFileFromYoutubeId(link);
+            }
+            System.out.println(link + " is too long! Checking next best");
+        }
+        return getMediaFileFromYoutubeId(getIDsOfBestMatchVideos(query).get(0));
+    }
+
+    /**
+     * Given Youtube videoID, returns the video's meta data
+     * @param id Youtube videoID
+     * @return the video's meta data
      */
     public static PyDictionary getVideoMeta(String id) {
         i.exec("with youtube_dl.YoutubeDL(ydl_opts) as ydl: " +
                 "meta = ydl.extract_info('https://www.youtube.com/watch?v=" + id + "', download=False)");
 
-//        System.out.println(i.get("meta").toString()); //uncomment to print the whole meta
+//        System.out.println(i.get("meta").toArtistName()); //uncomment to print the whole meta
         return (PyDictionary) i.get("meta");
     }
 
+    /**
+     * Return the Python interpreter
+     * @return Python interpreter
+     */
     public static PythonInterpreter getInterpreter() {
         return i;
+    }
+
+    /**
+     * Checks if [id].mp3 exists in default local location
+     *
+     * @param id - youtube video id
+     * @return true if exists in local
+     */
+    public static boolean isMediaFileExists(String id) {
+        return isMediaFileExists(id, DEFAULT_OUT_PATH);
+    }
+
+    /**
+     * Checks if [id].mp3 exists in local
+     *
+     * @param id - youtube video id
+     * @return true if exists in local
+     */
+    public static boolean isMediaFileExists(String id, String folderPath) {
+        return new File(folderPath + id + ".mp3").exists();
     }
 }

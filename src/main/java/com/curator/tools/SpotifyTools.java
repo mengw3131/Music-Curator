@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 
 /**
@@ -23,230 +26,21 @@ public class SpotifyTools {
     //TODO: secure spotify API keys, store in config file OR prompt login
     private static String clientId = "f9c190003d09495d9915681495281934";
     private static String clientSecret = "e63dcad355af406aa0cfc516427095ec";
-    public static SpotifyApi api = new SpotifyApi.Builder().setAccessToken(getAccessToken(clientId, clientSecret)).build();
+    private static SpotifyApi api = new SpotifyApi.Builder().setAccessToken(getAccessToken(clientId, clientSecret)).build();
+    private static int calls_count = 0;
 
-    public static int calls_count = 0;
+    private final static Logger LOGGER = getLogger();
+
 
     /**
      * Prevent instance creation
      */
     private SpotifyTools() {
-        try {
-            api.getAudioFeaturesForSeveralTracks("track id1", "track id 2")
-                    .build().execute();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
-            e.printStackTrace();
-        }
     }
 
-    /**
-     * Given ArrayList of multiple artistIDs, return ArrayList of Artist objects in single call
-     * @param artistsIDs ArrayList of the artistIDs of the albums
-     * @return ArrayList of Artist objects
-     */
-    public static ArrayList<com.curator.models.Artist> getSeveralArtists(ArrayList<String> artistsIDs) {
-        ArrayList<com.curator.models.Artist> artists = new ArrayList<>();
-        try {
-            for (com.wrapper.spotify.model_objects.specification.Artist sArtist:
-                    api.getSeveralArtists(getIdArray(artistsIDs)).build().execute()) {
-                artists.add(new com.curator.models.Artist(sArtist));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
-            e.printStackTrace();
-        }
-        return artists;
-    }
-
-    /**
-     * Given ArrayList of multiple albumIDs, return ArrayList of Album objects in single call
-     * @param albumIDs ArrayList of the albumIDs of the albums
-     * @return ArrayList of Album objects
-     */
-    public static ArrayList<com.curator.models.Album> getSeveralAlbums(ArrayList<String> albumIDs) {
-        ArrayList<com.curator.models.Album> albums = new ArrayList<>();
-        try {
-            for (com.wrapper.spotify.model_objects.specification.Album sAlbum :
-                    api.getSeveralAlbums(getIdArray(albumIDs)).build().execute()) {
-                albums.add(new com.curator.models.Album(sAlbum));
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
-            e.printStackTrace();
-        }
-        return albums;
-    }
-
-
-    /**
-     * Given ArrayList of multiple trackIDs, return ArrayList of Track objects in single call
-     * @param trackIDs ArrayList of the trackIDs of the tracks
-     * @return ArrayList of Track objects
-     */
-    public static ArrayList<com.curator.models.Track> getSeveralTracks(ArrayList<String> trackIDs) {
-        ArrayList<com.curator.models.Track> tracks = new ArrayList<>();
-
-        try {
-            for (com.wrapper.spotify.model_objects.specification.Track sTrack :
-                    api.getSeveralTracks(getIdArray(trackIDs)).build().execute()) {
-                tracks.add(new com.curator.models.Track(sTrack));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
-            e.printStackTrace();
-        }
-        return tracks;
-    }
-
-    /**
-     * Given ArrayList of Tracks, return ArrayList of the corresponding AudioFeatures
-     * @param tracks ArrayList of the tracks
-     * @return ArrayList of AudioFeatures of the tracks
-     */
-    public static ArrayList<AudioFeatures> getSeveralAudioFeaturesFromTracks(ArrayList<com.curator.models.Track> tracks) {
-        return getSeveralAudioFeaturesFromTrackIDs(getIdArray(tracks));
-    }
-
-    /**
-     * Given ArrayList of trackIDs, return ArrayList of the corresponding AudioFeatures
-     * @param trackIDs the trackIDs of the tracks
-     * @return ArrayList of AudioFeatures of the tracks with trackIDs
-     */
-    public static ArrayList<AudioFeatures> getSeveralAudioFeaturesFromTrackIDs(ArrayList<String> trackIDs) {
-        return getSeveralAudioFeaturesFromTrackIDs(getIdArray(trackIDs));
-    }
-
-    /**
-     * Given string array of trackIDs, return ArrayList of th corresponding AudioFeatures
-     * @param trackIDs the trackIDs of the tracks
-     * @return ArrayList of AudioFeatures of the tracks with trackIDs
-     */
-    private static ArrayList<AudioFeatures> getSeveralAudioFeaturesFromTrackIDs(String[] trackIDs) {
-        if (trackIDs.length > 100){
-            System.out.println("Max tracks 100, " + trackIDs.length + " supplied");
-            return null;
-        }
-        try {
-            return new ArrayList<>(Arrays.asList(api.getAudioFeaturesForSeveralTracks(trackIDs)
-                    .build().execute()));
-        } catch (IOException | SpotifyWebApiException e) {
-            e.printStackTrace();
-        }
-        return new ArrayList<>();
-    }
-
-    /**
-     * Given ArrayList of Tracks, Albums, Artists, or ids,
-     * return the string array of the ids of the objects
-     * @param items ArrayList of Tracks, Albums, Artists, or ids (String)
-     * @return the string array of the ids of the objects
-     */
-    private static String[] getIdArray(ArrayList items) {
-        int size = items.size();
-        String[] sArr = new String[size];
-        if (items.size() == 0) {
-            return new String[]{};
-        }
-        if (items.get(0) instanceof Track) {
-            for (int i = 0; i < size; i++) {
-                sArr[i] = ((Track) items.get(i)).getId();
-            }
-        } else if (items.get(0) instanceof Album) {
-            for (int i = 0; i < size; i++) {
-                sArr[i] = ((Album) items.get(i)).getId();
-            }
-        } else if (items.get(0) instanceof Artist) {
-            for (int i = 0; i < size; i++) {
-                sArr[i] = ((Artist) items.get(i)).getArtistID();
-            }
-        } else if (items.get(0) instanceof String) {
-            for (int i = 0; i < size; i++) {
-                sArr[i] = ((String) items.get(i));
-            }
-        }
-        return sArr;
-    }
-
-
-    /**
-     * Given Genre, returns artists of that genre.
-     *
-     * @param genre Genre object, e.g. Genre.POP
-     * @param limit number of artists to fetch
-     * @return ArrayList of artists of the genre
-     */
-    public static ArrayList<com.curator.models.Artist> getArtistByGenre(Genre genre, int limit) {
-        ArrayList<com.curator.models.Artist> artists = new ArrayList<>();
-        try {
-            com.wrapper.spotify.model_objects.specification.Artist[] sArtists =
-                    api.searchItem("genre:" + genre,
-                            ModelObjectType.ARTIST.getType()).limit(limit).build()
-                            .execute().getArtists().getItems();
-
-            for (int i = 0; i < sArtists.length; i++) {
-                artists.add(new Artist(sArtists[i]));
-            }
-        } catch (SpotifyWebApiException | IOException exception) {
-            exception.printStackTrace();
-        }
-
-        calls_count++;
-        System.out.println(calls_count + " getArtistByGenre()");
-        return artists;
-    }
-
-    /**
-     * Given a track, returns arrayList of tracks that are similar
-     *
-     * @param trackId the trackId of the track to be compared
-     * @return arrayList of similar tracks
-     */
-    public static ArrayList<com.curator.models.Track> getRelatedTracks(String trackId) {
-        Artist artist = getTrack(trackId).getArtists().get(0);
-        ArrayList<Artist> relatedArtist = getRelatedArtists(artist.getArtistID());
-        ArrayList<com.curator.models.Track> relatedTracks = new ArrayList<>();
-
-        for (Artist a : relatedArtist) {
-            relatedTracks.addAll(getArtistTopTracks(a.getArtistID()));
-        }
-        Collections.shuffle(relatedTracks);
-
-        calls_count++;
-        System.out.println(calls_count + " getRelatedTracks()");
-        return relatedTracks;
-    }
-
-    /**
-     * Given artists with artistId, returns related artists
-     *
-     * @param artistId artistsId of the artist to be searched
-     * @return ArrayList of related artists
-     */
-    public static ArrayList<Artist> getRelatedArtists(String artistId) {
-        ArrayList<Artist> artists = new ArrayList<>();
-        try {
-            for (com.wrapper.spotify.model_objects.specification.Artist artist :
-                    api.getArtistsRelatedArtists(artistId).build().execute()) {
-                artists.add(new Artist(artist));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
-            e.printStackTrace();
-        }
-
-
-        calls_count++;
-        System.out.println(calls_count + " getRelatedArtists()");
-        return artists;
-    }
+    //=====================================
+    // API PROPERTIES
+    //=====================================
 
 
     /**
@@ -258,51 +52,157 @@ public class SpotifyTools {
         return api;
     }
 
-
-    public static ArrayList<com.curator.models.Track> toTracks(TrackSimplified[] tsArr) {
-        ArrayList<com.curator.models.Track> tracks = new ArrayList<>();
-        for (TrackSimplified ts : tsArr) {
-            tracks.add(getTrack(ts.getId()));
-        }
-
-
-        return tracks;
-    }
-
     /**
-     * Given wrapper's object ArtistSimplified, convert to com.curator.models.Artist object
+     * Get access token given clientId and clientSecret
      *
-     * @param sArtist wrapper's object ArtistSimplified
-     * @return com.curator.models.Artist object of
+     * @param clientId
+     * @param clientSecret
+     * @return access token
      */
-    public static com.curator.models.Artist toArtist(ArtistSimplified sArtist) {
-        try {
+    public static String getAccessToken(String clientId, String clientSecret) {
+        SpotifyApi spotifyApi = new SpotifyApi.Builder()
+                .setClientId(clientId)
+                .setClientSecret(clientSecret)
+                .build();
+        ClientCredentialsRequest clientCredentialsRequest = spotifyApi.clientCredentials().build();
 
-            calls_count++;
-            System.out.println(calls_count + " toArtist()");
-            return new Artist(api.getArtist(sArtist.getId()).build().execute());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
+        try {
+            final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
+            return clientCredentials.getAccessToken();
+        } catch (SpotifyWebApiException | IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
+    private static Logger getLogger() {
+        Logger logger = Logger.getLogger(SpotifyTools.class.getName());
+        logger.setLevel(Level.INFO);
+        //LOGGER.setLevel(Level.OFF); ///turn off loggers
+        return logger;
+    }
+
+    //=====================================
+    // SEARCH METHODS
+    //=====================================
+
     /**
-     * Given array of wrapper's object ArtistSimplified, convert to ArrayList of com.curator.models.Artist objects
+     * Given query and limit, search and return results as arrayList of Track
      *
-     * @param sArtists array of wrapper's object ArtistSimplified
-     * @return ArrayList of com.curator.models.Artist objects
+     * @param query track name
+     * @param limit # of desired results, max 50
+     * @return arrayList of Track
      */
-    public static ArrayList<Artist> toArtist(ArtistSimplified[] sArtists) {
-        ArrayList<Artist> artists = new ArrayList<>();
-        for (ArtistSimplified sArtist : sArtists) {
-            artists.add(toArtist(sArtist));
+    public static ArrayList<com.curator.models.Track> searchTracks(String query, int limit) {
+        ArrayList<com.curator.models.Track> trackArr = new ArrayList<>();
+        try {
+            for (Track track : api.searchTracks(query).limit(limit).build().execute().getItems()) {
+                trackArr.add(new com.curator.models.Track(track));
+            }
+        } catch (IOException | SpotifyWebApiException e) {
+            e.printStackTrace();
         }
+        LOGGER.info("sAPI Call #" + ++calls_count + " searchTrack(), limit: " + limit);
+        return trackArr;
+    }
+
+    /**
+     * Given query string and limit, search and return results as arrayList of Artist
+     *
+     * @param query artist's name
+     * @param limit # of desired result, max 50
+     * @return arrayList of Artist
+     */
+    public static ArrayList<Artist> searchArtists(String query, int limit) {
+        ArrayList<Artist> artistArr = new ArrayList<>();
+        try {
+            for (com.wrapper.spotify.model_objects.specification.Artist artist :
+                    api.searchArtists(query).limit(limit).build().execute().getItems()) {
+                artistArr.add(new Artist(artist));
+            }
+        } catch (IOException | SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("sAPI Call #" + ++calls_count + " searchArtists(), limit: " + limit);
+        return artistArr;
+    }
+
+    /**
+     * Given query string and limit, search and return results as arrayList of Album
+     *
+     * @param query string query, e.g. Rondo Alla Turca Mozart
+     * @param limit # of desired results, max 50
+     * @return arrayList of Album
+     */
+    public static ArrayList<com.curator.models.Album> searchAlbums(String query, int limit) {
+        ArrayList<com.curator.models.Album> albums = new ArrayList<>();
+        try {
+            ArrayList<String> ids = toIdArrayList(
+                    api.searchAlbums(query).limit(limit).build().execute().getItems());
+            albums = getSeveralAlbums(ids);
+        } catch (IOException | SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("sAPI Call #" + ++calls_count + " searchAlbums(), limit: " + limit);
+        return albums;
+    }
+
+    //===================================================================
+    //===================================================================
+    // GETTERS
+    //===================================================================
+    //===================================================================
+
+    /**
+     * Given Spotify artistID, return Artist object
+     *
+     * @param artistID artistID of the artist
+     * @return com.curator.models.Artist object
+     */
+    public static com.curator.models.Artist getArtist(String artistID) {
+        com.curator.models.Artist artist = null;
+        try {
+            artist = new Artist(api.getArtist(artistID).build().execute());
+        } catch (IOException | SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("sAPI Call #" + ++calls_count + " getArtist()");
+        return artist;
+    }
 
 
-        return artists;
+    /**
+     * Given Spotify albumID, return Album object
+     *
+     * @param albumID albumID of the album
+     * @return com.curator.models.Album object
+     */
+    public static com.curator.models.Album getAlbum(String albumID) {
+        com.curator.models.Album album = null;
+        try {
+            album = new com.curator.models.Album(api.getAlbum(albumID).build().execute());
+        } catch (IOException | SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("sAPI Call #" + ++calls_count + " getAlbum()");
+        return album;
+    }
+
+    /**
+     * Given Spotify trackID, return Track object
+     *
+     * @param trackID trackID of the track
+     * @return com.curator.models.Track object
+     */
+    public static com.curator.models.Track getTrack(String trackID) {
+        com.curator.models.Track track = null;
+        try {
+            track = new com.curator.models.Track(api.getTrack(trackID).build().execute());
+        } catch (IOException | SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("sAPI Call #" + ++calls_count + " getTrack()");
+        return track;
     }
 
     /**
@@ -332,203 +232,15 @@ public class SpotifyTools {
      * @return AudioFeatures object of track with sTrackId
      */
     public static AudioFeatures getAudioFeatures(String sTrackId) {
+        AudioFeatures af = null;
         try {
-            calls_count++;
-            System.out.println(calls_count + " getAudioFeatures()");
-            return api.getAudioFeaturesForTrack(sTrackId).build().execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
+            af = api.getAudioFeaturesForTrack(sTrackId).build().execute();
+        } catch (IOException | SpotifyWebApiException e) {
             e.printStackTrace();
         }
-
-        return null;
+        LOGGER.info("sAPI Call #" + ++calls_count + " getAudioFeatures()");
+        return af;
     }
-
-    /**
-     * Given Spotify artistID, return Artist object
-     *
-     * @param artistID artistID of the artist
-     * @return com.curator.models.Artist object
-     */
-    public static com.curator.models.Artist getArtist(String artistID) {
-        try {
-            calls_count++;
-            System.out.println(calls_count + " getArtist()");
-            return new Artist(api.getArtist(artistID).build().execute());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    /**
-     * Given Spotify albumID, return Album object
-     *
-     * @param albumID albumID of the album
-     * @return com.curator.models.Album object
-     */
-    public static com.curator.models.Album getAlbum(String albumID) {
-        try {
-
-            calls_count++;
-            System.out.println(calls_count + " getAlbum()");
-            return new com.curator.models.Album(api.getAlbum(albumID).build().execute());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    /**
-     * Given Spotify trackID, return Track object
-     *
-     * @param trackID trackID of the track
-     * @return com.curator.models.Track object
-     */
-    public static com.curator.models.Track getTrack(String trackID) {
-        try {
-
-            calls_count++;
-            System.out.println(calls_count + " getTrack()");
-            return new com.curator.models.Track(api.getTrack(trackID).build().execute());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Get access token given clientId and clientSecret
-     *
-     * @param clientId
-     * @param clientSecret
-     * @return access token
-     */
-    public static String getAccessToken(String clientId, String clientSecret) {
-        SpotifyApi spotifyApi = new SpotifyApi.Builder()
-                .setClientId(clientId)
-                .setClientSecret(clientSecret)
-                .build();
-        ClientCredentialsRequest clientCredentialsRequest = spotifyApi.clientCredentials().build();
-
-        try {
-            final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
-            return clientCredentials.getAccessToken();
-        } catch (SpotifyWebApiException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    /**
-     * Given query and limit, search and return results as arrayList of Track
-     *
-     * @param query track name
-     * @param limit # of desired results, max 50
-     * @return arrayList of Track
-     */
-    public static ArrayList<com.curator.models.Track> searchTracks(String query, int limit) {
-        ArrayList<com.curator.models.Track> trackArr = new ArrayList<>();
-        try {
-            Paging<Track> tracks_paging =
-                    api.searchTracks(query).limit(limit).build().execute();
-
-            for (Track track : tracks_paging.getItems()) {
-                trackArr.add(new com.curator.models.Track(track));
-            }
-
-
-            calls_count++;
-            System.out.println(calls_count + " searchTrack()");
-            return trackArr;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
-            e.printStackTrace();
-        }
-
-
-        calls_count++;
-        return null;
-    }
-
-    /**
-     * Given query string and limit, search and return results as arrayList of Artist
-     *
-     * @param query artist's name
-     * @param limit # of desired result, max 50
-     * @return arrayList of Artist
-     */
-    public static ArrayList<Artist> searchArtists(String query, int limit) {
-        ArrayList<Artist> artistArr = new ArrayList<>();
-        try {
-            Paging<com.wrapper.spotify.model_objects.specification.Artist> artists_paging =
-                    api.searchArtists(query).limit(limit).build().execute();
-
-            for (com.wrapper.spotify.model_objects.specification.Artist artist : artists_paging.getItems()) {
-                artistArr.add(new Artist(artist));
-            }
-
-
-            calls_count++;
-            System.out.println(calls_count + " searchArtists()");
-            return artistArr;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
-            e.printStackTrace();
-        }
-
-
-        calls_count++;
-        return null;
-    }
-
-    /**
-     * Given query string and limit, search and return results as arrayList of Album
-     *
-     * @param query string query, e.g. Rondo Alla Turca Mozart
-     * @param limit # of desired results, max 50
-     * @return arrayList of Album
-     */
-    public static ArrayList<com.curator.models.Album> searchAlbums(String query, int limit) {
-        ArrayList<com.curator.models.Album> albums = new ArrayList<>();
-        try {
-            Paging<AlbumSimplified> albumsSimplified_paging = api.searchAlbums(query).limit(limit).build().execute();
-            for (AlbumSimplified sAlbumSimplified : albumsSimplified_paging.getItems()) {
-                albums.add(getAlbum(sAlbumSimplified.getId()));
-            }
-
-
-            calls_count++;
-            System.out.println(calls_count + " searchAlbums()");
-            return albums;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
-            e.printStackTrace();
-        }
-
-
-        calls_count++;
-        return null;
-    }
-
 
     /**
      * Given artistID, return top tracks by artist
@@ -539,24 +251,73 @@ public class SpotifyTools {
     public static ArrayList<com.curator.models.Track> getArtistTopTracks(String artistID) {
         ArrayList<com.curator.models.Track> tracks = new ArrayList<>();
         try {
-            for (Track track :
-                    api.getArtistsTopTracks(artistID, CountryCode.US).build().execute()) {
+            for (Track track : api.getArtistsTopTracks(artistID, CountryCode.US).build().execute()) {
                 tracks.add(new com.curator.models.Track(track));
             }
-
-
-            calls_count++;
-            System.out.println(calls_count + " getArtistTopTracks()");
-            return tracks;
-        } catch (IOException e) {
+        } catch (IOException | SpotifyWebApiException e) {
             e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
+        }
+        LOGGER.info("sAPI Call #" + ++calls_count
+                + " getArtistTopTracks(), size: " + tracks.size());
+        return tracks;
+    }
+
+    /**
+     * Given Genre, returns artists of that genre.
+     *
+     * @param genre Genre object, e.g. Genre.POP
+     * @param limit number of artists to fetch
+     * @return ArrayList of artists of the genre
+     */
+    public static ArrayList<com.curator.models.Artist> getArtistByGenre(Genre genre, int limit) {
+        ArrayList<com.curator.models.Artist> artists = new ArrayList<>();
+        try {
+            com.wrapper.spotify.model_objects.specification.Artist[] sArtists =
+                    api.searchItem("genre:" + genre,
+                            ModelObjectType.ARTIST.getType()).limit(limit).build()
+                            .execute().getArtists().getItems();
+
+            for (int i = 0; i < sArtists.length; i++) {
+                artists.add(new Artist(sArtists[i]));
+            }
+        } catch (SpotifyWebApiException | IOException exception) {
+            exception.printStackTrace();
+        }
+        LOGGER.info("sAPI Call #" + ++calls_count
+                + " getArtistByGenre(), size: " + artists.size());
+        return artists;
+    }
+
+    /**
+     * Given a track, returns arrayList of tracks that belongs to the same album
+     *
+     * @param trackId the trackId of the track to be compared
+     * @return arrayList of similar tracks
+     */
+    public static ArrayList<com.curator.models.Track> getRelatedTracks(String trackId) {
+        return getTrack(trackId).getAlbum().getTracks();
+    }
+
+    /**
+     * Given artists with artistId, returns related artists
+     *
+     * @param artistId artistsId of the artist to be searched
+     * @return ArrayList of related artists
+     */
+    public static ArrayList<Artist> getRelatedArtists(String artistId) {
+        ArrayList<Artist> artists = new ArrayList<>();
+        try {
+            for (com.wrapper.spotify.model_objects.specification.Artist artist :
+                    api.getArtistsRelatedArtists(artistId).build().execute()) {
+                artists.add(new Artist(artist));
+            }
+        } catch (IOException | SpotifyWebApiException e) {
             e.printStackTrace();
         }
 
-
-        calls_count++;
-        return null;
+        LOGGER.info("sAPI Call #" + ++calls_count
+                + " getRelatedArtists(), size: " + artists.size());
+        return artists;
     }
 
     /**
@@ -567,29 +328,165 @@ public class SpotifyTools {
      * @return arrayList of albums
      */
     public static ArrayList<com.curator.models.Album> getArtistAlbums(String artistID, int limit) {
-        ArrayList<com.curator.models.Album> albums = new ArrayList<>();
-
+        ArrayList<String> ids = null;
         try {
-            for (AlbumSimplified album
-                    : api.getArtistsAlbums(artistID).build().execute().getItems()) {
-                albums.add(getAlbum(album.getId()));
-            }
-
-
-            calls_count++;
-            System.out.println(calls_count + " getArtistAlbums()");
-            return albums;
+            ids = toIdArrayList(api.getArtistsAlbums(artistID).build().execute().getItems());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SpotifyWebApiException e) {
             e.printStackTrace();
         }
-
-
-        calls_count++;
-        return null;
+        LOGGER.info("sAPI Call #" + ++calls_count + " getArtistAlbums(), limit: " + limit);
+        return getSeveralAlbums(ids);
     }
 
+    /**
+     * Given ArrayList of multiple albumIDs, return ArrayList of Album objects in single call
+     *
+     * @param albumIDs ArrayList of the albumIDs of the albums
+     * @return ArrayList of Album objects
+     */
+    public static ArrayList<com.curator.models.Album> getSeveralAlbums(ArrayList<String> albumIDs) {
+        int size = albumIDs.size();
+        if (size > 50) {
+            LOGGER.warning("getSeveralAlbums Max 50, " + size + " supplied. Returning 50.");
+            return getSeveralAlbums(new ArrayList<>(albumIDs.subList(0, 50)));
+        }
+        ArrayList<com.curator.models.Album> albums = new ArrayList<>();
+
+        try {
+            for (com.wrapper.spotify.model_objects.specification.Album sAlbum :
+                    api.getSeveralAlbums(toIdArray(albumIDs)).build().execute()) {
+                albums.add(new com.curator.models.Album(sAlbum));
+            }
+        } catch (IOException | SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("sAPI Call #" + ++calls_count + " getSeveralAlbums(), size : " + size);
+        return albums;
+    }
+
+    /**
+     * Given ArrayList of multiple trackIDs, return ArrayList of Track objects in single call
+     *
+     * @param trackIDs ArrayList of the trackIDs of the tracks
+     * @return ArrayList of Track objects
+     */
+    public static ArrayList<com.curator.models.Track> getSeveralTracks(ArrayList<String> trackIDs) {
+        int size = trackIDs.size();
+        if (size > 50) {
+            LOGGER.warning("getSeveralTracks Max 50, " + size + " supplied. Returning 50.");
+            return getSeveralTracks(new ArrayList<>(trackIDs.subList(0, 50)));
+        }
+        ArrayList<com.curator.models.Track> tracks = new ArrayList<>();
+
+        try {
+            for (com.wrapper.spotify.model_objects.specification.Track sTrack :
+                    api.getSeveralTracks(toIdArray(trackIDs)).build().execute()) {
+                tracks.add(new com.curator.models.Track(sTrack));
+            }
+        } catch (IOException | SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("sAPI Call #" + ++calls_count + " getSeveralTracks(), size : " + size);
+        return tracks;
+    }
+
+    /**
+     * Given ArrayList of multiple artistIDs, return ArrayList of Artist objects in single call
+     *
+     * @param artistsIDs ArrayList of the artistIDs of the albums
+     * @return ArrayList of Artist objects
+     */
+    public static ArrayList<com.curator.models.Artist> getSeveralArtists(ArrayList<String> artistsIDs) {
+        int size = artistsIDs.size();
+        if (size > 50) {
+            LOGGER.warning("getSeveralArtists Max 50, " + size + " supplied. Returning 50.");
+            return getSeveralArtists(new ArrayList<>(artistsIDs.subList(0, 50)));
+        }
+        ArrayList<com.curator.models.Artist> artists = new ArrayList<>();
+        try {
+            for (com.wrapper.spotify.model_objects.specification.Artist sArtist :
+                    api.getSeveralArtists(toIdArray(artistsIDs)).build().execute()) {
+                artists.add(new com.curator.models.Artist(sArtist));
+            }
+        } catch (IOException | SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("sAPI Call #" + ++calls_count + " getSeveralArtists(), size : " + size);
+        return artists;
+    }
+
+    /**
+     * Given ArrayList of Tracks, return ArrayList of the corresponding AudioFeatures
+     *
+     * @param tracks ArrayList of the tracks
+     * @return ArrayList of AudioFeatures of the tracks
+     */
+    public static ArrayList<AudioFeatures> getSeveralAudioFeaturesFromTracks(ArrayList<com.curator.models.Track> tracks) {
+        return getSeveralAudioFeaturesFromTrackIDs(toIdArray(tracks));
+    }
+
+    /**
+     * Given ArrayList of trackIDs, return ArrayList of the corresponding AudioFeatures
+     *
+     * @param trackIDs the trackIDs of the tracks
+     * @return ArrayList of AudioFeatures of the tracks with trackIDs
+     */
+    public static ArrayList<AudioFeatures> getSeveralAudioFeaturesFromTrackIDs(ArrayList<String> trackIDs) {
+        return getSeveralAudioFeaturesFromTrackIDs(toIdArray(trackIDs));
+    }
+
+    /**
+     * Given string array of trackIDs, return ArrayList of th corresponding AudioFeatures
+     *
+     * @param trackIDs the trackIDs of the tracks
+     * @return ArrayList of AudioFeatures of the tracks with trackIDs
+     */
+    private static ArrayList<AudioFeatures> getSeveralAudioFeaturesFromTrackIDs(String[] trackIDs) {
+        int size = trackIDs.length;
+        ArrayList<AudioFeatures> afArr = new ArrayList<>();
+
+        if (size > 100) {
+            System.out.println("Max tracks 100, " + size + " supplied");
+            return afArr;
+        }
+        try {
+            return new ArrayList<>(Arrays.asList(api.getAudioFeaturesForSeveralTracks(trackIDs)
+                    .build().execute()));
+        } catch (IOException | SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        LOGGER.info("sAPI Call #"
+                + ++calls_count + " getSeveralAudioFeaturesFromTrackIDs(), size : " + size);
+        return afArr;
+    }
+
+    //===================================================================
+    //===================================================================
+    // OBJECT MODELS CONVERSION METHODS
+    //===================================================================
+    //===================================================================
+
+    /**
+     * Convert ArrayList of TrackSimplified object to ArrayList of Track
+     *
+     * @param tsArr ArrayList of TrackSimplified object to be converted
+     * @return the corresponding ArrayList of Track
+     */
+    public static ArrayList<com.curator.models.Track> toTracks(TrackSimplified[] tsArr) {
+        return getSeveralTracks(toIdArrayList(tsArr));
+    }
+
+    /**
+     * Given array of wrapper's object ArtistSimplified, convert to ArrayList of com.curator.models.Artist objects
+     *
+     * @param sArtists array of wrapper's object ArtistSimplified
+     * @return ArrayList of com.curator.models.Artist objects
+     */
+    public static ArrayList<Artist> toArtists(ArtistSimplified[] sArtists) {
+        return getSeveralArtists(toIdArrayList(sArtists));
+    }
 
     /**
      * Returns JavaFX Image object given url. Uses background thread.
@@ -608,8 +505,7 @@ public class SpotifyTools {
      * @param images ArrayList of wrapper's Image object
      * @return ArrayList of javafx.scene.image.Image
      */
-    public static ArrayList<javafx.scene.image.Image> toImage
-    (Image[] images) {
+    public static ArrayList<javafx.scene.image.Image> toImage (Image[] images) {
         ArrayList<javafx.scene.image.Image> imageArr = new ArrayList<>();
         for (Image image : images) {
             imageArr.add(toImage(image.getUrl()));
@@ -620,30 +516,116 @@ public class SpotifyTools {
     /**
      * Given an array of artists, return the comma-separated strings of the names of the artists
      *
-     * @param artistArr array of com.curator.models.Artist
-     * @return comma-separated strings of the names of the artists
-     */
-    public static String toString(ArrayList<Artist> artistArr) {
-        StringBuilder sb = new StringBuilder();
-        for (Artist artist : artistArr) {
-            sb.append(artist.getName()).append(", ");
-        }
-        String res = sb.toString();
-        return res.substring(0, res.length() - 3); //exclude last separator
-    }
-
-    /**
-     * Given an array of artists, return the comma-separated strings of the names of the artists
-     *
      * @param artistArr com.wrapper.spotify.model_objects.specification.ArtistSimplified
      * @return comma-separated strings of the names of the artists
      */
-    public static String toString(ArtistSimplified[] artistArr) {
+    public static String toArtistName(ArtistSimplified[] artistArr) {
         StringBuilder sb = new StringBuilder();
         for (ArtistSimplified artist : artistArr) {
             sb.append(artist.getName()).append(", ");
         }
         String res = sb.toString();
         return res.substring(0, res.length() - 2); //exclude last separator
+    }
+
+    /**
+     * Given ArrayList of Tracks, Albums, Artists, or ids,
+     * return the string array of the ids of the objects
+     *
+     * @param items ArrayList of Tracks, Albums, Artists, or ids (String)
+     * @return the string array of the ids of the objects
+     */
+    public static ArrayList<String> toIdArrayList(Object[] items) {
+        int size = items.length;
+        ArrayList<String> ids = new ArrayList<>();
+        if (size == 0) {
+            return ids;
+        }
+        if (items[0] instanceof com.curator.models.Track) {
+            for (int i = 0; i < size; i++) {
+                ids.add(((com.curator.models.Track) items[i]).getTrackID());
+            }
+        } else if (items[0] instanceof com.curator.models.Album) {
+            for (int i = 0; i < size; i++) {
+                ids.add(((com.curator.models.Album) items[i]).getAlbumID());
+            }
+        } else if (items[0] instanceof com.curator.models.Artist) {
+            for (int i = 0; i < size; i++) {
+                ids.add(((com.curator.models.Artist) items[i]).getArtistID());
+            }
+        } else if (items[0] instanceof String) {
+            for (int i = 0; i < size; i++) {
+                ids.add(((String) items[i]));
+            }
+        } else if (items[0] instanceof AlbumSimplified) {
+            for (int i = 0; i < size; i++) {
+                ids.add(((AlbumSimplified) items[i]).getId());
+            }
+        } else if (items[0] instanceof TrackSimplified) {
+            for (int i = 0; i < size; i++) {
+                ids.add(((TrackSimplified) items[i]).getId());
+            }
+        } else if (items[0] instanceof ArtistSimplified) {
+            for (int i = 0; i < size; i++) {
+                ids.add(((ArtistSimplified) items[i]).getId());
+            }
+        }
+        return ids;
+    }
+
+    /**
+     * Given ArrayList of Tracks, Albums, Artists, or ids,
+     * return the string array of the ids of the objects
+     *
+     * @param items ArrayList of Tracks, Albums, Artists, or ids (String)
+     * @return the string array of the ids of the objects
+     */
+    public static String[] toIdArray(ArrayList items) {
+        int size = items.size();
+        String[] ids = new String[size];
+        if (items.size() == 0) {
+            return new String[]{};
+        }
+        if (items.get(0) instanceof com.curator.models.Track) {
+            for (int i = 0; i < size; i++) {
+                ids[i] = ((com.curator.models.Track) items.get(i)).getTrackID();
+            }
+        } else if (items.get(0) instanceof com.curator.models.Album) {
+            for (int i = 0; i < size; i++) {
+                ids[i] = ((com.curator.models.Album) items.get(i)).getAlbumID();
+            }
+        } else if (items.get(0) instanceof com.curator.models.Artist) {
+            for (int i = 0; i < size; i++) {
+                ids[i] = ((com.curator.models.Artist) items.get(i)).getArtistID();
+            }
+        } else if (items.get(0) instanceof String) {
+            for (int i = 0; i < size; i++) {
+                ids[i] = ((String) items.get(i));
+            }
+        } else if (items.get(0) instanceof AlbumSimplified) {
+            for (int i = 0; i < size; i++) {
+                ids[i] = ((AlbumSimplified) items.get(i)).getId();
+            }
+        } else if (items.get(0) instanceof TrackSimplified) {
+            for (int i = 0; i < size; i++) {
+                ids[i] = ((TrackSimplified) items.get(i)).getId();
+            }
+        } else if (items.get(0) instanceof ArtistSimplified) {
+            for (int i = 0; i < size; i++) {
+                ids[i] = ((ArtistSimplified) items.get(i)).getId();
+            }
+        }
+        return ids;
+    }
+
+    /**
+     * Given ArrayList of Tracks, Albums, Artists, or ids,
+     * return the arrayList of the ids of the objects
+     *
+     * @param items ArrayList of Tracks, Albums, Artists, or ids (String)
+     * @return the string array of the ids of the objects
+     */
+    public static ArrayList toIdArrayList(ArrayList items) {
+        return new ArrayList<>(Arrays.asList(toIdArray(items)));
     }
 }
