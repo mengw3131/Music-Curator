@@ -25,6 +25,8 @@ public class SpotifyTools {
     private static String clientSecret = "e63dcad355af406aa0cfc516427095ec";
     public static SpotifyApi api = new SpotifyApi.Builder().setAccessToken(getAccessToken(clientId, clientSecret)).build();
 
+    public static int calls_count = 0;
+
     /**
      * Prevent instance creation
      */
@@ -51,6 +53,9 @@ public class SpotifyTools {
         } catch (SpotifyWebApiException | IOException exception){
             exception.printStackTrace();
         }
+
+        calls_count++;
+        System.out.println(calls_count + " getArtistByGenre()");
         return artists;
     }
 
@@ -68,6 +73,9 @@ public class SpotifyTools {
             relatedTracks.addAll(getArtistTopTracks(a.getArtistID()));
         }
         Collections.shuffle(relatedTracks);
+
+        calls_count++;
+        System.out.println(calls_count + " getRelatedTracks()");
         return relatedTracks;
     }
 
@@ -88,6 +96,10 @@ public class SpotifyTools {
         } catch (SpotifyWebApiException e) {
             e.printStackTrace();
         }
+
+
+        calls_count++;
+        System.out.println(calls_count + " getRelatedArtists()");
         return artists;
     }
 
@@ -107,6 +119,8 @@ public class SpotifyTools {
         for (TrackSimplified ts: tsArr) {
             tracks.add(getTrack(ts.getId()));
         }
+
+
         return tracks;
     }
 
@@ -118,6 +132,9 @@ public class SpotifyTools {
      */
     public static com.curator.models.Artist toArtist(ArtistSimplified sArtist) {
         try {
+
+            calls_count++;
+            System.out.println(calls_count + " toArtist()");
             return new Artist(api.getArtist(sArtist.getId()).build().execute());
         } catch (IOException e) {
             e.printStackTrace();
@@ -138,6 +155,8 @@ public class SpotifyTools {
         for (ArtistSimplified sArtist : sArtists) {
             artists.add(toArtist(sArtist));
         }
+
+
         return artists;
     }
 
@@ -169,12 +188,15 @@ public class SpotifyTools {
      */
     public static AudioFeatures getAudioFeatures(String sTrackId) {
         try {
+            calls_count++;
+            System.out.println(calls_count + " getAudioFeatures()");
             return api.getAudioFeaturesForTrack(sTrackId).build().execute();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SpotifyWebApiException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
@@ -186,6 +208,8 @@ public class SpotifyTools {
      */
     public static com.curator.models.Artist getArtist(String artistID) {
         try {
+            calls_count++;
+            System.out.println(calls_count + " getArtist()");
             return new Artist(api.getArtist(artistID).build().execute());
         } catch (IOException e) {
             e.printStackTrace();
@@ -204,12 +228,16 @@ public class SpotifyTools {
      */
     public static com.curator.models.Album getAlbum(String albumID) {
         try {
+
+            calls_count++;
+            System.out.println(calls_count + " getAlbum()");
             return new com.curator.models.Album(api.getAlbum(albumID).build().execute());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SpotifyWebApiException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
@@ -221,12 +249,16 @@ public class SpotifyTools {
      */
     public static com.curator.models.Track getTrack(String trackID) {
         try {
+
+            calls_count++;
+            System.out.println(calls_count + " getTrack()");
             return new com.curator.models.Track(api.getTrack(trackID).build().execute());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SpotifyWebApiException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
@@ -273,6 +305,10 @@ public class SpotifyTools {
             for (Track track : tracks_paging.getItems()) {
                 trackArr.add(new com.curator.models.Track(track));
             }
+
+
+            calls_count++;
+            System.out.println(calls_count + " searchTrack()");
             return trackArr;
 
         } catch (IOException e) {
@@ -280,6 +316,9 @@ public class SpotifyTools {
         } catch (SpotifyWebApiException e) {
             e.printStackTrace();
         }
+
+
+        calls_count++;
         return null;
     }
 
@@ -299,12 +338,19 @@ public class SpotifyTools {
             for (com.wrapper.spotify.model_objects.specification.Artist artist : artists_paging.getItems()) {
                 artistArr.add(new Artist(artist));
             }
+
+
+            calls_count++;
+            System.out.println(calls_count + " searchArtists()");
             return artistArr;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SpotifyWebApiException e) {
             e.printStackTrace();
         }
+
+
+        calls_count++;
         return null;
     }
 
@@ -322,12 +368,19 @@ public class SpotifyTools {
             for (AlbumSimplified sAlbumSimplified : albumsSimplified_paging.getItems()) {
                 albums.add(getAlbum(sAlbumSimplified.getId()));
             }
+
+
+            calls_count++;
+            System.out.println(calls_count + " searchAlbums()");
             return albums;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SpotifyWebApiException e) {
             e.printStackTrace();
         }
+
+
+        calls_count++;
         return null;
     }
 
@@ -347,12 +400,19 @@ public class SpotifyTools {
                     api.getArtistsTopTracks(artistID, CountryCode.US).build().execute()) {
                 tracks.add(new com.curator.models.Track(track));
             }
+
+
+            calls_count++;
+            System.out.println(calls_count + " getArtistTopTracks()");
             return tracks;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SpotifyWebApiException e) {
             e.printStackTrace();
         }
+
+
+        calls_count++;
         return null;
     }
 
@@ -371,12 +431,19 @@ public class SpotifyTools {
                     : api.getArtistsAlbums(artistID).build().execute().getItems()) {
                 albums.add(getAlbum(album.getId()));
             }
+
+
+            calls_count++;
+            System.out.println(calls_count + " getArtistAlbums()");
             return albums;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SpotifyWebApiException e) {
             e.printStackTrace();
         }
+
+
+        calls_count++;
         return null;
     }
 

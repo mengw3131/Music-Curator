@@ -34,9 +34,9 @@ public class DBTools {
                     storePlaylist(new Playlist("New Playlist"));
 
                     // !!! DUMMY RECOMMENDATION: COMMENT THIS OUT WHEN USING THE REAL MODEL
-                    DBTools.storeRecommendationArtist(SpotifyTools.getArtistByGenre(Genre.JAZZ, 20));
-                    DBTools.storeRecommendationAlbum(SpotifyTools.searchAlbums("jazz", 21));
-                    DBTools.storeRecommendationTrack(SpotifyTools.searchTracks("jazz", 30));
+//                    DBTools.storeRecommendationArtist(SpotifyTools.getArtistByGenre(Genre.JAZZ, 20));
+//                    DBTools.storeRecommendationAlbum(SpotifyTools.searchAlbums("jazz", 21));
+//                    DBTools.storeRecommendationTrack(SpotifyTools.searchTracks("jazz", 30));
 
 
                 } else {
