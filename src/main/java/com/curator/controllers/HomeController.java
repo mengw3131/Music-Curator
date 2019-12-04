@@ -133,11 +133,15 @@ public class HomeController implements Initializable {
         if (albums == null) {
             setAlbums(RecTools.popAlbums(21));
         }
-        loadItems(albums);
+        if (albums.size() != 0) {
+            loadItems(albums);
+        }
         if (artists == null) {
             setArtists(RecTools.popArtists(21));
         }
-        loadItems(artists);
+        if (artists.size() != 0) {
+            loadItems(artists);
+        }
     }
 
     /**

@@ -70,11 +70,13 @@ public class SurveyController implements Initializable {
 
                 //Run recommender
                 System.out.println("Curating recommendation...");
-//                RecTools.runCombinedRecommender();
+                RecTools.runCombinedRecommender();
 //                RecTools.runAlbumRecommender();
 //                RecTools.runArtistRecommender();
-                RecTools.runSongRecommender();
+//                RecTools.runSongRecommender();
                 System.out.println("Fetching data...");
+
+
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main.fxml"));
                 try {
