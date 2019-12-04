@@ -43,9 +43,7 @@ public class MainController implements Initializable {
     private BorderPane homePane;
     private BorderPane discoverPane;
     private BorderPane myMusicPane;
-    private AnchorPane madeForYouPane;
     private BorderPane playlistPane;
-    private AnchorPane profilePane;
 
     FXMLLoader loader;
 
@@ -62,13 +60,7 @@ public class MainController implements Initializable {
     Button myMusicButton;
 
     @FXML
-    Button madeForYouButton;
-
-    @FXML
     Button playlistsButton;
-
-    @FXML
-    Button profileButton;
 
     @FXML
     HBox playerContainer;
@@ -194,34 +186,6 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Triggered when MadeForYou button in the left bar is clicked
-     */
-    @FXML
-    private void handleMadeForYouButtonAction() {
-        //change button visual effects
-        unselectAllButtons();
-        madeForYouButton.setStyle("-fx-background-color: lightgrey;");
-
-        //set current page index
-        currentPageIndex = PAGE_INDEX.MADEFORYOU.index;
-        navbarController.updateIndex();
-
-        //if music page already exists, don't create new, just switch to the last page
-        if (navbarController.getPagesCountInSection(currentPageIndex) != 0) {
-            navbarController.switchPage();
-        } else {
-            //TODO: IMPLEMENT HERE
-
-            madeForYouPane = new AnchorPane();
-            madeForYouPane.getChildren().add(new Label("Made For You page"));
-            madeForYouPane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
-
-            //add pane
-            navbarController.addPage(madeForYouPane);
-        }
-    }
-
-    /**
      * Triggered when Playlists button in the left bar is clicked
      */
     @FXML
@@ -256,38 +220,6 @@ public class MainController implements Initializable {
 
             //add homePane
             navbarController.addPage(playlistPane);
-        }
-    }
-
-    /**
-     * Triggered when Profile button in the left bar is clicked
-     */
-    @FXML
-    private void handleProfileButtonAction() {
-
-        //change button visual effects
-        unselectAllButtons();
-        profileButton.setStyle("-fx-background-color: lightgrey;");
-
-        //set current page index
-        currentPageIndex = PAGE_INDEX.PROFILE.index;
-        navbarController.updateIndex();
-
-        //if music page already exists, don't create new, just switch to the last page
-        if (navbarController.getPagesCountInSection(currentPageIndex) != 0) {
-            navbarController.switchPage();
-        } else {
-
-
-            //TODO: IMPLEMENT HERE
-
-
-            profilePane = new AnchorPane();
-            profilePane.getChildren().add(new Label("Profile page"));
-            profilePane.setBackground(new Background(new BackgroundFill(Color.web("#d4d4d4"), CornerRadii.EMPTY, Insets.EMPTY)));
-
-            //add myMusicPane
-            navbarController.addPage(profilePane);
         }
     }
 
@@ -334,10 +266,8 @@ public class MainController implements Initializable {
     public void unselectAllButtons() {
         homeButton.setStyle("-fx-background-color: none;");
         discoverButton.setStyle("-fx-background-color: none;");
-        madeForYouButton.setStyle("-fx-background-color: none;");
         myMusicButton.setStyle("-fx-background-color: none;");
         playlistsButton.setStyle("-fx-background-color: none;");
-        profileButton.setStyle("-fx-background-color: none;");
     }
 
     /**

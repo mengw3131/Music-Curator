@@ -1036,7 +1036,6 @@ public class DBTools {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("get rec artist DB, ids length is " + ids.size());
         return SpotifyTools.getSeveralArtists(ids);
     }
 

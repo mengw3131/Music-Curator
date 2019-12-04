@@ -43,8 +43,6 @@ public class Artist {
 	 * @return artistID The artist's Spotify ID
 	 */
 	public String getArtistID() {
-		System.out.print("is sArtist null? "); System.out.println(sArtist == null);
-		System.out.print("is sArtist.getId null? "); System.out.println(sArtist.getId() == null);
 		return sArtist.getId();
 	}
 

@@ -29,8 +29,6 @@ public class TrackPane {
     private ItemScrollPane parentContainer;
     private int childIndex;
 
-
-
     public TrackPane(Track track, MainController mainController, NavbarController navbarController,
                      PlayerController playerController,
                      ItemScrollPane parentContainer, int childIndex

@@ -159,7 +159,6 @@ public class HomeController implements Initializable {
      * @param items ArrayList of Track, AlbumSimple, or Artist
      */
     private void loadItems(ArrayList items) {
-        System.out.println("loading items ");
         //if there are recommended items
         if (items.size() != 0) {
             ArrayList<ScrollPane> panes = new ArrayList<>();
@@ -192,6 +191,5 @@ public class HomeController implements Initializable {
                 artistVBox.getChildren().setAll(panes);
             }
         }
-        System.out.println("done loading items");
     }
 }

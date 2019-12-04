@@ -27,7 +27,6 @@ public class Main extends Application {
      */
     @java.lang.Override
     public void start(Stage stage) {
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/welcome.fxml"));
         Scene scene = null;
         try {

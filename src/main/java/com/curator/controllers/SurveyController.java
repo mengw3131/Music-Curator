@@ -70,10 +70,10 @@ public class SurveyController implements Initializable {
 
                 //Run recommender
                 System.out.println("Curating recommendation...");
-//                RecTools.runCombinedRecommender();
-                RecTools.runAlbumRecommender();
-                RecTools.runArtistRecommender();
-                RecTools.runSongRecommender();
+                RecTools.runCombinedRecommender();
+//                RecTools.runAlbumRecommender();
+//                RecTools.runArtistRecommender();
+//                RecTools.runSongRecommender();
                 System.out.println("Fetching data...");
 
 

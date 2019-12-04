@@ -81,8 +81,8 @@ public class RecTools {
 	public static void runCombinedRecommender() {
 		boolean newUser = true;
 		SongRecommender s = new SongRecommender();
-//		new ArtistRecommender(s.getUserRecs(), newUser);
-//		new AlbumRecommender(s.getUserRecs(), newUser);
+		new ArtistRecommender(s.getUserRecs(), newUser);
+		new AlbumRecommender(s.getUserRecs(), newUser);
 	}
 
 	/**
