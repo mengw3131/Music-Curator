@@ -81,8 +81,8 @@ public class RecTools {
 	public static void runCombinedRecommender() {
 		boolean newUser = true;
 		SongRecommender s = new SongRecommender();
-//		new ArtistRecommender(s.getUserRecs(), newUser);
-//		new AlbumRecommender(s.getUserRecs(), newUser);
+		new ArtistRecommender(s.getUserRecs(), newUser);
+		new AlbumRecommender(s.getUserRecs(), newUser);
 	}
 
 	/**
@@ -185,7 +185,7 @@ public class RecTools {
 	public static Track popTrack() {
 		checkAndReplenishTrack();
 		Track t = null;
-		if (trackQueue.size() != 0){
+		if (trackQueue.size() != 0) {
 			t = trackQueue.get(0);
 			trackQueue.remove(0);
 			trackQueueSize--;
@@ -199,7 +199,7 @@ public class RecTools {
 	public static Album popAlbum() {
 		checkAndReplenishAlbum();
 		Album a = null;
-		if (albumQueue.size() != 0){
+		if (albumQueue.size() != 0) {
 			a = albumQueue.get(0);
 			albumQueue.remove(0);
 			albumQueueSize--;
