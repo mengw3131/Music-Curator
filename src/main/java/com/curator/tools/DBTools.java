@@ -430,11 +430,12 @@ public class DBTools {
      */
     private static void updateItemPreference(boolean newPreference, String itemId, String q) {
         try {
-            PreparedStatement preSt1 = conn.prepareStatement(q);
-            preSt1.setBoolean(1, newPreference);
-            preSt1.setString(2, itemId);
-            preSt1.setString(3, USER_ID);
-            preSt1.executeUpdate();
+            System.out.println("new pref is " + newPreference);
+            PreparedStatement stmt = conn.prepareStatement(q);
+            stmt.setBoolean(1, newPreference);
+            stmt.setString(2, itemId);
+            stmt.setString(3, USER_ID);
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -447,8 +448,8 @@ public class DBTools {
      * @param trackId       trackId of the track to be updated
      */
     private static void updateTrackPreference(boolean newPreference, String trackId) {
-        String q = "UPDATE User_Preference_Artist SET `Like/Dislike` = ? " +
-                "WHERE Artist_id = ? AND user_id = ?";
+        String q = "UPDATE User_Preference_Song SET `Like/Dislike` = ? " +
+                "WHERE Track_id = ? AND user_id = ?;";
         updateItemPreference(newPreference, trackId, q);
     }
 

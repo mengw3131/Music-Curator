@@ -105,7 +105,6 @@ public class MyMusicController implements Initializable {
             }
         });
 
-
         //when my music page becomes visible, reload respective tab if selected
         topBorderPane.visibleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue){
@@ -121,7 +120,6 @@ public class MyMusicController implements Initializable {
             }
         });
     }
-
 
     /**
      * Loads tracks to be displayed
