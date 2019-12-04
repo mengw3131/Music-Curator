@@ -126,7 +126,6 @@ public class MyMusicController implements Initializable {
      */
     public void loadTracks(){
         tracks = DBTools.getUserLikedSongs();
-
         VBox trackListVBox = new TrackListVBox(tracks, mainController, navbarController, playerController).asVBox();
         trackListVBox.prefWidthProperty().bind(mainScrollPane.widthProperty());
         trackTabPaneScroll.setContent(trackListVBox);

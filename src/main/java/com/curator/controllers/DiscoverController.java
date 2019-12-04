@@ -59,6 +59,24 @@ public class DiscoverController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        artistLabel.setVisible(false);
+        albumLabel.setVisible(false);
+        trackLabel.setVisible(false);
+
+//        trackVBox.setMaxHeight(0);
+//        trackLabel.setMaxHeight(0);
+//        albumVBox.setMaxHeight(0);
+//        albumLabel.setMaxHeight(0);
+//        artistVBox.setMaxHeight(0);
+
+//        trackVBox.setVisible(false);
+//        trackLabel.setVisible(false);
+//        albumVBox.setVisible(false);
+//        albumLabel.setVisible(false);
+//        artistVBox.setVisible(false);
+//        artistLabel.setVisible(false);
+
+
         discoverVBox.prefWidthProperty().bind(discoverScrollPane.widthProperty());
 
         //when user press Enter, updateIndex results
@@ -83,14 +101,33 @@ public class DiscoverController implements Initializable {
     }
 
     /**
+     * Clear contents of VBox
+     */
+    private void clearVBox(){
+        trackVBox.getChildren().clear();
+        albumVBox.getChildren().clear();
+        artistVBox.getChildren().clear();
+        trackVBox.setPrefHeight(0);
+        albumVBox.setPrefHeight(0);
+        artistVBox.setPrefHeight(0);
+    }
+
+    /**
      * Updates search result given query
      * @param query search query
      */
     private void updateSearchResult(String query) {
+        clearVBox();
+        artistLabel.setVisible(true);
+        albumLabel.setVisible(true);
+        trackLabel.setVisible(true);
+
         ArrayList<Track> tracks = SpotifyTools.searchTracks(query, 8);
         if (tracks.size() == 0) {
             trackLabel.setText("No tracks found");
         } else {
+            trackLabel.setText("Tracks");
+            trackVBox.setPrefHeight(200);
             loadResults(tracks);
         }
 
@@ -98,6 +135,8 @@ public class DiscoverController implements Initializable {
         if (albums.size() == 0) {
             albumLabel.setText("No albums found");
         } else {
+            albumLabel.setText("Albums");
+            albumVBox.setPrefHeight(200);
             loadResults(albums);
         }
 
@@ -105,6 +144,8 @@ public class DiscoverController implements Initializable {
         if (artists.size() == 0) {
             artistLabel.setText("No artists found");
         } else {
+            artistLabel.setText("Artists");
+            artistVBox.setPrefHeight(200);
             loadResults(artists);
         }
     }
@@ -118,13 +159,10 @@ public class DiscoverController implements Initializable {
         pane.prefWidthProperty().bind(discoverScrollPane.widthProperty());
 
         if (items.get(0) instanceof Track) {
-            trackVBox.getChildren().clear();
             trackVBox.getChildren().add(pane);
         } else if (items.get(0) instanceof Album || items.get(0) instanceof Album) {
-            albumVBox.getChildren().clear();
             albumVBox.getChildren().add(pane);
         } else if (items.get(0) instanceof Artist) {
-            artistVBox.getChildren().clear();
             artistVBox.getChildren().add(pane);
         }
     }
