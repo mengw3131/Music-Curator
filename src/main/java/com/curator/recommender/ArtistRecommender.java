@@ -139,9 +139,11 @@ public class ArtistRecommender {
 	 * in songRecs.
 	 */
 	public void recSongsToArtists() {
-		ArrayList<Artist> artists = SpotifyTools.getSeveralArtists(SpotifyTools.toIdArrayList(songRecs));
+		ArrayList<Artist> artists = SpotifyTools
+				.getSeveralArtists(SpotifyTools.toIdArrayList(songRecs));
 		for (int i = 0; i < songRecs.size(); i++) {
-			artistResults.computeIfPresent(artists.get(i), (key, val) -> val + 1);
+			artistResults.computeIfPresent(artists.get(i),
+					(key, val) -> val + 1);
 			artistResults.putIfAbsent(artists.get(i), 1);
 		}
 
@@ -161,7 +163,7 @@ public class ArtistRecommender {
 	public void bestRecommendations() {
 		for (Map.Entry<Integer, Artist> entry : artistResultsRanked
 				.entrySet()) {
-		    if (entry.getValue().isInitialized()){
+			if (entry.getValue().isInitialized()) {
 				userArtistRecs.add(entry.getValue());
 			}
 		}
@@ -185,7 +187,7 @@ public class ArtistRecommender {
 	public ArrayList<Artist> runRecommender() {
 		artistsToSongs();
 		SongRecommender songRecommender = new SongRecommender(songInputs);
-		songRecs = songRecommender.runRecommender(25);
+		songRecs = songRecommender.runRecommender(75);
 		recSongsToArtists();
 		bestRecommendations();
 		return userArtistRecs;

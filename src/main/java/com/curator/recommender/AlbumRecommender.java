@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.curator.models.*;
+import com.curator.models.Album;
+import com.curator.models.Track;
 import com.curator.tools.DBTools;
 import com.curator.tools.SpotifyTools;
 
@@ -133,15 +134,14 @@ public class AlbumRecommender {
 	 * songRecs.
 	 */
 	public void recSongsToAlbums() {
-	    ArrayList<String> albumIDs = new ArrayList<>();
-	    for (Track track : songRecs){
-	    	albumIDs.add(track.getAlbumId());
+		ArrayList<String> albumIDs = new ArrayList<>();
+		for (Track track : songRecs) {
+			albumIDs.add(track.getAlbumId());
 		}
 
 		ArrayList<Album> albums = SpotifyTools.getSeveralAlbums(albumIDs);
-		for (Album album: albums) {
-			albumResults.computeIfPresent(album,
-					(key, val) -> val + 1);
+		for (Album album : albums) {
+			albumResults.computeIfPresent(album, (key, val) -> val + 1);
 			albumResults.putIfAbsent(album, 1);
 		}
 
@@ -180,7 +180,7 @@ public class AlbumRecommender {
 	public ArrayList<Album> runRecommender() {
 		albumsToSongs();
 		SongRecommender songRecommender = new SongRecommender(songInputs);
-		songRecs = songRecommender.runRecommender(25);
+		songRecs = songRecommender.runRecommender(75);
 		recSongsToAlbums();
 		bestRecommendations();
 		return userAlbumRecs;
