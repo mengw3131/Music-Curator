@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.curator.models.Album;
-import com.curator.models.Track;
+import com.curator.models.*;
 import com.curator.tools.DBTools;
+import com.curator.tools.SpotifyTools;
 
 /**
  * 
@@ -133,11 +133,23 @@ public class AlbumRecommender {
 	 * songRecs.
 	 */
 	public void recSongsToAlbums() {
-		for (Track song : songRecs) {
-			albumResults.computeIfPresent(song.getAlbum(),
-					(key, val) -> val + 1);
-			albumResults.putIfAbsent(song.getAlbum(), 1);
+	    ArrayList<String> albumIDs = new ArrayList<>();
+	    for (Track track : songRecs){
+	    	albumIDs.add(track.getAlbumId());
 		}
+
+		ArrayList<Album> albums = SpotifyTools.getSeveralAlbums(albumIDs);
+		for (Album album: albums) {
+			albumResults.computeIfPresent(album,
+					(key, val) -> val + 1);
+			albumResults.putIfAbsent(album, 1);
+		}
+
+//		for (Track song : songRecs) {
+//			albumResults.computeIfPresent(song.getAlbum(),
+//					(key, val) -> val + 1);
+//			albumResults.putIfAbsent(song.getAlbum(), 1);
+//		}
 		for (Map.Entry<Album, Integer> entry : albumResults.entrySet()) {
 			albumResultsRanked.put(entry.getValue(), entry.getKey());
 		}

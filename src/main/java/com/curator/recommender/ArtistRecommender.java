@@ -9,6 +9,7 @@ import java.util.TreeMap;
 import com.curator.models.Artist;
 import com.curator.models.Track;
 import com.curator.tools.DBTools;
+import com.curator.tools.SpotifyTools;
 
 /**
  * 
@@ -138,11 +139,12 @@ public class ArtistRecommender {
 	 * in songRecs.
 	 */
 	public void recSongsToArtists() {
-		for (Track song : songRecs) {
-			artistResults.computeIfPresent(song.getArtists().get(0),
-					(key, val) -> val + 1);
-			artistResults.putIfAbsent(song.getArtists().get(0), 1);
+		ArrayList<Artist> artists = SpotifyTools.getSeveralArtists(SpotifyTools.toIdArrayList(songRecs));
+		for (int i = 0; i < songRecs.size(); i++) {
+			artistResults.computeIfPresent(artists.get(i), (key, val) -> val + 1);
+			artistResults.putIfAbsent(artists.get(i), 1);
 		}
+
 		for (Map.Entry<Artist, Integer> entry : artistResults.entrySet()) {
 			artistResultsRanked.put(entry.getValue(), entry.getKey());
 		}
@@ -159,7 +161,9 @@ public class ArtistRecommender {
 	public void bestRecommendations() {
 		for (Map.Entry<Integer, Artist> entry : artistResultsRanked
 				.entrySet()) {
-			userArtistRecs.add(entry.getValue());
+		    if (entry.getValue().isInitialized()){
+				userArtistRecs.add(entry.getValue());
+			}
 		}
 	}
 

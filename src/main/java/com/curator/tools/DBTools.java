@@ -197,96 +197,72 @@ public class DBTools {
      * Returns an ArrayList of user liked songs by passing in the USER_ID
      */
     public static ArrayList<Track> getUserLikedSongs() {
-
-        ArrayList<Track> userLikedSongs = new ArrayList<>();
-        String trackID = "";
+        ArrayList<String> ids = new ArrayList<>();
         try {
-            if (conn == null) {
-                System.out.print("error");
-            } else {
-                System.out.print("success");
-            }
             PreparedStatement preStSong = conn.prepareStatement("SELECT Track_id FROM User_Preference_Song WHERE `Like/Dislike` = '1' AND user_id = ?");
             preStSong.setString(1, USER_ID);
             rs = preStSong.executeQuery();
             while (rs.next()) {
-                trackID = rs.getString("Track_id");
-                Track track = SpotifyTools.getTrack(trackID);
-                userLikedSongs.add(track);
-//				System.out.println(rs.getString("Track_id"));
-//				System.out.println(trackID);
-//				System.out.println(track.getTrackID());
+                ids.add(rs.getString("Track_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return userLikedSongs;
+        return SpotifyTools.getSeveralTracks(ids);
     }
 
     /*
      * Returns an ArrayList of user liked artists by passing in the USER_ID
      */
     public static ArrayList<Artist> getUserLikedArtists() {
-        ArrayList<Artist> userLikedArtist = new ArrayList<>();
-        String artistID = "";
+        ArrayList<String> ids = new ArrayList<>();
         try {
             PreparedStatement preStArtist = conn.prepareStatement("SELECT Artist_id FROM User_Preference_Artist WHERE `Like/Dislike` = '1' AND user_id = ?");
             preStArtist.setString(1, USER_ID);
             rs = preStArtist.executeQuery();
             while (rs.next()) {
-                artistID = rs.getString("Artist_id");
-                Artist artist = SpotifyTools.getArtist(artistID);
-                userLikedArtist.add(artist);
-                System.out.println(rs.getString("Artist_id"));
+                ids.add(rs.getString("Artist_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return userLikedArtist;
+        return SpotifyTools.getSeveralArtists(ids);
     }
 
     /*
      * Returns an ArrayList of user liked albums by passing in the USER_ID
      */
     public static ArrayList<Album> getUserLikedAlbum() {
-        ArrayList<Album> userLikedAlbum = new ArrayList<>();
-        String albumID = "";
+        ArrayList<String> ids = new ArrayList<>();
         try {
             PreparedStatement preStAlbum = conn.prepareStatement("SELECT Album_id FROM User_Preference_Album WHERE `Like/Dislike` = '1' AND user_id = ?");
             preStAlbum.setString(1, USER_ID);
             rs = preStAlbum.executeQuery();
             while (rs.next()) {
-                albumID = rs.getString("Album_id");
-                Album album = SpotifyTools.getAlbum(albumID);
-                userLikedAlbum.add(album);
-                System.out.println(rs.getString("Album_id"));
+                ids.add(rs.getString("Album_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return userLikedAlbum;
+        return SpotifyTools.getSeveralAlbums(ids);
     }
 
     /*
      * Returns an ArrayList of user disliked songs by passing in the USER_ID
      */
     public static ArrayList<Track> getUserDislikedSongs() {
-        ArrayList<Track> userDislikedSongs = new ArrayList<>();
-        String trackID = "";
+        ArrayList<String> ids = new ArrayList<>();
         try {
             PreparedStatement preStSong1 = conn.prepareStatement("SELECT Track_id FROM User_Preference_Song WHERE `Like/Dislike` = '0' AND user_id = ?");
             preStSong1.setString(1, USER_ID);
             rs = preStSong1.executeQuery();
             while (rs.next()) {
-                trackID = rs.getString("Track_id");
-                Track track = SpotifyTools.getTrack(trackID);
-                userDislikedSongs.add(track);
-                System.out.println(rs.getString("Track_id"));
+                ids.add(rs.getString("Track_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return userDislikedSongs;
+        return SpotifyTools.getSeveralTracks(ids);
 
     }
 
@@ -294,44 +270,36 @@ public class DBTools {
      * Returns an ArrayList of user disliked artists by passing in the USER_ID
      */
     public static ArrayList<Artist> getUserDislikedArtists() {
-        ArrayList<Artist> userDislikedArtist = new ArrayList<>();
-        String artistID = "";
+        ArrayList<String> ids = new ArrayList<>();
         try {
             PreparedStatement preStArtist1 = conn.prepareStatement("SELECT Artist_id FROM User_Preference_Artist WHERE `Like/Dislike` = '0' AND user_id = ?");
             preStArtist1.setString(1, USER_ID);
             rs = preStArtist1.executeQuery();
             while (rs.next()) {
-                artistID = rs.getString("Artist_id");
-                Artist artist = SpotifyTools.getArtist(artistID);
-                userDislikedArtist.add(artist);
-                System.out.println(rs.getString("Artist_id"));
+                ids.add(rs.getString("Artist_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return userDislikedArtist;
+        return SpotifyTools.getSeveralArtists(ids);
     }
 
     /*
      * Returns an ArrayList of user disliked albums by passing in the USER_ID
      */
     public static ArrayList<Album> getUserDislikedAlbum() {
-        ArrayList<Album> userDislikedAlbum = new ArrayList<>();
-        String albumID = "";
+        ArrayList<String> ids = new ArrayList<>();
         try {
             PreparedStatement preStAlbum = conn.prepareStatement("SELECT Album_id FROM User_Preference_Album WHERE `Like/Dislike` = '0' AND user_id = ?");
             preStAlbum.setString(1, USER_ID);
             rs = preStAlbum.executeQuery();
             while (rs.next()) {
-                albumID = rs.getString("Album_id");
-                Album album = SpotifyTools.getAlbum(albumID);
-                userDislikedAlbum.add(album);
-                System.out.println(rs.getString("Album_id"));
+                ids.add(rs.getString("Album_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return userDislikedAlbum;
+        return SpotifyTools.getSeveralAlbums(ids);
     }
 
     /*
@@ -1007,6 +975,7 @@ public class DBTools {
     public static ArrayList<Track> getRecommendationTrack(int qty) {
         String q = "SELECT track_id FROM rec_track WHERE user_id = ? LIMIT ?;";
         ArrayList<Track> tracks = new ArrayList<>();
+        ArrayList<String> ids = new ArrayList<>();
         PreparedStatement ps;
         try {
             ps = conn.prepareStatement(q);
@@ -1014,12 +983,12 @@ public class DBTools {
             ps.setInt(2, qty);
             rs = ps.executeQuery();
             while (rs.next()) {
-                tracks.add(SpotifyTools.getTrack(rs.getString("track_id")));
+                ids.add(rs.getString("track_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return tracks;
+        return SpotifyTools.getSeveralTracks(ids);
     }
 
     /**
@@ -1030,7 +999,7 @@ public class DBTools {
      */
     public static ArrayList<Album> getRecommendationAlbum(int qty) {
         String q = "SELECT album_id FROM rec_album WHERE user_id = ? LIMIT ?;";
-        ArrayList<Album> albums = new ArrayList<>();
+        ArrayList<String> ids = new ArrayList<>();
         PreparedStatement ps;
         try {
             ps = conn.prepareStatement(q);
@@ -1038,12 +1007,12 @@ public class DBTools {
             ps.setInt(2, qty);
             rs = ps.executeQuery();
             while (rs.next()) {
-                albums.add(SpotifyTools.getAlbum(rs.getString("album_id")));
+                ids.add(rs.getString("album_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return albums;
+        return SpotifyTools.getSeveralAlbums(ids);
     }
 
     /**
@@ -1054,7 +1023,7 @@ public class DBTools {
      */
     public static ArrayList<Artist> getRecommendationArtist(int qty) {
         String q = "SELECT artist_id FROM rec_artist WHERE user_id = ? LIMIT ?;";
-        ArrayList<Artist> artists = new ArrayList<>();
+        ArrayList<String> ids = new ArrayList<>();
         PreparedStatement ps;
         try {
             ps = conn.prepareStatement(q);
@@ -1062,12 +1031,13 @@ public class DBTools {
             ps.setInt(2, qty);
             rs = ps.executeQuery();
             while (rs.next()) {
-                artists.add(SpotifyTools.getArtist(rs.getString("artist_id")));
+                ids.add(rs.getString("artist_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return artists;
+        System.out.println("get rec artist DB, ids length is " + ids.size());
+        return SpotifyTools.getSeveralArtists(ids);
     }
 
     /**
@@ -1139,6 +1109,7 @@ public class DBTools {
      */
     public static void storeRecommendationArtist(ArrayList<Artist> artists) {
         String q = "INSERT INTO rec_artist (user_id, artist_id, ranking) VALUES(?, ?, ?);";
+        System.out.println("in store rec, artists size is " + artists.size());
         for (Artist artist : artists) {
             if (!isArtistExistInRecTable(artist)) {
                 storeRecommendationItem(artist, q);
@@ -1154,6 +1125,9 @@ public class DBTools {
      * @return true if artist/album/track exists in recommendation table, false otherwise
      */
     private static boolean isItemInRecommendationTable(Object item, String q) {
+        if (item == null){
+            return false;
+        }
         PreparedStatement stmt = null;
         try {
             stmt = conn.prepareStatement(q);
@@ -1210,6 +1184,9 @@ public class DBTools {
      * @return true if the artist exists in the recommendation table, false otherwise
      */
     public static boolean isArtistExistInRecTable(Artist artist) {
+        if (artist == null || artist.getArtistID() == null){
+            return false;
+        }
         String q = "SELECT EXISTS(SELECT artist_id FROM rec_artist WHERE user_id = ? AND artist_id = ? LIMIT 1);";
         return isItemInRecommendationTable(artist, q);
     }

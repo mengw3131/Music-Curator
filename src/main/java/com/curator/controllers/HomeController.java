@@ -3,7 +3,6 @@ package com.curator.controllers;
 import com.curator.models.*;
 import com.curator.tools.DBTools;
 import com.curator.tools.RecTools;
-import com.curator.tools.SpotifyTools;
 import com.curator.views.ItemScrollPane;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -128,19 +127,28 @@ public class HomeController implements Initializable {
     private void loadAll() {
         if (tracks == null) {
             setTracks(RecTools.popTracks(21));
-        }
-        loadItems(tracks);
-        if (albums == null) {
-            setAlbums(RecTools.popAlbums(21));
-        }
-        if (albums.size() != 0) {
-            loadItems(albums);
+            if (tracks != null && tracks.size() != 0){
+                loadItems(tracks);
+            }
+        } else if (tracks.size() != 0){
+            loadItems(tracks);
         }
         if (artists == null) {
             setArtists(RecTools.popArtists(21));
-        }
-        if (artists.size() != 0) {
+            if (artists != null && artists.size() != 0){
+                loadItems(artists);
+            }
+        } else if (artists.size() != 0){
             loadItems(artists);
+        }
+
+        if (albums == null) {
+            setAlbums(RecTools.popAlbums(21));
+            if (albums != null && albums.size() != 0){
+                loadItems(albums);
+            }
+        } else if (albums.size() != 0){
+            loadItems(albums);
         }
     }
 

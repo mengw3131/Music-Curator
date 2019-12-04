@@ -98,7 +98,7 @@ public class RecTools {
 	}
 
 	private static int INIT_SIZE = 150;
-	private static int MIN_THRESHOLD = 30;
+	private static int MIN_THRESHOLD = 1;
 	private static ArrayList<Track> trackQueue = new ArrayList<>();
 	private static ArrayList<Album> albumQueue = new ArrayList<>();
 	private static ArrayList<Artist> artistQueue = new ArrayList<>();
@@ -184,10 +184,12 @@ public class RecTools {
 	 */
 	public static Track popTrack() {
 		checkAndReplenishTrack();
-		Track t = trackQueue.get(0);
-		trackQueue.remove(0);
-
-		trackQueueSize--;
+		Track t = null;
+		if (trackQueue.size() != 0){
+			t = trackQueue.get(0);
+			trackQueue.remove(0);
+			trackQueueSize--;
+		}
 		return t;
 	}
 
@@ -196,9 +198,12 @@ public class RecTools {
 	 */
 	public static Album popAlbum() {
 		checkAndReplenishAlbum();
-		Album a = albumQueue.get(0);
-		albumQueue.remove(0);
-		albumQueueSize--;
+		Album a = null;
+		if (albumQueue.size() != 0){
+			a = albumQueue.get(0);
+			albumQueue.remove(0);
+			albumQueueSize--;
+		}
 		return a;
 	}
 
@@ -207,9 +212,12 @@ public class RecTools {
 	 */
 	public static Artist popArtist() {
 		checkAndReplenishArtist();
-		Artist a = artistQueue.get(0);
-		artistQueue.remove(0);
-		artistQueueSize--;
+		Artist a = null;
+		if (artistQueue.size() != 0) {
+			a = artistQueue.get(0);
+			artistQueue.remove(0);
+			artistQueueSize--;
+		}
 		return a;
 	}
 

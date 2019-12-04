@@ -314,6 +314,14 @@ public class Track {
 		return features;
 	}
 
+	public String getAlbumId(){
+		return sTrack.getAlbum().getId();
+	}
+
+	public String getArtistId(){
+		return sTrack.getArtists()[0].getId();
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (! (obj instanceof Track)){
