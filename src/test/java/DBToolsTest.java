@@ -1,9 +1,10 @@
-import com.curator.models.Playlist;
 import com.curator.tools.SpotifyTools;
 import org.junit.jupiter.api.*;
 
 import com.curator.tools.DBTools;
 import com.curator.models.*;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 
@@ -31,24 +32,6 @@ class DBToolsTest {
     }
 
     @Test
-    void testGetUserLikedSongs() {
-        //String userID = "meng";
-//		String trackID = "463564A";
-//		Boolean like = true;
-
-//		DBTools.storeUserPreferenceTracks(userID, trackID, like);
-//		DBTools db = new DBTools();
-//		ArrayList<Track> list = db.getUserLikedSongs("meng");
-//		StringBuilder sb = new StringBuilder();
-//		for (Track track: list) {
-//			String track_id = track.getTrackID();
-//			sb.append(track_id);
-//		}
-//		Assertions.assertEquals("463564A", sb.toArtistName());
-//		fail("Not yet implemented");
-    }
-
-    @Test
     public void isNewUser_returnsTrueIfUserIsNew(){
         Assertions.assertTrue(DBTools.isNewUser());  //true, since user is deleted after each test
     }
@@ -56,6 +39,7 @@ class DBToolsTest {
     @Test
     public void isNewUser_returnsFalseIfIsNotNewUser(){
         DBTools.initialize("islong");
+        DBTools.addNewUser();
         Assertions.assertFalse(DBTools.isNewUser()); //islong logged in twice
         DBTools.initialize(USER_ID); //switch back, so islong is not removed
     }
@@ -65,10 +49,10 @@ class DBToolsTest {
         Assertions.assertEquals(USER_ID, DBTools.getUserId());
     }
 
-    //TODO: FIX!
     @Test
     public void incrementLoginCount_incrementsLoginCount(){
-        DBTools.incrementLoginCount();
+    	DBTools.addNewUser();
+    	DBTools.incrementLoginCount();
         Assertions.assertEquals(2, DBTools.getLoginCount());
     }
 
@@ -222,4 +206,245 @@ class DBToolsTest {
             Assertions.assertFalse(DBTools.isTrackExistInPlaylist(track, playlist));
         }
     }
+    
+    @Test
+	void testAddNewUser() {
+    	DBTools.addNewUser();
+        Assertions.assertEquals(1, DBTools.getLoginCount());
+	}
+
+
+	@Test
+	void testGetUserLikedSongs() {
+		DBTools.storeUserPreferenceTracks("703WlQONsXodIABGbGvF6M", true);
+		ArrayList<Track> list = DBTools.getUserLikedSongs();
+		StringBuilder sb = new StringBuilder();
+		for (Track track: list) {
+			String track_id = track.getTrackID();
+			sb.append(track_id);
+		}
+		Assertions.assertEquals("703WlQONsXodIABGbGvF6M", sb.toString());
+		
+	}
+
+	@Test
+	void testGetUserLikedArtists() {
+		DBTools.storeUserPreferenceArtist("04gDigrS5kc9YWfZHwBETP", true);
+		ArrayList<Artist> list = DBTools.getUserLikedArtists();
+		StringBuilder sb = new StringBuilder();
+		for (Artist artist: list) {
+			String artist_id = artist.getArtistID();
+			sb.append(artist_id);
+		}
+		Assertions.assertEquals("04gDigrS5kc9YWfZHwBETP", sb.toString());
+	}
+
+	@Test
+	void testGetUserLikedAlbum() {
+		DBTools.storeUserPreferenceAlbum("3LM5q1ozRtvCt0Wf3fqsp7", true);
+		ArrayList<Album> list = DBTools.getUserLikedAlbum();
+		StringBuilder sb = new StringBuilder();
+		for (Album album: list) {
+			String album_id = album.getAlbumID();
+			sb.append(album_id);
+		}
+		Assertions.assertEquals("3LM5q1ozRtvCt0Wf3fqsp7", sb.toString());
+	}
+
+	@Test
+	void testGetUserDislikedSongs() {
+		DBTools.storeUserPreferenceTracks("703WlQONsXodIABGbGvF6M", false);
+		ArrayList<Track> list = DBTools.getUserDislikedSongs();
+		StringBuilder sb = new StringBuilder();
+		for (Track track: list) {
+			String track_id = track.getTrackID();
+			sb.append(track_id);
+		}
+		Assertions.assertEquals("703WlQONsXodIABGbGvF6M", sb.toString());
+	}
+
+	@Test
+	void testGetUserDislikedArtists() {
+		DBTools.storeUserPreferenceArtist("04gDigrS5kc9YWfZHwBETP", false);
+		ArrayList<Artist> list = DBTools.getUserDislikedArtists();
+		StringBuilder sb = new StringBuilder();
+		for (Artist artist: list) {
+			String artist_id = artist.getArtistID();
+			sb.append(artist_id);
+		}
+		Assertions.assertEquals("04gDigrS5kc9YWfZHwBETP", sb.toString());
+	}
+
+	@Test
+	void testGetUserDislikedAlbum() {
+		DBTools.storeUserPreferenceAlbum("3LM5q1ozRtvCt0Wf3fqsp7", false);
+		ArrayList<Album> list = DBTools.getUserDislikedAlbum();
+		StringBuilder sb = new StringBuilder();
+		for (Album album: list) {
+			String album_id = album.getAlbumID();
+			sb.append(album_id);
+		}
+		Assertions.assertEquals("3LM5q1ozRtvCt0Wf3fqsp7", sb.toString());
+	}
+
+	
+
+	@Test
+	void testGetPlaylist() {
+		 Playlist p4 = new Playlist("Playlist getPlaylist");
+		 String id = p4.getId();
+		 DBTools.storePlaylist(p4);
+		 Assertions.assertEquals(p4, DBTools.getPlaylist(id));
+	}
+
+	@Test
+	void testGetTracksFromPlaylistID() {
+		Playlist p4 = new Playlist("getTracksFromPlaylistID");
+		String t1 = "5zhuWncJsBKrQ1HhmAKNAg";
+		String t2 = "1Mse9NKBbEASi50CQ4aYhr";
+		String t3 = "2s7oaW721ExcKoyxzDWD1D";
+		DBTools.storePlaylist(p4);
+		String playlistId = p4.getId();
+		DBTools.storeTrackToPlaylist(t1, playlistId);
+		DBTools.storeTrackToPlaylist(t2, playlistId);
+		DBTools.storeTrackToPlaylist(t3, playlistId);
+		ArrayList<Track> tracks = DBTools.getTracksFromPlaylistID(playlistId);
+		Assertions.assertEquals(t1, tracks.get(0).getTrackID());
+		Assertions.assertEquals(t2, tracks.get(1).getTrackID());
+		Assertions.assertEquals(t3, tracks.get(2).getTrackID());
+		
+	}
+
+	@Test
+	void testGetTracksIDsFromPlaylist() {
+		Playlist p4 = new Playlist("getTracksIDsFromPlaylist");
+		String t1 = "5zhuWncJsBKrQ1HhmAKNAg";
+		String t2 = "1Mse9NKBbEASi50CQ4aYhr";
+		String t3 = "2s7oaW721ExcKoyxzDWD1D";
+		DBTools.storePlaylist(p4);
+		String playlistId = p4.getId();
+		DBTools.storeTrackToPlaylist(t1, playlistId);
+		DBTools.storeTrackToPlaylist(t2, playlistId);
+		DBTools.storeTrackToPlaylist(t3, playlistId);
+		ArrayList<String> tracks = DBTools.getTracksIDsFromPlaylist(p4);
+		Assertions.assertEquals(t1, tracks.get(0));
+		Assertions.assertEquals(t2, tracks.get(1));
+		Assertions.assertEquals(t3, tracks.get(2));
+		
+	}
+
+	
+
+	@Test
+	void testRenamePlaylist() {
+		Playlist p4 = new Playlist("PlaylistName");
+		DBTools.storePlaylist(p4);
+		String playlistId = p4.getId();
+		DBTools.renamePlaylist("PlaylistNewName", playlistId);
+		Assertions.assertEquals("PlaylistNewName", DBTools.getPlaylistName(playlistId));
+		
+	}
+
+	@Test
+	void testStorePlaylistMeta() {
+		Playlist p4 = new Playlist("PlaylistName");
+		DBTools.storePlaylistMeta(p4);
+		Assertions.assertEquals("PlaylistName", p4.getName());
+	}
+
+	@Test
+	void testGetPlaylistName() {
+		Playlist p4 = new Playlist("PlaylistName");
+		DBTools.storePlaylist(p4);
+		String playlistId = p4.getId();
+		Assertions.assertEquals("PlaylistName", DBTools.getPlaylistName(playlistId));
+	}
+
+	@Test
+	void testGetRecommendationTrack() {
+		Track t1 = SpotifyTools.getTrack("5zhuWncJsBKrQ1HhmAKNAg");
+		Track t2 = SpotifyTools.getTrack("1Mse9NKBbEASi50CQ4aYhr");
+		Track t3 = SpotifyTools.getTrack("2s7oaW721ExcKoyxzDWD1D");
+		ArrayList<Track> storedTracks = new ArrayList<>();
+		storedTracks.add(t1);
+		storedTracks.add(t2);
+		storedTracks.add(t3);
+		DBTools.storeRecommendationTrack(storedTracks);
+		ArrayList<Track> list = DBTools.getRecommendationTrack(3);
+		Assertions.assertEquals(t1, list.get(0));
+		Assertions.assertEquals(t2, list.get(1));
+		Assertions.assertEquals(t3, list.get(2));
+	}
+
+	@Test
+	void testGetRecommendationAlbum() {
+		Album t1 = SpotifyTools.getAlbum("2OpnKgmVYPEN2GldgBponI");
+		Album t2 = SpotifyTools.getAlbum("5oxH8IwrnqlG5t4nDngDV1");
+		Album t3 = SpotifyTools.getAlbum("1QlwdrB0YycnoWOH1JqCqh");
+		ArrayList<Album> storedAlbums = new ArrayList<>();
+		storedAlbums.add(t1);
+		storedAlbums.add(t2);
+		storedAlbums.add(t3);
+		DBTools.storeRecommendationAlbum(storedAlbums);
+		ArrayList<Album> list = DBTools.getRecommendationAlbum(3);
+		Assertions.assertEquals(t1, list.get(0));
+		Assertions.assertEquals(t2, list.get(1));
+		Assertions.assertEquals(t3, list.get(2));
+	}
+
+	@Test
+	void testGetRecommendationArtist() {
+		Artist t1 = SpotifyTools.getArtist("6qqNVTkY8uBg9cP3Jd7DAH");
+		Artist t2 = SpotifyTools.getArtist("00FQb4jTyendYWaN8pK0wa");
+		Artist t3 = SpotifyTools.getArtist("66CXWjxzNUsdJxJ2JdwvnR");
+		ArrayList<Artist> storedArtists = new ArrayList<>();
+		storedArtists.add(t1);
+		storedArtists.add(t2);
+		storedArtists.add(t3);
+		DBTools.storeRecommendationArtist(storedArtists);
+		ArrayList<Artist> list = DBTools.getRecommendationArtist(3);
+		Assertions.assertEquals(t1, list.get(0));
+		Assertions.assertEquals(t2, list.get(1));
+		Assertions.assertEquals(t3, list.get(2));
+	}
+
+	@Test
+	void testIsTrackExistInRecTable() {
+		Track t1 = SpotifyTools.getTrack("5zhuWncJsBKrQ1HhmAKNAg");
+		Track t2 = SpotifyTools.getTrack("1Mse9NKBbEASi50CQ4aYhr");
+		Track t3 = SpotifyTools.getTrack("2s7oaW721ExcKoyxzDWD1D");
+		ArrayList<Track> storedTracks = new ArrayList<>();
+		storedTracks.add(t1);
+		storedTracks.add(t2);
+		DBTools.storeRecommendationTrack(storedTracks);
+		Assertions.assertTrue(DBTools.isTrackExistInRecTable(t1));
+		Assertions.assertFalse(DBTools.isTrackExistInRecTable(t3));
+	}
+
+	@Test
+	void testIsAlbumExistInRecTable() {
+		Album t1 = SpotifyTools.getAlbum("2OpnKgmVYPEN2GldgBponI");
+		Album t2 = SpotifyTools.getAlbum("5oxH8IwrnqlG5t4nDngDV1");
+		Album t3 = SpotifyTools.getAlbum("1QlwdrB0YycnoWOH1JqCqh");
+		ArrayList<Album> storedAlbums = new ArrayList<>();
+		storedAlbums.add(t1);
+		storedAlbums.add(t2);
+		DBTools.storeRecommendationAlbum(storedAlbums);
+		Assertions.assertTrue(DBTools.isAlbumExistInRecTable(t1));
+		Assertions.assertFalse(DBTools.isAlbumExistInRecTable(t3));
+	}
+
+	@Test
+	void testIsArtistExistInRecTable() {
+		Artist t1 = SpotifyTools.getArtist("6qqNVTkY8uBg9cP3Jd7DAH");
+		Artist t2 = SpotifyTools.getArtist("00FQb4jTyendYWaN8pK0wa");
+		Artist t3 = SpotifyTools.getArtist("66CXWjxzNUsdJxJ2JdwvnR");
+		ArrayList<Artist> storedArtists = new ArrayList<>();
+		storedArtists.add(t1);
+		storedArtists.add(t2);
+		DBTools.storeRecommendationArtist(storedArtists);
+		Assertions.assertTrue(DBTools.isArtistExistInRecTable(t1));
+		Assertions.assertFalse(DBTools.isArtistExistInRecTable(t3));
+	}
+  
 }
