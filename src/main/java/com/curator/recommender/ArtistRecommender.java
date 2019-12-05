@@ -141,7 +141,10 @@ public class ArtistRecommender {
 	 * in songRecs.
 	 */
 	public void recSongsToArtists() {
-		ArrayList<String> ids = SpotifyTools.toIdArrayList(songRecs);
+		ArrayList<String> ids = new ArrayList<>();
+		for (Track t: songRecs) {
+			ids.add(t.getArtistId());
+		}
 		ArrayList<Artist> artists = SpotifyTools.getSeveralArtists(ids);
 
 		for (int i = 0; i < songRecs.size(); i++) {
@@ -165,11 +168,11 @@ public class ArtistRecommender {
 	 */
 	public void bestRecommendations() {
 		for (Map.Entry<Integer, Artist> entry : artistResultsRanked .entrySet()) {
-//			if (entry.getValue().isInitialized()) {
+			if (entry.getValue().isInitialized()) {
 				userArtistRecs.add(entry.getValue());
-//			} else {
-//				System.out.println("in artist rec, artist is not initialized");
-//			}
+			} else {
+				System.out.println("in artist rec, artist is not initialized");
+			}
 		}
 		System.out.println("in artist, after best reccommne, user artist recs is " + userArtistRecs.size());
 	}

@@ -138,7 +138,10 @@ public class AlbumRecommender {
 	 * songRecs.
 	 */
 	public void recSongsToAlbums() {
-		ArrayList<String> albumIDs = SpotifyTools.toIdArrayList(songRecs);
+		ArrayList<String> albumIDs = new ArrayList<>();
+		for (Track t: songRecs) {
+			albumIDs.add(t.getAlbumId());
+		}
 
 		for (Album album : SpotifyTools.getSeveralAlbums(albumIDs)) {
 			albumResults.computeIfPresent(album, (key, val) -> val + 1 + RecTools.getRandom());
@@ -160,13 +163,12 @@ public class AlbumRecommender {
 	 */
 	public void bestRecommendations() {
 		for (Map.Entry<Integer, Album> entry : albumResultsRanked.entrySet()) {
-//			if (entry.getValue().isInitialized()) {
+			if (entry.getValue().isInitialized()) {
 				userAlbumRecs.add(entry.getValue());
-//			} else {
-//				System.out.println("in album rec, album is not initialized");
-//			}
+			} else {
+				System.out.println("in album rec, album is not initialized");
+			}
 		}
-		System.out.println("in album, after best reccommne, user album recs is " + userAlbumRecs.size());
 	}
 
 	/**

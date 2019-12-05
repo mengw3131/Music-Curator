@@ -29,18 +29,6 @@ public class Main extends Application {
      */
     @java.lang.Override
     public void start(Stage stage) {
-//        ArrayList<com.curator.models.Album> albums = SpotifyTools.searchAlbums("love", 20);
-//        ArrayList<String> ids = SpotifyTools.toIdArrayList(albums);
-//        System.out.println("ids are " + ids);
-//        ArrayList<com.curator.models.Album> albums2 = SpotifyTools.getSeveralAlbums(ids);
-//        for (Album a: albums2) {
-//            System.out.println(a.getName());
-//        }
-//
-//        System.exit(0);
-
-
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/welcome.fxml"));
         Scene scene = null;
         try {

@@ -430,7 +430,6 @@ public class DBTools {
      */
     private static void updateItemPreference(boolean newPreference, String itemId, String q) {
         try {
-            System.out.println("new pref is " + newPreference);
             PreparedStatement stmt = conn.prepareStatement(q);
             stmt.setBoolean(1, newPreference);
             stmt.setString(2, itemId);

@@ -418,13 +418,6 @@ public class SpotifyTools {
                 }
             }
         }
-        System.out.println("in spotify tools get tracks, testing initialized");
-        for (com.curator.models.Track t: tracks) {
-            if (!t.isInitialized()){
-                System.out.println("in stols track not initialized");
-            }
-
-        }
         return tracks;
     }
 

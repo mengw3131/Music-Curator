@@ -311,4 +311,19 @@ public class SpotifyToolsTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void getSeveralAlbums_returnsCorrectAlbumsForLargeQuantity() {
+        ArrayList<String> ids = new ArrayList<>();
+        ids.addAll(SpotifyTools.toIdArrayList(SpotifyTools.searchAlbums("My", 50)));
+        ids.addAll(SpotifyTools.toIdArrayList(SpotifyTools.searchAlbums("Love", 50)));
+        ids.addAll(SpotifyTools.toIdArrayList(SpotifyTools.searchAlbums("You", 50)));
+        ids.addAll(SpotifyTools.toIdArrayList(SpotifyTools.searchAlbums("She", 50)));
+        ids.addAll(SpotifyTools.toIdArrayList(SpotifyTools.searchAlbums("Why", 50)));
+
+        ArrayList<Album> albums = SpotifyTools.getSeveralAlbums(ids);
+        for (Album album: albums) {
+            Assertions.assertTrue(album.isInitialized());
+        }
+    }
 }
