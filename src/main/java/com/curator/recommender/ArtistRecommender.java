@@ -197,4 +197,5 @@ public class ArtistRecommender {
 		bestRecommendations();
 		return userArtistRecs;
 	}
+
 }
