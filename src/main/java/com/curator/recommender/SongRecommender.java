@@ -47,11 +47,11 @@ public class SongRecommender {
 	public SongRecommender() {
 		this.songPoolScored = new TreeMap<>();
 		this.userLikesMetrics = new HashMap<>();
-
 		this.userLikes = DBTools.getUserLikedSongs();
 
 		this.runRecommender(75);
 
+		System.out.println("userRecs size: " + userRecs.size());
 		DBTools.storeRecommendationTrack(userRecs);
 	}
 
@@ -144,16 +144,14 @@ public class SongRecommender {
 			}
 		}
 		// after song pool is initialized, fill its corresponding audio feature
-		// pool
 		fillAudioFeaturePool();
 	}
 
 	public void fillAudioFeaturePool() {
 		int size = songPool.size();
-		System.out.println("songPool size " + size);
+		System.out.println("songPool size: " + size);
 		audioFeaturesPool.addAll(
 				SpotifyTools.getSeveralAudioFeaturesFromTracks(songPool));
-		System.out.println("AF pool size is now " + audioFeaturesPool.size());
 	}
 
 	/**
@@ -173,7 +171,7 @@ public class SongRecommender {
 		double tempoScore = 0;
 		double valenceScore = 0;
 
-		for (AudioFeatures af : audioFeaturesPool) {
+		for (AudioFeatures af : SpotifyTools.getSeveralAudioFeaturesFromTracks(userLikes)) {
 			acousticScore += af.getAcousticness();
 			danceScore += af.getDanceability();
 			energyScore += af.getEnergy();
@@ -247,9 +245,7 @@ public class SongRecommender {
 	 */
 	public void loadRecScores() {
 		for (int i = 0; i < songPool.size(); i++) {
-			songPoolScored.put(
-					generateSimilarityScore(audioFeaturesPool.get(i)),
-					songPool.get(i));
+			songPoolScored.put( generateSimilarityScore(audioFeaturesPool.get(i)), songPool.get(i));
 		}
 	}
 
@@ -267,8 +263,10 @@ public class SongRecommender {
 			if (count >= listSize) {
 				break;
 			}
-			userRecs.add(entry.getValue());
-			count++;
+			if (entry.getValue().isInitialized()) {
+				userRecs.add(entry.getValue());
+				count++;
+			}
 		}
 	}
 

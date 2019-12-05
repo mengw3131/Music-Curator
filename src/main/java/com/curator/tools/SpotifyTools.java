@@ -354,7 +354,6 @@ public class SpotifyTools {
         int size = albumIDs.size();
         final int MAX_BUFFER = 20;
 
-
         if (size <= MAX_BUFFER){
             try {
                 LOGGER.info("sAPI Call #" + ++calls_count + " getSeveralAlbums(), size : " + size);
@@ -369,12 +368,11 @@ public class SpotifyTools {
         } else {
             for (int i = 0; i < size; i += MAX_BUFFER) {
                 if (i + MAX_BUFFER < size) {
-                    LOGGER.info("sAPI Call #" + ++calls_count + " getSeveralAlbums(), size : " + MAX_BUFFER);
-                    albums.addAll(SpotifyTools.getSeveralAlbums( new ArrayList<>(albumIDs.subList(i, i + MAX_BUFFER))));
+                    LOGGER.info("sAPI Call #" + ++calls_count + " getSeveralTracks(), size : " + MAX_BUFFER);
+                    albums.addAll(SpotifyTools.getSeveralAlbums(new ArrayList<>(albumIDs.subList(i, i + MAX_BUFFER))));
                 } else {
-
-                    LOGGER.info("sAPI Call #" + ++calls_count + " getSeveralAlbums(), size : " + (size - i));
-                    albums.addAll(SpotifyTools.getSeveralAlbums( new ArrayList<>(albumIDs.subList(i, size))));
+                    LOGGER.info("sAPI Call #" + ++calls_count + " getSeveralTracks(), size : " + (size - i));
+                    albums.addAll(SpotifyTools.getSeveralAlbums(new ArrayList<>(albumIDs.subList(i, size))));
                     break;
                 }
             }
@@ -420,28 +418,14 @@ public class SpotifyTools {
                 }
             }
         }
+        System.out.println("in spotify tools get tracks, testing initialized");
+        for (com.curator.models.Track t: tracks) {
+            if (!t.isInitialized()){
+                System.out.println("in stols track not initialized");
+            }
+
+        }
         return tracks;
-
-
-
-
-//        int size = trackIDs.size();
-//        if (size > 50) {
-//            LOGGER.warning("getSeveralTracks Max 50, " + size + " supplied. Returning 50.");
-//            return getSeveralTracks(new ArrayList<>(trackIDs.subList(0, 50)));
-//        }
-//        ArrayList<com.curator.models.Track> tracks = new ArrayList<>();
-//
-//        try {
-//            for (com.wrapper.spotify.model_objects.specification.Track sTrack :
-//                    api.getSeveralTracks(toIdArray(trackIDs)).build().execute()) {
-//                tracks.add(new com.curator.models.Track(sTrack));
-//            }
-//        } catch (IOException | SpotifyWebApiException e) {
-//            e.printStackTrace();
-//        }
-//        LOGGER.info("sAPI Call #" + ++calls_count + " getSeveralTracks(), size : " + size);
-//        return tracks;
     }
 
     /**

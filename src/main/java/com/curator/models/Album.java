@@ -108,6 +108,10 @@ public class Album {
 
 	public void setRanking(int ranking){ this.ranking = ranking; }
 
+	public boolean isInitialized(){
+		return this.sAlbum != null;
+	}
+
 
 	@Override
 	public boolean equals(Object obj) {

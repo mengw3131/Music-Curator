@@ -322,6 +322,10 @@ public class Track {
 		return sTrack.getArtists()[0].getId();
 	}
 
+	public boolean isInitialized(){
+		return this.sTrack != null;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (! (obj instanceof Track)){

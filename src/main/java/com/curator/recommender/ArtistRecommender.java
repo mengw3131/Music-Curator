@@ -9,7 +9,9 @@ import java.util.TreeMap;
 import com.curator.models.Artist;
 import com.curator.models.Track;
 import com.curator.tools.DBTools;
+import com.curator.tools.RecTools;
 import com.curator.tools.SpotifyTools;
+import jdk.jfr.consumer.RecordedThread;
 
 /**
  * 
@@ -139,17 +141,18 @@ public class ArtistRecommender {
 	 * in songRecs.
 	 */
 	public void recSongsToArtists() {
-		ArrayList<Artist> artists = SpotifyTools
-				.getSeveralArtists(SpotifyTools.toIdArrayList(songRecs));
+		ArrayList<String> ids = SpotifyTools.toIdArrayList(songRecs);
+		ArrayList<Artist> artists = SpotifyTools.getSeveralArtists(ids);
+
 		for (int i = 0; i < songRecs.size(); i++) {
-			artistResults.computeIfPresent(artists.get(i),
-					(key, val) -> val + 1);
-			artistResults.putIfAbsent(artists.get(i), 1);
+			artistResults.computeIfPresent(artists.get(i), (key, val) -> val + 1 + RecTools.getRandom());
+			artistResults.putIfAbsent(artists.get(i), 1 + RecTools.getRandom());
 		}
 
 		for (Map.Entry<Artist, Integer> entry : artistResults.entrySet()) {
 			artistResultsRanked.put(entry.getValue(), entry.getKey());
 		}
+		System.out.println("Artists result ranked size is " + artistResultsRanked.size());
 	}
 
 	/**
@@ -161,12 +164,14 @@ public class ArtistRecommender {
 	 *                 similarity scores
 	 */
 	public void bestRecommendations() {
-		for (Map.Entry<Integer, Artist> entry : artistResultsRanked
-				.entrySet()) {
-			if (entry.getValue().isInitialized()) {
+		for (Map.Entry<Integer, Artist> entry : artistResultsRanked .entrySet()) {
+//			if (entry.getValue().isInitialized()) {
 				userArtistRecs.add(entry.getValue());
-			}
+//			} else {
+//				System.out.println("in artist rec, artist is not initialized");
+//			}
 		}
+		System.out.println("in artist, after best reccommne, user artist recs is " + userArtistRecs.size());
 	}
 
 	/**
@@ -186,8 +191,8 @@ public class ArtistRecommender {
 	 */
 	public ArrayList<Artist> runRecommender() {
 		artistsToSongs();
-		SongRecommender songRecommender = new SongRecommender(songInputs);
-		songRecs = songRecommender.runRecommender(75);
+//		SongRecommender songRecommender = new SongRecommender(songInputs);
+//		songRecs = songRecommender.runRecommender(75);
 		recSongsToArtists();
 		bestRecommendations();
 		return userArtistRecs;

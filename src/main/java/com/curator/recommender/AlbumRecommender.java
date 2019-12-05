@@ -5,10 +5,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.curator.models.Album;
 import com.curator.models.Track;
 import com.curator.tools.DBTools;
+import com.curator.tools.RecTools;
 import com.curator.tools.SpotifyTools;
 
 /**
@@ -51,6 +53,7 @@ public class AlbumRecommender {
 		this.userAlbumRecs = new ArrayList<>();
 
 		this.userAlbumLikes = DBTools.getUserLikedAlbum();
+		this.songRecs = DBTools.getRecommendationTrack(75);
 
 		this.runRecommender();
 
@@ -76,6 +79,7 @@ public class AlbumRecommender {
 		this.userAlbumRecs = new ArrayList<>();
 
 		this.songRecs = songResults;
+		System.out.println("in album rec constructor, songrecs size is " + songRecs.size());
 
 		this.recSongsToAlbums();
 		this.bestRecommendations();
@@ -134,22 +138,13 @@ public class AlbumRecommender {
 	 * songRecs.
 	 */
 	public void recSongsToAlbums() {
-		ArrayList<String> albumIDs = new ArrayList<>();
-		for (Track track : songRecs) {
-			albumIDs.add(track.getAlbumId());
+		ArrayList<String> albumIDs = SpotifyTools.toIdArrayList(songRecs);
+
+		for (Album album : SpotifyTools.getSeveralAlbums(albumIDs)) {
+			albumResults.computeIfPresent(album, (key, val) -> val + 1 + RecTools.getRandom());
+			albumResults.putIfAbsent(album, 1 + RecTools.getRandom());
 		}
 
-		ArrayList<Album> albums = SpotifyTools.getSeveralAlbums(albumIDs);
-		for (Album album : albums) {
-			albumResults.computeIfPresent(album, (key, val) -> val + 1);
-			albumResults.putIfAbsent(album, 1);
-		}
-
-//		for (Track song : songRecs) {
-//			albumResults.computeIfPresent(song.getAlbum(),
-//					(key, val) -> val + 1);
-//			albumResults.putIfAbsent(song.getAlbum(), 1);
-//		}
 		for (Map.Entry<Album, Integer> entry : albumResults.entrySet()) {
 			albumResultsRanked.put(entry.getValue(), entry.getKey());
 		}
@@ -165,8 +160,13 @@ public class AlbumRecommender {
 	 */
 	public void bestRecommendations() {
 		for (Map.Entry<Integer, Album> entry : albumResultsRanked.entrySet()) {
-			userAlbumRecs.add(entry.getValue());
+//			if (entry.getValue().isInitialized()) {
+				userAlbumRecs.add(entry.getValue());
+//			} else {
+//				System.out.println("in album rec, album is not initialized");
+//			}
 		}
+		System.out.println("in album, after best reccommne, user album recs is " + userAlbumRecs.size());
 	}
 
 	/**
@@ -179,10 +179,12 @@ public class AlbumRecommender {
 	 */
 	public ArrayList<Album> runRecommender() {
 		albumsToSongs();
-		SongRecommender songRecommender = new SongRecommender(songInputs);
-		songRecs = songRecommender.runRecommender(75);
+//		SongRecommender songRecommender = new SongRecommender(songInputs);
+//		songRecs = songRecommender.runRecommender(75);
 		recSongsToAlbums();
 		bestRecommendations();
 		return userAlbumRecs;
 	}
+
+
 }

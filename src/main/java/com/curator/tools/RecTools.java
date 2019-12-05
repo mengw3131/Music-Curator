@@ -1,6 +1,7 @@
 package com.curator.tools;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.curator.models.Album;
 import com.curator.models.Artist;
@@ -246,5 +247,13 @@ public class RecTools {
 		if (trackQueueSize < MIN_THRESHOLD) {
 			replenishTrack();
 		}
+	}
+
+	/**
+	 * Returns random integer
+	 * @return
+	 */
+	public static int getRandom(){
+		return ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE);
 	}
 }
