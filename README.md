@@ -4,19 +4,18 @@ Official Page: https://upenn-cit599.github.io/final-project-music-curator/
 ![alt test](screenshots/home.png)
 
 #### Short Description:
-
-The music recommender will be a program with a user GUI that takes in a user’s favorite musical artists/songs and provides the user with recommendations on other artists/albums/songs that they may like (including the ability to play a preview of the artist or song). It will also be able to accept user feedback on the suggestions and update recommendations based on the user’s feedback (ex: remove suggestions that the user does not like and other recommendations that are too similar to the disliked suggestion). 
+Music Curator is a smart music player that picks for you your next favorite tracks, albums, or artists based on your usage and preference.
 
 #### Features:
-* Search artist, artist attributes (lyrics, trivia, artist description)
-* “Artists you may like” recommendation list
-* “Albums you may like” recommendation list
-* Song/artist audio preview/download (30 seconds)
-* com.curator.models.User feedback for the recommendations (like/dislike)
-* Updates recommendation list based on user feedback
-* Removes suggestions they don’t like and any other artists who are too similar
-If a user likes a suggestion, the recommendation list will update with more artists similar to the liked suggestion
+* Curate special collections of artists, albums, and tracks you might like
+* Search and discover artists, albums, and tracks  
+* Play and download any track and any album by any artist
+* Save your artists, albums, and tracks you like 
+* Create custom playlist of your favorite tracks 
+* Store user account and preference on the cloud 
 
+
+See instruction on how to run on Eclipse
 ### Running on Eclipse:
 ##### Cloning Repository
 1. File -> Import... -> Git -> Projects from Git (with smart import) -> Clone URI
@@ -32,6 +31,21 @@ If a user likes a suggestion, the recommendation list will update with more arti
 
 ##### Run Task 
 9. On Gradle Tasks bar at the bottom, MusicCurator -> application -> double-click on "run"
+
+#### Gallery
+![alt test](screenshots/welcome.png)
+![alt test](screenshots/survey1.png)
+![alt test](screenshots/survey2.png)
+![alt test](screenshots/survey3.png)
+![alt test](screenshots/home.png)
+![alt test](screenshots/discover.png)
+![alt test](screenshots/artist.png)
+![alt test](screenshots/artist2.png)
+![alt test](screenshots/album.png)
+![alt test](screenshots/my_music.png)
+![alt test](screenshots/playlist_1.png)
+![alt test](screenshots/playlist_track.png)
+
 
 #### Team 71
 * Isaac Longkutoy ([islong@seas.upenn.edu](mailto:islong@seas.upenn.edu)) 
