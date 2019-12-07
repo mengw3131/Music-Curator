@@ -35,14 +35,9 @@
                         <TextField visible="false" />
                      </children>
                   </GridPane>
-                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="49.0" layoutY="34.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icons/other/play.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/star.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
@@ -76,14 +71,9 @@
                         <TextField visible="false" />
                      </children>
                   </GridPane>
-                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="49.0" layoutY="34.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icons/other/play.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/star.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
@@ -117,14 +107,9 @@
                         <TextField visible="false" />
                      </children>
                   </GridPane>
-                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="49.0" layoutY="34.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icons/other/play.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/star.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
@@ -158,14 +143,9 @@
                         <TextField visible="false" />
                      </children>
                   </GridPane>
-                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="49.0" layoutY="34.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icons/other/play.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/star.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
@@ -199,14 +179,9 @@
                         <TextField visible="false" />
                      </children>
                   </GridPane>
-                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="49.0" layoutY="34.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icons/other/play.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/star.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
@@ -240,14 +215,9 @@
                         <TextField visible="false" />
                      </children>
                   </GridPane>
-                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="49.0" layoutY="34.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icons/other/play.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/star.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
@@ -281,14 +251,9 @@
                         <TextField visible="false" />
                      </children>
                   </GridPane>
-                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="49.0" layoutY="34.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icons/other/play.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/star.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
@@ -322,14 +287,9 @@
                         <TextField visible="false" />
                      </children>
                   </GridPane>
-                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="49.0" layoutY="34.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icons/other/play.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="86.0" layoutY="30.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/star.png" />
                      </image>
                   </ImageView>
                   <ImageView disable="true" fitHeight="50.0" fitWidth="50.0" layoutX="8.0" layoutY="93.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">

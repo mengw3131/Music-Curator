@@ -15,7 +15,7 @@ public class Artist {
 	private ArrayList<String> genres;
 	private ArrayList<Image> images;
 	private ArrayList<Track> tracks;
-	private com.wrapper.spotify.model_objects.specification.Artist sArtist;
+	private final com.wrapper.spotify.model_objects.specification.Artist sArtist;
 
 	private int ranking = -1;
 
@@ -83,14 +83,27 @@ public class Artist {
 		return this.tracks;
 	}
 
-	public int getRanking(){ return ranking; }
-
-	public void setRanking(int ranking){ this.ranking = ranking; }
-
-	public boolean isInitialized(){
-		return this.sArtist != null;
+	/**
+	 * Get the ranking of the Artist
+	 * @return the ranking of the artist
+	 */
+	public int getRanking() {
+		return ranking;
 	}
 
+	/**
+	 * Set the ranking of the artist
+	 * @param ranking the ranking of the artist
+	 */
+	public void setRanking(int ranking) {
+		this.ranking = ranking;
+	}
+
+	/**
+	 * Compares if this and Object obj is the same Artist object
+	 * @param obj the other object to be compared
+	 * @return true if this and other object is equal
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (! (obj instanceof Artist)){
@@ -99,6 +112,10 @@ public class Artist {
 		return this.getArtistID().equals(((Artist) obj).getArtistID());
 	}
 
+	/**
+	 * Returns the information about the Artist
+	 * @return String representation of the Artist
+	 */
 	@Override
 	public String toString() {
 		return "Artist " + getName() + " with id " + getArtistID();

@@ -3,12 +3,9 @@ package com.curator.controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,7 +21,7 @@ public class MainController implements Initializable {
         HOME(0), DISCOVER(1), MYMUSIC(2), FAVORITES(3),
         MADEFORYOU(4), PLAYLISTS(5), PROFILE(6);
 
-        int index;
+        final int index;
         PAGE_INDEX(int i) {
             this.index = i;
         }
@@ -35,17 +32,13 @@ public class MainController implements Initializable {
 
     private PlayerController playerController;
     private NavbarController navbarController;
-    private HomeController homeController;
-    private DiscoverController discoverController;
-    private PlaylistController playlistController;
-    private MyMusicController myMusicController;
 
     private BorderPane homePane;
     private BorderPane discoverPane;
     private BorderPane myMusicPane;
     private BorderPane playlistPane;
 
-    FXMLLoader loader;
+    private FXMLLoader loader;
 
     @FXML
     AnchorPane mainPane;
@@ -95,7 +88,7 @@ public class MainController implements Initializable {
                 homePane.prefWidthProperty().bind(mainPane.widthProperty());
 
                 //pass parent controller to child
-                homeController = loader.getController(); //get controller of home.fxml
+                HomeController homeController = loader.getController(); //get controller of home.fxml
                 homeController.setControllers(this, navbarController, playerController);
             }
 
@@ -133,7 +126,7 @@ public class MainController implements Initializable {
                     discoverPane.prefWidthProperty().bind(mainPane.widthProperty());
                     discoverVBox.prefWidthProperty().bind(scrollPane.widthProperty());
 
-                    discoverController = loader.getController();
+                    DiscoverController discoverController = loader.getController();
                     discoverController.setControllers(this, navbarController, playerController);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -173,7 +166,7 @@ public class MainController implements Initializable {
                     myMusicPane.prefWidthProperty().bind(mainPane.widthProperty());
                     myMusicVBox.prefWidthProperty().bind(scrollPane.widthProperty());
 
-                    myMusicController = loader.getController();
+                    MyMusicController myMusicController = loader.getController();
                     myMusicController.setControllers(this, navbarController, playerController);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -211,7 +204,7 @@ public class MainController implements Initializable {
                     playlistPane.prefHeightProperty().bind(mainPane.heightProperty());
                     playlistPane.prefWidthProperty().bind(mainPane.widthProperty());
 
-                    playlistController = loader.getController();
+                    PlaylistController playlistController = loader.getController();
                     playlistController.setControllers(this, navbarController, playerController);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -263,7 +256,7 @@ public class MainController implements Initializable {
     /**
      * Unselect all currently pane buttons
      */
-    public void unselectAllButtons() {
+    private void unselectAllButtons() {
         homeButton.setStyle("-fx-background-color: none;");
         discoverButton.setStyle("-fx-background-color: none;");
         myMusicButton.setStyle("-fx-background-color: none;");
@@ -281,9 +274,8 @@ public class MainController implements Initializable {
         System.out.println("Loading panes ... ");
         loadPlayer();
         loadNavBar();
-        System.out.println("Loading home content... ");
-
         //which page to show first
         homeButton.fire();
+        System.out.println("Welcome home");
     }
 }

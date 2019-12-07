@@ -4,7 +4,6 @@ import com.curator.controllers.*;
 import com.curator.models.Track;
 import com.curator.tools.DBTools;
 import com.curator.tools.RecTools;
-import com.curator.tools.SpotifyTools;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -21,22 +20,28 @@ import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
-public class TrackPane {
+/**
+ * The class representation of the track pane in track_pane.fxml
+ */
+class TrackPane {
     private Pane pane;
-    private NavbarController navbarController;
-    private MainController mainController;
-    private PlayerController playerController;
     private ItemScrollPane parentContainer;
     private int childIndex;
 
+    /**
+     * Creates a TrackPane object
+     * @param track the track of this pane
+     * @param mainController the main controller of the app
+     * @param navbarController the navbar controller of the app
+     * @param playerController the player controller of the app
+     * @param parentContainer the parent container of this track pane
+     * @param childIndex the ranking of the child in the parent of container
+     */
     public TrackPane(Track track, MainController mainController, NavbarController navbarController,
                      PlayerController playerController,
                      ItemScrollPane parentContainer, int childIndex
     ) {
         try {
-            this.mainController = mainController;
-            this.navbarController = navbarController;
-            this.playerController = playerController;
             this.parentContainer = parentContainer;
             this.childIndex = childIndex;
 
@@ -103,9 +108,7 @@ public class TrackPane {
                     for (String playlist_id : DBTools.getAllPlaylistIDs()) {
                         MenuItem menuItem = new MenuItem(DBTools.getPlaylistName(playlist_id));
                         menuItem.setId(playlist_id);
-                        menuItem.setOnAction(event2 -> {
-                            DBTools.storeTrackToPlaylist(track.getTrackID(), playlist_id);
-                        });
+                        menuItem.setOnAction(event2 -> DBTools.storeTrackToPlaylist(track.getTrackID(), playlist_id));
                         contextMenu.getItems().add(menuItem);
                     }
                     contextMenu.show(addToPlaylistButtonImageView, event.getScreenX(), event.getScreenY());
@@ -118,8 +121,6 @@ public class TrackPane {
             dislikeButtonImageView.addEventHandler(MouseEvent.MOUSE_CLICKED,
                     event -> {
                         DBTools.storeUserPreferenceTracks(track.getTrackID(), false);
-
-                        //TODO: GET REPLACEMENT FROM THE RECOMMENDER
                         TrackPane replacement =
                                 new TrackPane(RecTools.popTrack(), mainController,
                                 navbarController, playerController, parentContainer, childIndex);
@@ -133,7 +134,7 @@ public class TrackPane {
             trackNameLabel.addEventHandler(MouseEvent.MOUSE_EXITED,
                     event -> trackNameLabel.setStyle("-fx-underline: false"));
 
-            trackNameLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            trackNameLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<>() {
                 @Override
                 public void handle(MouseEvent event) {
                     if (event.getButton() == MouseButton.PRIMARY) {
@@ -177,15 +178,17 @@ public class TrackPane {
                 }
             });
 
-            pane.idProperty().addListener((observable, oldValue, newValue) -> {
-                setChildIndex(Integer.valueOf(newValue));
-            });
+            pane.idProperty().addListener((observable, oldValue, newValue) -> setChildIndex(Integer.valueOf(newValue)));
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Sets child index of the track pane
+     * @param childIndex the child index of the track pane
+     */
     public void setChildIndex(int childIndex) {
         this.childIndex = childIndex;
     }
@@ -215,7 +218,7 @@ public class TrackPane {
 
     /**
      * Return the Pane object of the track
-     * @return
+     * @return Pane object of this TrackPane
      */
     public Pane asPane() {
         return pane;

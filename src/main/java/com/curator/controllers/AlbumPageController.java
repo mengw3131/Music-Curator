@@ -75,7 +75,7 @@ public class AlbumPageController implements Initializable {
     /**
      * Load the tracks of the current album to the page
      */
-    public void loadTrack(){
+    private void loadTrack(){
         secondaryVBox.getChildren().add(new TrackListVBox(this.album.getTracks(), mainController,
                 navbarController, playerController).asVBox());
     }

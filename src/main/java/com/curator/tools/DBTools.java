@@ -10,7 +10,7 @@ public class DBTools {
     private static ResultSet rs;
     private static String USER_ID;
 
-    private static String[] tableNames = new String[]{
+    private static final String[] tableNames = new String[]{
             "User_Preference_Album", "User_Preference_Artist", "User_Preference_Song",
             "playlist", "playlist_meta", "rec_album", "rec_artist", "rec_track", "user_meta",
     };
@@ -28,16 +28,6 @@ public class DBTools {
 
                 if (isNewUser()) {
                     addNewUser();
-
-
-                    //initialize dummy data
-//                    storePlaylist(new Playlist("New Playlist"));
-
-                    // !!! DUMMY RECOMMENDATION: COMMENT THIS OUT WHEN USING THE REAL MODEL
-//                    DBTools.storeRecommendationArtist(SpotifyTools.getArtistByGenre(Genre.JAZZ, 20));
-//                    DBTools.storeRecommendationAlbum(SpotifyTools.searchAlbums("jazz", 21));
-//                    DBTools.storeRecommendationTrack(SpotifyTools.searchTracks("jazz", 30));
-
                 } else {
                     incrementLoginCount();
                 }
@@ -81,8 +71,7 @@ public class DBTools {
             stmt.setString(1, USER_ID);
             stmt.setInt(2, 1);
             stmt.execute();
-
-            System.out.println("Added new user: " + USER_ID);
+            System.out.println("Welcome to Music Curator, " + USER_ID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -90,8 +79,6 @@ public class DBTools {
 
     /**
      * Increase the login count of the current user by one
-     *
-     * @return
      */
     public static void incrementLoginCount() {
         try {
@@ -630,7 +617,7 @@ public class DBTools {
      * @param track    track to be stored
      * @param playlist destination playlist
      */
-    public static void storeTrackToPlaylist(Track track, Playlist playlist) {
+    private static void storeTrackToPlaylist(Track track, Playlist playlist) {
         storeTrackToPlaylist(track.getTrackID(), playlist.getId());
     }
 
@@ -718,7 +705,7 @@ public class DBTools {
      * @param track_id    track_id of the track to be removed
      * @param playlist_id playlist_id of the playlist where the track to be removed belongs
      */
-    public static void removeTrackFromPlaylist(String track_id, String playlist_id) {
+    private static void removeTrackFromPlaylist(String track_id, String playlist_id) {
         if (!isTrackExistInPlaylist(track_id, playlist_id)) {
             return;
         }
@@ -1046,7 +1033,7 @@ public class DBTools {
      * @param q    SQL query to store the items
      */
     private static void storeRecommendationItem(Object item, String q) {
-        PreparedStatement stmt = null;
+        PreparedStatement stmt;
         try {
             stmt = conn.prepareStatement(q);
             stmt.setString(1, USER_ID);
@@ -1108,7 +1095,6 @@ public class DBTools {
      */
     public static void storeRecommendationArtist(ArrayList<Artist> artists) {
         String q = "INSERT INTO rec_artist (user_id, artist_id, ranking) VALUES(?, ?, ?);";
-        System.out.println("in store rec, artists size is " + artists.size());
         for (Artist artist : artists) {
             if (!isArtistExistInRecTable(artist)) {
                 storeRecommendationItem(artist, q);
@@ -1127,7 +1113,7 @@ public class DBTools {
         if (item == null){
             return false;
         }
-        PreparedStatement stmt = null;
+        PreparedStatement stmt;
         try {
             stmt = conn.prepareStatement(q);
             stmt.setString(1, USER_ID);
@@ -1190,27 +1176,13 @@ public class DBTools {
         return isItemInRecommendationTable(artist, q);
     }
 
-
-    public static void deleteRecommendationArtist(String artistId) {
-
-    }
-
-    public static void deleteRecommendationAlbum(String albumId) {
-
-    }
-
-    public static void deleteRecommendationTrack(String albumId) {
-
-    }
-
-
     /**
      * Remove current user.
      * <p>
      * USE CAUTION.
      */
     public static void removeUser() {
-        PreparedStatement stmt = null;
+        PreparedStatement stmt;
         for (String table : tableNames) {
             try {
                 stmt = conn.prepareStatement("DELETE FROM " + table + " WHERE user_id = ?;");
@@ -1228,7 +1200,7 @@ public class DBTools {
      * USE CAUTION
      */
     public static void cleanDB() {
-        PreparedStatement stmt = null;
+        PreparedStatement stmt;
         for (String table : tableNames) {
             try {
                 stmt = conn.prepareStatement("DELETE FROM " + table + ";");

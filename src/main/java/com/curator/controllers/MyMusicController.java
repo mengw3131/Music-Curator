@@ -23,9 +23,6 @@ import java.util.ResourceBundle;
  * Controllers to my_music.fxml
  */
 public class MyMusicController implements Initializable {
-    private ArrayList<Artist> artists;
-    private ArrayList<Track> tracks;
-    private ArrayList<Album> albums;
 
     private NavbarController navbarController;
     private PlayerController playerController;
@@ -124,20 +121,19 @@ public class MyMusicController implements Initializable {
     /**
      * Loads tracks to be displayed
      */
-    public void loadTracks(){
-        tracks = DBTools.getUserLikedSongs();
+    private void loadTracks(){
+        ArrayList<Track> tracks = DBTools.getUserLikedSongs();
         VBox trackListVBox = new TrackListVBox(tracks, mainController, navbarController, playerController).asVBox();
         trackListVBox.prefWidthProperty().bind(mainScrollPane.widthProperty());
         trackTabPaneScroll.setContent(trackListVBox);
     }
 
-    //TODO: REFACTOR
     /**
      * Loads albums to be displayed
      */
-    public void loadAlbums() {
+    private void loadAlbums() {
         albumTabPaneVBox.getChildren().clear();
-        albums = DBTools.getUserLikedAlbum();
+        ArrayList<Album> albums = DBTools.getUserLikedAlbum();
 
         int remaining = albums.size();
         int i = 0;
@@ -155,14 +151,13 @@ public class MyMusicController implements Initializable {
         }
     }
 
-    //TODO: REFACTOR
     /**
      * Loads artists to be displayed
      */
-    public void loadArtists() {
+    private void loadArtists() {
 
         artistTabPaneVBox.getChildren().clear();
-        artists = DBTools.getUserLikedArtists();
+        ArrayList<Artist> artists = DBTools.getUserLikedArtists();
 
         int remaining = artists.size();
         int i = 0;
@@ -182,9 +177,9 @@ public class MyMusicController implements Initializable {
 
     /**
      * Set controllers, and initialize property + load tracks
-     * @param mainController
-     * @param navbarController
-     * @param playerController
+     * @param mainController main controller of the app
+     * @param navbarController navbar controller of the app
+     * @param playerController player controller of the app
      */
     public void setControllers(MainController mainController, NavbarController navbarController,
                                PlayerController playerController) {
@@ -197,7 +192,6 @@ public class MyMusicController implements Initializable {
     }
 
     /**
-     * //TODO: REFACTOR
      * Set the width and height bindings
      */
     private void initProperty(){

@@ -24,14 +24,14 @@
 
   Isaac Longkutoy (islong@seas.upenn.edu)
     
-    # designs and developes GUI 
+    # designs and develops GUI
     # integrates Spotify and YouTube API
     # writes Junit test cases- SpotifyToolsTest and YouTubeToolsTest
     # creates README file
 
   Luke Glover (lcglover@seas.upenn.edu)
     
-    # developes algorithms that analyzes tracks/artists/albums to understand the fundamental similarities between songs/artists/albums
+    # develops algorithms that analyzes tracks/artists/albums to understand the fundamental similarities between songs/artists/albums
     # builds recommendation models that performs personalized recommendations 
     # writes *com.curator.models classes
     # writes *com.curator.recommender classes

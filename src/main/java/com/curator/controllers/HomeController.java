@@ -70,9 +70,7 @@ public class HomeController implements Initializable {
      */
     private void initProperty() {
         topRecommendationVBox.prefWidthProperty().bind(mainScrollPane.widthProperty());
-        topBorderPane.visibleProperty().addListener(((observable, oldValue, newValue) -> {
-            loadAll();
-        }));
+        topBorderPane.visibleProperty().addListener(((observable, oldValue, newValue) -> loadAll()));
     }
 
 
@@ -81,7 +79,7 @@ public class HomeController implements Initializable {
      *
      * @param tracks ArrayList of tracks to be displayed
      */
-    public void setTracks(ArrayList<Track> tracks) {
+    private void setTracks(ArrayList<Track> tracks) {
         this.tracks = tracks;
     }
 
@@ -90,7 +88,7 @@ public class HomeController implements Initializable {
      *
      * @param albums ArrayList of albums to be displayed
      */
-    public void setAlbums(ArrayList<Album> albums) {
+    private void setAlbums(ArrayList<Album> albums) {
         this.albums = albums;
     }
 
@@ -100,7 +98,7 @@ public class HomeController implements Initializable {
      *
      * @param artists ArrayList of artists to be displayed
      */
-    public void setArtists(ArrayList<Artist> artists) {
+    private void setArtists(ArrayList<Artist> artists) {
         this.artists = artists;
     }
 

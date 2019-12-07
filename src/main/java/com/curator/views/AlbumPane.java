@@ -21,24 +21,27 @@ import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
-public class AlbumPane {
+/**
+ * The class representation of the album pane in album_pane.fxml
+ */
+class AlbumPane {
     private Pane pane;
-    private NavbarController navbarController;
-    private MainController mainController;
-    private PlayerController playerController;
-    private ItemScrollPane parentContainer;
-    private int childIndex;
-    private int type;
+    private final ItemScrollPane parentContainer;
 
+    /**
+     * Creates an AlbumPane object
+     * @param album the album of this pane
+     * @param mainController the main controller of the app
+     * @param navbarController the navbar controller of the app
+     * @param playerController the player controller of the app
+     * @param parentContainer the parent container of this track pane
+     * @param childIndex the ranking of the child in the parent of container
+     * @param type 0 if dislike button replaces the album with another recommended album
+     */
     public AlbumPane(Album album, MainController mainController, NavbarController navbarController,
                      PlayerController playerController, ItemScrollPane parentContainer,
                      int childIndex, int type) {
-        this.mainController = mainController;
-        this.navbarController = navbarController;
-        this.playerController = playerController;
         this.parentContainer = parentContainer;
-        this.childIndex = childIndex;
-        this.type = type;
 
         try {
             //=================================
@@ -109,8 +112,6 @@ public class AlbumPane {
 
                         //replace
                         if (type == 0){
-                            //TODO: GET REPLACEMENT FROM THE RECOMMENDER
-//                            Album a = SpotifyTools.searchAlbums("hello world", 1).get(0);
                             AlbumPane replacement =
                                     new AlbumPane(RecTools.popAlbum(), mainController,
                                     navbarController, playerController, parentContainer, childIndex,
@@ -126,7 +127,7 @@ public class AlbumPane {
             albumNameLabel.addEventHandler(MouseEvent.MOUSE_EXITED,
                     event -> albumNameLabel.setStyle("-fx-underline: false"));
 
-            albumNameLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            albumNameLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<>() {
                 @Override
                 public void handle(MouseEvent event) {
                     if (event.getButton() == MouseButton.PRIMARY) {
@@ -201,16 +202,30 @@ public class AlbumPane {
         }
     }
 
+    /**
+     * Return the Pane object of the album
+     * @return Pane object of this AlbumPane
+     */
     public Pane asPane() {
         return pane;
     }
 
+   /**
+     * Set nodes visibility
+     * @param isVisible whether set to be visible or not
+     * @param nodes the nodes to be set
+     */
     private void setVisible(boolean isVisible, Node... nodes) {
         for (Node n : nodes) {
             n.setOpacity(isVisible ? 1 : 0);
         }
     }
 
+    /**
+     * Set nodes disabled property
+     * @param isDisabled whether set to be disabled or not
+     * @param nodes the nodes to be set
+     */
     private void setDisabled(boolean isDisabled, Node... nodes) {
         for (Node n : nodes) {
             n.setDisable(isDisabled);

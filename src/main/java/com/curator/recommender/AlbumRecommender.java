@@ -21,19 +21,19 @@ import com.curator.tools.SpotifyTools;
  * 
  */
 public class AlbumRecommender {
-	ArrayList<Album> userAlbumLikes = new ArrayList<>(); // stores the user
+	private ArrayList<Album> userAlbumLikes = new ArrayList<>(); // stores the user
 															// provided albums
-	ArrayList<Track> songInputs = new ArrayList<>(); // the songs on the albums
+															private final ArrayList<Track> songInputs = new ArrayList<>(); // the songs on the albums
 														// in userAlbumLikes
-	ArrayList<Track> songRecs = new ArrayList<>(); // stores the top results
+														private ArrayList<Track> songRecs = new ArrayList<>(); // stores the top results
 													// from SongRecommender
 	// run on songs by the user-provided albums
-	HashMap<Album, Integer> albumResults; // stores the albums of the
+													private final HashMap<Album, Integer> albumResults; // stores the albums of the
 											// songs
 	// in songRecs as well as the number
 	// of songs on that album in
 	// songRecs
-	ArrayList<Album> userAlbumRecs; // a list of the albums with the best
+											private final ArrayList<Album> userAlbumRecs; // a list of the albums with the best
 	// similarity scores
 
 	// Constructors
@@ -64,11 +64,7 @@ public class AlbumRecommender {
 	public AlbumRecommender(ArrayList<Track> songResults, boolean newUser) {
 		this.albumResults = new HashMap<>();
 		this.userAlbumRecs = new ArrayList<>();
-
 		this.songRecs = songResults;
-		System.out.println("in album rec constructor, songrecs size is "
-				+ songRecs.size());
-
 		this.recSongsToAlbums();
 
 		DBTools.storeRecommendationAlbum(userAlbumRecs);
@@ -107,15 +103,10 @@ public class AlbumRecommender {
 	/**
 	 * Converts the list of user-liked albums into a list of the tracks on the
 	 * albums
-	 * 
-	 * @param userAlbumsLikes The list of user-provided albums
-	 * @param songInputs      The list of songs on the user-liked albums
 	 */
-	public void albumsToSongs() {
+	private void albumsToSongs() {
 		for (Album album : userAlbumLikes) {
-			for (Track song : album.getTracks()) {
-				songInputs.add(song);
-			}
+            songInputs.addAll(album.getTracks());
 		}
 	}
 
@@ -123,7 +114,7 @@ public class AlbumRecommender {
 	 * Takes the output of SongRecommender (songRecs) and creates an ArrayList
 	 * of the albums of the songs in the results.
 	 */
-	public void recSongsToAlbums() {
+	private void recSongsToAlbums() {
 		ArrayList<String> albumIDs = new ArrayList<>();
 		for (Track t: songRecs) {
 			albumIDs.add(t.getAlbumId());
@@ -144,12 +135,11 @@ public class AlbumRecommender {
 	 * the albums of the songs in the list of recommended songs.
 	 * 
 	 */
-	public ArrayList<Album> runRecommender() {
+	private void runRecommender() {
 		albumsToSongs();
-		SongRecommender songRecommender = new SongRecommender(songInputs);
-		songRecs = songRecommender.runRecommender(75);
+//		SongRecommender songRecommender = new SongRecommender(songInputs);
+//		songRecs = songRecommender.runRecommender(75);
 		recSongsToAlbums();
-		return userAlbumRecs;
 	}
 
 }

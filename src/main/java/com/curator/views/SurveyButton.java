@@ -11,30 +11,23 @@ import javafx.scene.layout.FlowPane;
 
 import java.util.ArrayList;
 
+/**
+ * The class representation of the survey button in album_pane.fxml
+ */
 public class SurveyButton extends Button {
-
     private boolean selected = false;
-    private FlowPane parent;
-    private SurveyController surveyController;
-    private String id;
+    private final String id;
     private int type;
 
-    public String getItemId() {
-        return id;
-    }
-
-    public int getItemType() {
-        return type;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public SurveyButton(String text, FlowPane parentContainer, SurveyController surveyController,
-                        int type, String id) {
-        this.surveyController = surveyController;
-        this.parent = parentContainer;
+    /**
+     * Creates a SurveyButton object
+     * @param text the text to be displayed on the button
+     * @param parentContainer the parent container object of the button
+     * @param surveyController the survey controller of the app
+     * @param type sets the behavior of the button
+     * @param id the id of the item represented by this button
+     */
+    public SurveyButton(String text, FlowPane parentContainer, SurveyController surveyController, int type, String id) {
         this.id = id;
 
         if (text.length() > 60){
@@ -101,5 +94,29 @@ public class SurveyButton extends Button {
             }
             selected = !selected;
         });
+    }
+
+    /**
+     * Returns the id of the item represented by this button
+     * @return the id of the item represented by this button
+     */
+    public String getItemId() {
+        return id;
+    }
+
+    /**
+     * Returns the type of the item represented by this button
+     * @return the type of the item represented by this button
+     */
+    public int getItemType() {
+        return type;
+    }
+
+    /**
+     * Returns true if the button is selected, returns false otherwise
+     * @return true if the button is selected, returns false otherwise
+     */
+    public boolean isSelected() {
+        return selected;
     }
 }

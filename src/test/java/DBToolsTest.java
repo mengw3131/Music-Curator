@@ -4,17 +4,21 @@ import org.junit.jupiter.api.*;
 import com.curator.tools.DBTools;
 import com.curator.models.*;
 
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 
+/*
+
+ Test Coverage
+ +---------------+-------------+------+-------+---------------+
+ | Element       | Class, %    | Method, %    | Line, %       |
+ +---------------+-------------+------+-------+---------------+
+ | DBTools       | 100% (1/1)  | 91% (53/58)  | 75% (362/479) |
+ +---------------+-------------+------+-------+---------------+
+*/
+
 class DBToolsTest {
-    public static String USER_ID = "unit_test_12345";
-
-    @BeforeAll
-    public static void init(){
-    }
-
+    public static final String USER_ID = "unit_test_12345";
 
     @BeforeEach
     public void reInit() {
@@ -309,7 +313,8 @@ class DBToolsTest {
 		DBTools.storeTrackToPlaylist(t2, playlistId);
 		DBTools.storeTrackToPlaylist(t3, playlistId);
 		ArrayList<Track> tracks = DBTools.getTracksFromPlaylistID(playlistId);
-		Assertions.assertEquals(t1, tracks.get(0).getTrackID());
+        assert tracks != null;
+        Assertions.assertEquals(t1, tracks.get(0).getTrackID());
 		Assertions.assertEquals(t2, tracks.get(1).getTrackID());
 		Assertions.assertEquals(t3, tracks.get(2).getTrackID());
 		
@@ -327,7 +332,8 @@ class DBToolsTest {
 		DBTools.storeTrackToPlaylist(t2, playlistId);
 		DBTools.storeTrackToPlaylist(t3, playlistId);
 		ArrayList<String> tracks = DBTools.getTracksIDsFromPlaylist(p4);
-		Assertions.assertEquals(t1, tracks.get(0));
+        assert tracks != null;
+        Assertions.assertEquals(t1, tracks.get(0));
 		Assertions.assertEquals(t2, tracks.get(1));
 		Assertions.assertEquals(t3, tracks.get(2));
 		

@@ -9,7 +9,8 @@ out/
 *.ipr
 *.iml
 src/main/resources/music/*
-src/main/res/
+src/main/res/*
+
 
 
 

@@ -23,24 +23,27 @@ import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
-public class ArtistPane {
+/**
+ * The class representation of the album pane in artist_pane.fxml
+ */
+class ArtistPane {
     private Pane pane;
-    private NavbarController navbarController;
-    private MainController mainController;
-    private PlayerController playerController;
-    private ItemScrollPane parentContainer;
-    private int childIndex;
-    private int type;
+    private final ItemScrollPane parentContainer;
 
+    /**
+     * Creates an ArtistPane object
+     * @param artist the artist of this pane
+     * @param mainController the main controller of the app
+     * @param navbarController the navbar controller of the app
+     * @param playerController the player controller of the app
+     * @param parentContainer the parent container of this track pane
+     * @param childIndex the ranking of the child in the parent of container
+     * @param type 0 if dislike button replaces the artist with another recommended artist
+     */
     public ArtistPane(Artist artist, MainController mainController, NavbarController navbarController,
                       PlayerController playerController, ItemScrollPane parentContainer,
                       int childIndex, int type) {
-        this.mainController = mainController;
-        this.navbarController = navbarController;
-        this.playerController = playerController;
         this.parentContainer = parentContainer;
-        this.childIndex = childIndex;
-        this.type = type;
 
         try {
             //=================================
@@ -107,7 +110,6 @@ public class ArtistPane {
 
                         //replace
                         if (type == 0){
-//                            Artist a = SpotifyTools.searchArtists("John", 1).get(0);
                             ArtistPane replacement =
                                     new ArtistPane(
                                             RecTools.popArtist(), mainController, navbarController,
@@ -124,7 +126,7 @@ public class ArtistPane {
             artistNameLabel.addEventHandler(MouseEvent.MOUSE_EXITED,
                     event -> artistNameLabel.setStyle("-fx-underline: false"));
 
-            artistNameLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            artistNameLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<>() {
                 @Override
                 public void handle(MouseEvent event) {
                     if (event.getButton() == MouseButton.PRIMARY) {
@@ -172,15 +174,30 @@ public class ArtistPane {
         }
     }
 
+    /**
+     * Return the Pane object of the album
+     * @return Pane object of this AlbumPane
+     */
     public Pane asPane() {
         return pane;
     }
 
+    /**
+     * Set nodes visibility
+     * @param isVisible whether set to be visible or not
+     * @param nodes the nodes to be set
+     */
     private void setVisible(boolean isVisible, Node ... nodes){
         for (Node n:nodes) {
             n.setOpacity(isVisible ? 1 : 0);
         }
     }
+
+    /**
+     * Set nodes disabled property
+     * @param isDisabled whether set to be disabled or not
+     * @param nodes the nodes to be set
+     */
     private void setDisabled(boolean isDisabled, Node ... nodes){
         for (Node n:nodes) {
             n.setDisable(isDisabled);

@@ -36,7 +36,6 @@ public class WelcomeController implements Initializable {
     @FXML
     private Label instructionLabel;
 
-    private Scene scene;
     private Stage stage;
 
 
@@ -46,10 +45,9 @@ public class WelcomeController implements Initializable {
 
         usernameTextField.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)){
+                okButton.fire();
             }
         });
-
-
 
         okButton.setOnMousePressed(new EventHandler<>() {
             @Override
@@ -92,7 +90,6 @@ public class WelcomeController implements Initializable {
     }
 
     public void setScene(Scene scene) {
-        this.scene = scene;
     }
 
     public void setStage(Stage stage) {

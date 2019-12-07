@@ -90,12 +90,11 @@ public class PlaylistController implements Initializable {
     }
 
     /**
-     * TODO: REFACTOR
-     *
-     * @param playlists
-     * @return
+     * Creates the playlist recommendation container
+     * @param playlists the playlists to be displayed
+     * @return a Scroll Pane object containing the playlists
      */
-    public ScrollPane createRecommendationBox(ArrayList<Playlist> playlists) {
+    private ScrollPane createRecommendationBox(ArrayList<Playlist> playlists) {
 
         /*
           Nodes Hierarchy:
@@ -131,13 +130,12 @@ public class PlaylistController implements Initializable {
                 textField.setVisible(false);
 
                 ImageView playButton = (ImageView) subPane.getChildren().get(2);
-                ImageView heartButton = (ImageView) subPane.getChildren().get(3);
-                ImageView renamePlaylist = (ImageView) subPane.getChildren().get(4);
-                ImageView deleteButton = (ImageView) subPane.getChildren().get(5);
+                ImageView renamePlaylist = (ImageView) subPane.getChildren().get(3);
+                ImageView deleteButton = (ImageView) subPane.getChildren().get(4);
 
                 Task task = new Task() {
                     @Override
-                    protected Object call() throws Exception {
+                    protected Object call() {
                         if (playlist.getImage() != null) {
                             playlistImage.setImage(playlist.getImage());
                         } else {
@@ -151,78 +149,59 @@ public class PlaylistController implements Initializable {
                 playlistName.setText(playlist.getName());
 
                 //when mouse enter the pane
-                subPane.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        playlistImage.setOpacity(0.2);
-                        playButton.setOpacity(1);
-                        heartButton.setOpacity(1);
-                        renamePlaylist.setOpacity(1);
-                        deleteButton.setOpacity(1);
+                subPane.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+                    playlistImage.setOpacity(0.2);
+                    playButton.setOpacity(1);
+                    renamePlaylist.setOpacity(1);
+                    deleteButton.setOpacity(1);
 
-                        playButton.setDisable(false);
-                        heartButton.setDisable(false);
-                        renamePlaylist.setDisable(false);
-                        deleteButton.setDisable(false);
-                    }
+                    playButton.setDisable(false);
+                    renamePlaylist.setDisable(false);
+                    deleteButton.setDisable(false);
                 });
 
                 //when mouse exit the pane
-                subPane.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        playlistImage.setOpacity(1);
-                        playButton.setOpacity(0);
-                        heartButton.setOpacity(0);
-                        renamePlaylist.setOpacity(0);
-                        deleteButton.setOpacity(0);
+                subPane.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+                    playlistImage.setOpacity(1);
+                    playButton.setOpacity(0);
+                    renamePlaylist.setOpacity(0);
+                    deleteButton.setOpacity(0);
 
-                        playButton.setDisable(true);
-                        heartButton.setDisable(true);
-                        renamePlaylist.setDisable(true);
-                        deleteButton.setDisable(true);
-                    }
+                    playButton.setDisable(true);
+                    renamePlaylist.setDisable(true);
+                    deleteButton.setDisable(true);
                 });
 
                 //when play button inside pane is clicked
-                playButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        if (playlist.getTracks().size() != 0) {
-                            playerController.setCurrentTrack(playlist.getTracks().get(0));
-                        } else {
-                            System.out.println("No tracks found in playlist " + playlist.getName());
-                        }
-                        event.consume();
+                playButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                    if (playlist.getTracks().size() != 0) {
+                        playerController.setCurrentTrack(playlist.getTracks().get(0));
+                    } else {
+                        System.out.println("No tracks found in playlist " + playlist.getName());
                     }
+                    event.consume();
                 });
 
                 //when addToPlaylist button inside pane is clicked
-                renamePlaylist.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        if (textField.isVisible()) {
-                            textField.setVisible(false);
-                            playlistName.setVisible(true);
-                            textField.setText(playlistName.getText());
+                renamePlaylist.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                    if (textField.isVisible()) {
+                        textField.setVisible(false);
+                        playlistName.setVisible(true);
+                        textField.setText(playlistName.getText());
 
-                        } else {
-                            textField.setVisible(true);
-                            playlistName.setVisible(false);
-                            textField.setText(playlistName.getText());
-                            textField.requestFocus();
-                        }
+                    } else {
+                        textField.setVisible(true);
+                        playlistName.setVisible(false);
+                        textField.setText(playlistName.getText());
+                        textField.requestFocus();
                     }
                 });
 
-                textField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                        //if no longer focus on textfield
-                        if (!newValue) {
-                            textField.setVisible(false);
-                            playlistName.setVisible(true);
-                        }
+                textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                    //if no longer focus on textfield
+                    if (!newValue) {
+                        textField.setVisible(false);
+                        playlistName.setVisible(true);
                     }
                 });
                 textField.setOnKeyPressed(event -> {
@@ -236,37 +215,16 @@ public class PlaylistController implements Initializable {
                     }
                 });
 
-                heartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        //TODO: IMPLEMENT
-                        System.out.println("heart clicked");
-                    }
+                deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                    removeFromPlaylists(playlist.getId());
+                    reload();
                 });
 
-                deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        removeFromPlaylists(playlist.getId());
-                        reload();
-                    }
-                });
+                playlistName.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> playlistName.setStyle("-fx-underline: true"));
 
-                playlistName.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        playlistName.setStyle("-fx-underline: true");
-                    }
-                });
+                playlistName.addEventHandler(MouseEvent.MOUSE_EXITED, event -> playlistName.setStyle("-fx-underline: false"));
 
-                playlistName.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        playlistName.setStyle("-fx-underline: false");
-                    }
-                });
-
-                playlistName.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                playlistName.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<>() {
                     @Override
                     public void handle(MouseEvent event) {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/playlist_track_page.fxml"));
@@ -293,7 +251,7 @@ public class PlaylistController implements Initializable {
     /**
      * Remove playlist from user's playlists
      */
-    public void removeFromPlaylists(String playlist_id) {
+    private void removeFromPlaylists(String playlist_id) {
         DBTools.removePlaylist(playlist_id);
         reload();
     }
@@ -301,7 +259,7 @@ public class PlaylistController implements Initializable {
     /**
      * Reload playlist page
      */
-    public void reload() {
+    private void reload() {
         playlists = DBTools.getAllPlaylist();
         mainVBox.getChildren().remove(2, mainVBox.getChildren().size());
 

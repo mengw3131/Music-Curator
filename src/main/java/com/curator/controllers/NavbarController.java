@@ -14,11 +14,10 @@ import java.util.ResourceBundle;
  * Controller to navbar.fxml. Handles pane transition.
  */
 public class NavbarController implements Initializable {
-    private MainController mainController;
     private AnchorPane mainPane;  //holds the pane to be set
 
-    private ArrayList<ArrayList<Node>> mainArr = new ArrayList<>();
-    private ArrayList<Integer> mainArrIndex = new ArrayList<>();
+    private final ArrayList<ArrayList<Node>> mainArr = new ArrayList<>();
+    private final ArrayList<Integer> mainArrIndex = new ArrayList<>();
     private int currentPageIndex; //Set in MainController class: 0 Home, 1 Discover, etc..
 
     @FXML
@@ -51,7 +50,7 @@ public class NavbarController implements Initializable {
 
         //for each page (home, discover, etc) in the app, add a new node tracker and indexer
         for (int i = 0; i < MainController.PAGE_INDEX.values().length; i++) {
-            mainArr.add(new ArrayList<Node>());
+            mainArr.add(new ArrayList<>());
             mainArrIndex.add(0);
         }
 
@@ -76,12 +75,8 @@ public class NavbarController implements Initializable {
             }
         });
 
-        backButton.setOnMouseExited(event -> {
-            backButton.setOpacity(1);
-        });
-        backButton.setOnMouseEntered(event -> {
-            backButton.setOpacity(0.5);
-        });
+        backButton.setOnMouseExited(event -> backButton.setOpacity(1));
+        backButton.setOnMouseEntered(event -> backButton.setOpacity(0.5));
 
         backButton.setOnMouseClicked(event -> {
             if (0 <= mainArrIndex.get(currentPageIndex) - 1) {
@@ -100,7 +95,6 @@ public class NavbarController implements Initializable {
      * @param mainController instance of MainController
      */
     public void setMain(MainController mainController) {
-        this.mainController = mainController;
         this.mainPane = mainController.mainPane;
     }
 
@@ -211,14 +205,11 @@ public class NavbarController implements Initializable {
      * If the current page index changes, it means user is moving from one section to another
      * E.g. from Discover -> Favorites, thus currentPageIndex changes from 1 -> 3
      *
-     * @return true if the value has changed, otherwise false
      */
-    public boolean updateIndex() {
+    public void updateIndex() {
         if (this.currentPageIndex != MainController.currentPageIndex) {
             this.currentPageIndex = MainController.currentPageIndex;
-            return true;
         }
-        return false;
     }
 
 
@@ -231,8 +222,6 @@ public class NavbarController implements Initializable {
      * @return number of pages in section
      */
     public int getPagesCountInSection(int currentPageIndex) {
-
-        //TODO: should change to count non null instead??
         return mainArr.get(currentPageIndex).size();
     }
 }

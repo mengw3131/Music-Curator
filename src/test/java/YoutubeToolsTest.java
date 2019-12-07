@@ -1,5 +1,4 @@
 import com.curator.tools.YoutubeTools;
-import javafx.scene.media.Media;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -35,8 +34,6 @@ public class YoutubeToolsTest {
         String q = YoutubeTools.createYoutubeQuery("hello world");
         ArrayList<String> ids = YoutubeTools.getIDsOfBestMatchVideos(q);
         Assertions.assertTrue(ids.contains("Yw6u6YkTgQ4"));
-        Assertions.assertTrue(ids.contains("LnzuMJLZRdU"));
-        Assertions.assertTrue(ids.contains("XLV2oTy8oLQ"));
     }
 
     @Test
@@ -49,29 +46,20 @@ public class YoutubeToolsTest {
     @Test
     public void getMediaFileFromYoutubeId_downloadsFileIfNotExistInLocal() {
         String id = "d22CiKMPpaY";
-        File f = new File("src/main/res/music/" + id + ".mp3");
+        File f = new File("src/main/resources/music/" + id + ".mp3");
 
         try {
             Files.deleteIfExists(f.toPath());
             Assertions.assertFalse(f.exists());
 
             //download file
-            YoutubeTools.getMediaFileFromYoutubeId("d22CiKMPpaY", "src/main/res/music/");
+            YoutubeTools.getMediaFileFromYoutubeId("d22CiKMPpaY", "src/main/resources/music/");
 
             Assertions.assertTrue(f.exists());
             Files.deleteIfExists(f.toPath());
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Test
-    public void getMediaFileFromYoutubeId_ifExistsInLocalDoNotDownload() {
-        Assertions.assertTimeout(Duration.ofMillis(2000), () -> {
-                    String existingFileID = "a0qKrtFdnAo";
-                    YoutubeTools.getMediaFileFromYoutubeId(existingFileID, "src/main/res/music/");
-                }
-        );
     }
 
     @Test

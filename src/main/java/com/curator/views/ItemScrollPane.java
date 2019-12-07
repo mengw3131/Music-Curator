@@ -11,11 +11,23 @@ import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 
+/**
+ * The parent container to Track , Album, and Artist HBoxes
+ */
 public class ItemScrollPane extends ScrollPane {
-    private HBox hBox = new HBox();
 
+    /**
+     * Constructs the ItemScrollPane object of the items in the arrayList
+     * @param items the items to be added to the scroll pane, must be instance of Track, Album, or Artist
+     * @param mainController the main controller of the app
+     * @param navbarController the navbar controller of the app
+     * @param playerController the player controller of the app
+     * @param type set the behavior of the underlying panes
+     * @param <T> the type of the object in items array, must be instance of Track, Album, or Artist
+     */
     public <T> ItemScrollPane(ArrayList<T> items, MainController mainController, NavbarController navbarController,
                               PlayerController playerController, int type) {
+        HBox hBox = new HBox();
         if (items.get(0) instanceof Track) {
             for (int i = 0; i < items.size(); i++) {
                 T item = items.get(i);

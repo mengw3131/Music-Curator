@@ -26,7 +26,7 @@ public class YoutubeTools {
     //Pattern matches /watch?v=[video id], compile once only, for performance
     //Design note: avoid using doc based selector(e.g. JSoup) for matching,
     //since might break if youtube changes the structure
-    private static Pattern p = Pattern.compile("(/watch\\?v=|\\.be/)([\\w\\-_]*)(&(amp;)?\u200C\u200B[\\w?\u200C\u200B=]*)?");
+    private static final Pattern p = Pattern.compile("(/watch\\?v=|\\.be/)([\\w\\-_]*)(&(amp;)?\u200C\u200B[\\w?\u200C\u200B=]*)?");
     private static PythonInterpreter i;
 
     /**
@@ -41,7 +41,7 @@ public class YoutubeTools {
      * <p>
      * Returns true if interpreter is initialized successfully
      */
-    public static boolean initialize() {
+    public static void initialize() {
         System.out.println("Initializing interpreter... ");
         try {
             if (i == null) {
@@ -70,11 +70,9 @@ public class YoutubeTools {
                 );
             }
             System.out.println("Done initializing interpreter");
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     /**

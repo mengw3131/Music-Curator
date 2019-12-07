@@ -5,14 +5,13 @@ import com.curator.controllers.NavbarController;
 import com.curator.controllers.PlayerController;
 import com.curator.models.Track;
 //import com.curator.models.TrackSimple;
-import com.curator.tools.SpotifyTools;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 
 public class TrackListVBox {
-    private VBox vbox = new VBox();
+    private final VBox vbox = new VBox();
 
     public TrackListVBox(ArrayList tracks, MainController mainController, NavbarController navbarController,
                          PlayerController playerController) {

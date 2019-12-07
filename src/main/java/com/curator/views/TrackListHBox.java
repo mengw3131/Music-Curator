@@ -19,9 +19,19 @@ import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 
-public class TrackListHBox {
+/**
+ * The TrackList representation of a Track
+ */
+class TrackListHBox {
     private HBox hbox;
 
+    /**
+     * Constructs the TrackList object of the track
+     * @param track the track to of this trackList
+     * @param mainController the main controller of the app
+     * @param navbarController the navbar controller of the app
+     * @param playerController the player controller of the app
+     */
     public TrackListHBox(Track track, MainController mainController, NavbarController navbarController,
                          PlayerController playerController) {
         try {
@@ -40,84 +50,52 @@ public class TrackListHBox {
         buttonsPane.setOpacity(0);
         buttonsPane.setDisable(true);
 
-        //alternate the background color of the track row using flag
-        // white + light grey
-//        if (flag) {
-//            hbox.setStyle("-fx-background-color: #e8e8e8");
-//        }
-//        flag = !flag;
-
-
         //when mouse enter the hbox, show action icons
-        hbox.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                buttonsPane.setOpacity(1);
-                buttonsPane.setDisable(false);
-            }
+        hbox.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            buttonsPane.setOpacity(1);
+            buttonsPane.setDisable(false);
         });
 
         //when mouse exit the hbox
-        hbox.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                buttonsPane.setOpacity(0);
-                buttonsPane.setDisable(true);
-            }
+        hbox.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+            buttonsPane.setOpacity(0);
+            buttonsPane.setDisable(true);
         });
 
         //if double click on track, play music
-        hbox.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton().equals(MouseButton.PRIMARY)) {
-                    if (event.getClickCount() == 2) {
-                        playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID()));
-                    }
+        hbox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                if (event.getClickCount() == 2) {
+                    playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID()));
                 }
             }
         });
 
         //if click on play icon, play music
-        playButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID()));
-            }
-        });
+        playButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID())));
 
         //if click on heart icon,
-        heartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-
-                //TODO: IMPLEMENT
-                System.out.println("heart clicked");
-
-            }
-        });
+        heartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> DBTools.storeUserPreferenceTracks(track.getTrackID(), true));
 
 
-        playlistButton.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.isPrimaryButtonDown()) {
-
-                    ContextMenu contextMenu = new ContextMenu();
-                    for (String playlist_id : DBTools.getAllPlaylistIDs()) {
-                        MenuItem menuItem = new MenuItem(DBTools.getPlaylistName(playlist_id));
-                        menuItem.setId(playlist_id);
-                        menuItem.setOnAction(event2 -> {
-                            DBTools.storeTrackToPlaylist(track.getTrackID(), playlist_id);
-                        });
-                        contextMenu.getItems().add(menuItem);
-                    }
-                    contextMenu.show(playlistButton, event.getScreenX(), event.getScreenY());
+        playlistButton.setOnMousePressed(event -> {
+            if (event.isPrimaryButtonDown()) {
+                ContextMenu contextMenu = new ContextMenu();
+                for (String playlist_id : DBTools.getAllPlaylistIDs()) {
+                    MenuItem menuItem = new MenuItem(DBTools.getPlaylistName(playlist_id));
+                    menuItem.setId(playlist_id);
+                    menuItem.setOnAction(event2 -> DBTools.storeTrackToPlaylist(track.getTrackID(), playlist_id));
+                    contextMenu.getItems().add(menuItem);
                 }
+                contextMenu.show(playlistButton, event.getScreenX(), event.getScreenY());
             }
         });
     }
 
+    /**
+     * Return the HBox object of the album
+     * @return HBox object of this TrackList
+     */
     public HBox asHBox(){
         return hbox;
     }

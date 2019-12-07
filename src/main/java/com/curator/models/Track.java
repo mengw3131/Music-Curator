@@ -17,20 +17,19 @@ import javafx.scene.media.Media;
  *         to be accessed by other classes.
  */
 public class Track {
-	private ArrayList<Artist> artists; // the list of artists on the track
 	private String artistsNames; // the list of artists on the track
     private Album album;
 	private Image image;
 	private Media media;
 	private String trackName; // name of the song
 
-	private int ranking = -1; //ranking
-
 	private boolean analysisRan = false;
+
+	private int ranking = -1;
 
 	// wrapper objects
 	private AudioFeatures features;
-	private com.wrapper.spotify.model_objects.specification.Track sTrack;
+	private final com.wrapper.spotify.model_objects.specification.Track sTrack;
 
 	/**
 	 * Construct com.curator.models.Track object from wrapper's
@@ -77,7 +76,8 @@ public class Track {
 	 * @return artists com.curator.models.Artist of the track
 	 */
 	public ArrayList<Artist> getArtists() {
-		this.artists = SpotifyTools.toArtists(sTrack.getArtists());
+		// the list of artists on the track
+		ArrayList<Artist> artists = SpotifyTools.toArtists(sTrack.getArtists());
 
 		return artists;
 	}
@@ -141,9 +141,6 @@ public class Track {
 		return sTrack.getPopularity();
 	}
 
-    public int getRanking(){ return ranking; }
-
-	public void setRanking(int ranking){ this.ranking = ranking; }
 
 	/**
 	 * Return image of the track.
@@ -186,7 +183,7 @@ public class Track {
 	/**
 	 * Set Media object of the track
 	 *
-	 * @param media
+	 * @param media the media object of the track
 	 */
 	public void setMedia(Media... media) {
 		if (media.length == 0) {
@@ -305,7 +302,7 @@ public class Track {
 
 	/**
 	 * Returns the AudioFeatures object of the track
-	 * @return
+	 * @return the AudioFeatures object of the track
 	 */
 	public AudioFeatures getAudioFeatures() {
 		if (!analysisRan){
@@ -322,10 +319,27 @@ public class Track {
 		return sTrack.getArtists()[0].getId();
 	}
 
-	public boolean isInitialized(){
-		return this.sTrack != null;
+	/**
+	 * Get the ranking of the track
+	 * @return the ranking of the track
+	 */
+	public int getRanking() {
+		return ranking;
 	}
 
+	/**
+	 * Set the ranking of the track
+	 * @param ranking the ranking of the track
+	 */
+	public void setRanking(int ranking) {
+		this.ranking = ranking;
+	}
+
+	/**
+	 * Compares if this and Object obj is the same Track object
+	 * @param obj the other object to be compared
+	 * @return true if this and other object is equal
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (! (obj instanceof Track)){
@@ -334,6 +348,10 @@ public class Track {
 		return this.getTrackID().equals(((Track) obj).getTrackID());
 	}
 
+	/**
+	 * Rerturns the information about the Track
+	 * @return String representation of the Track
+	 */
 	@Override
 	public String toString() {
 		return "Track " + getTrackName() + " in album " + getAlbumName() + " by " +

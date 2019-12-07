@@ -255,7 +255,7 @@ public enum Genre {
 
     WORLDMUSIC("world-music");
 
-    public String id;
+    public final String id;
 
     Genre(String genre) {
         this.id = genre;
@@ -266,7 +266,7 @@ public enum Genre {
         return id;
     }
 
-    private static HashMap<String, Genre> hm = new HashMap<>();
+    private static final HashMap<String, Genre> hm = new HashMap<>();
 
     public static Genre getGenreFromId(String genre){
         if (hm.size() == 0) {

@@ -24,7 +24,6 @@ import java.util.ResourceBundle;
  * Controller to artist_page.fxml. Shows tracks, albums by artist
  */
 public class ArtistPageController implements Initializable {
-    private Artist artist;
     private ArrayList<Track> tracks;
     private ArrayList<Album> albums;
     private NavbarController navbarController;
@@ -94,7 +93,6 @@ public class ArtistPageController implements Initializable {
     private void initProperty() {
         mainController.mainPane.getChildren().add(topBorderPane);
 
-        //TODO: REFACTOR
         topBorderPane.prefHeightProperty().bind(mainController.mainPane.heightProperty());
         topBorderPane.prefWidthProperty().bind(mainController.mainPane.widthProperty());
 
@@ -120,7 +118,6 @@ public class ArtistPageController implements Initializable {
      */
     public void setArtist(Artist artist) {
         //set UI contents
-        this.artist = artist;
         artistName.setText(artist.getName());
 
         //set image if artist's image exists

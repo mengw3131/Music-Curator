@@ -21,17 +21,17 @@ import com.curator.tools.SpotifyTools;
  * 
  */
 public class ArtistRecommender {
-	ArrayList<Artist> userArtistLikes; // stores the user provided artists
-	ArrayList<Track> songInputs = new ArrayList<>(); // the most popular songs
+	private ArrayList<Artist> userArtistLikes; // stores the user provided artists
+	private final ArrayList<Track> songInputs = new ArrayList<>(); // the most popular songs
 														// by the artists in
 	// userArtistLikes
-	ArrayList<Track> songRecs; // stores the top results from SongRecommender
+														private ArrayList<Track> songRecs; // stores the top results from SongRecommender
 								// run on songs by the user-provided artists
-	HashMap<Artist, Integer> artistResults; // stores the artists of the songs
+								private final HashMap<Artist, Integer> artistResults; // stores the artists of the songs
 											// in songRecs as well as the number
 											// of songs by that artist in
 											// songRecs
-	ArrayList<Artist> userArtistRecs; // a list of the artists with the best
+											private final ArrayList<Artist> userArtistRecs; // a list of the artists with the best
 										// similarity scores
 
 	// Constructors
@@ -110,15 +110,10 @@ public class ArtistRecommender {
 	/**
 	 * Converts the list of user-liked artists into a list of the most popular
 	 * songs by those artists.
-	 * 
-	 * @param userArtistLikes The list of user-provided artists
-	 * @return songInputs The list of songs by the user-liked artists
 	 */
-	public void artistsToSongs() {
+	private void artistsToSongs() {
 		for (Artist artist : userArtistLikes) {
-			for (Track song : artist.getTracks()) {
-				songInputs.add(song);
-			}
+			songInputs.addAll(artist.getTracks());
 		}
 	}
 
@@ -126,7 +121,7 @@ public class ArtistRecommender {
 	 * Takes the output of SongRecommender (songRecs) and creates an ArrayList
 	 * of the artists of those songs.
 	 */
-	public void recSongsToArtists() {
+	private void recSongsToArtists() {
 		ArrayList<String> ids = new ArrayList<>();
 		for (Track t: songRecs) {
 			ids.add(t.getArtistId());
@@ -138,8 +133,6 @@ public class ArtistRecommender {
 				userArtistRecs.add(artist);
 			}
 		}
-		System.out.println(
-				"Artists result ranked size is " + userArtistRecs.size());
 	}
 
 	/**
@@ -150,19 +143,16 @@ public class ArtistRecommender {
 	 * on the similarity scores of the songs. Creates a list of recommended
 	 * artists based on the artists of the songs in the list of recommended
 	 * songs.
-	 * 
-	 * @param userArtistLikes The list of user provided artists
+	 *  @param userArtistLikes The list of user provided artists
 	 * @param songRecs        The list of songs from
 	 *                        com.curator.recommender.SongRecommender
 	 * @param userArtistRecs  The list of recommended artists and their
-	 *                        similarity scores
 	 */
-	public ArrayList<Artist> runRecommender() {
+	private void runRecommender() {
 		artistsToSongs();
-		SongRecommender songRecommender = new SongRecommender(songInputs);
-		songRecs = songRecommender.runRecommender(75);
+//		SongRecommender songRecommender = new SongRecommender(songInputs);
+//		songRecs = songRecommender.runRecommender(75);
 		recSongsToArtists();
-		return userArtistRecs;
 	}
 
 }

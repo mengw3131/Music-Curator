@@ -13,9 +13,7 @@ import com.wrapper.spotify.requests.authorization.client_credentials.ClientCrede
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 
@@ -23,10 +21,9 @@ import java.util.logging.Logger;
  * Class containing static utility methods for interfacing with Spotify wrapper's objects
  */
 public class SpotifyTools {
-    //TODO: secure spotify API keys, store in config file OR prompt login
-    private static String clientId = "f9c190003d09495d9915681495281934";
-    private static String clientSecret = "e63dcad355af406aa0cfc516427095ec";
-    private static SpotifyApi api = new SpotifyApi.Builder().setAccessToken(getAccessToken(clientId, clientSecret)).build();
+    private static final String clientId = "f9c190003d09495d9915681495281934";
+    private static final String clientSecret = "e63dcad355af406aa0cfc516427095ec";
+    private static final SpotifyApi api = new SpotifyApi.Builder().setAccessToken(getAccessToken(clientId, clientSecret)).build();
     private static int calls_count = 0;
 
     private final static Logger LOGGER = getLogger();
@@ -55,11 +52,11 @@ public class SpotifyTools {
     /**
      * Get access token given clientId and clientSecret
      *
-     * @param clientId
-     * @param clientSecret
+     * @param clientId Spotify clientId
+     * @param clientSecret Spotify clientSecret
      * @return access token
      */
-    public static String getAccessToken(String clientId, String clientSecret) {
+    private static String getAccessToken(String clientId, String clientSecret) {
         SpotifyApi spotifyApi = new SpotifyApi.Builder()
                 .setClientId(clientId)
                 .setClientSecret(clientSecret)
@@ -77,8 +74,8 @@ public class SpotifyTools {
 
     private static Logger getLogger() {
         Logger logger = Logger.getLogger(SpotifyTools.class.getName());
-        logger.setLevel(Level.INFO);
-        //LOGGER.setLevel(Level.OFF); ///turn off loggers
+//        logger.setLevel(Level.INFO);
+        logger.setLevel(Level.OFF); ///turn off loggers
         return logger;
     }
 
@@ -331,12 +328,11 @@ public class SpotifyTools {
         ArrayList<String> ids = null;
         try {
             ids = toIdArrayList(api.getArtistsAlbums(artistID).build().execute().getItems());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SpotifyWebApiException e) {
+        } catch (IOException | SpotifyWebApiException e) {
             e.printStackTrace();
         }
         LOGGER.info("sAPI Call #" + ++calls_count + " getArtistAlbums(), limit: " + limit);
+        assert ids != null;
         return getSeveralAlbums(ids);
     }
 
@@ -591,7 +587,7 @@ public class SpotifyTools {
      * @param items ArrayList of Tracks, Albums, Artists, or ids (String)
      * @return the string array of the ids of the objects
      */
-    public static ArrayList<String> toIdArrayList(Object[] items) {
+    private static ArrayList<String> toIdArrayList(Object[] items) {
         int size = items.length;
         ArrayList<String> ids = new ArrayList<>();
         if (size == 0) {
@@ -636,7 +632,7 @@ public class SpotifyTools {
      * @param items ArrayList of Tracks, Albums, Artists, or ids (String)
      * @return the string array of the ids of the objects
      */
-    public static String[] toIdArray(ArrayList items) {
+    private static String[] toIdArray(ArrayList items) {
         int size = items.size();
         String[] ids = new String[size];
         if (items.size() == 0) {

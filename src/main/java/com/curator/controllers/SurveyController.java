@@ -26,6 +26,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
+/**
+ * Controllers to survey.fxml
+ */
 public class SurveyController implements Initializable {
 	@FXML
 	private Button okButton;
@@ -53,9 +56,14 @@ public class SurveyController implements Initializable {
 	@FXML
 	private Label welcomeLabel;
 
-	private HashSet<String> uniqueArtistsID = new HashSet<String>();
-	private HashSet<String> uniqueTracksID = new HashSet<String>();
+	private final HashSet<String> uniqueArtistsID = new HashSet<>();
+	private final HashSet<String> uniqueTracksID = new HashSet<>();
 
+	/**
+	 * Initialize controller
+	 * @param location
+	 * @param resources
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		welcomeLabel.setText("Hi, " + DBTools.getUserId() + "!");
@@ -73,9 +81,6 @@ public class SurveyController implements Initializable {
 				// Run recommender
 				System.out.println("Curating recommendation...");
 				RecTools.runCombinedRecommender();
-//                RecTools.runAlbumRecommender();
-//                RecTools.runArtistRecommender();
-//                RecTools.runSongRecommender();
 				System.out.println("Fetching data...");
 
 				FXMLLoader loader = new FXMLLoader(
@@ -94,7 +99,10 @@ public class SurveyController implements Initializable {
 		});
 	}
 
-	public void storePicks() {
+	/**
+	 * Store user track and artist picks in DB
+	 */
+	private void storePicks() {
 		for (Node node : artistFlowPane.getChildren()) {
 			SurveyButton btn = (SurveyButton) node;
 			if (btn.isSelected()) {
@@ -115,13 +123,20 @@ public class SurveyController implements Initializable {
 		}
 	}
 
-	public void populateGenre() {
+	/**
+	 *  Populate containers with predefined genres
+	 */
+	private void populateGenre() {
 		for (Genre genre : Genre.values()) {
 			genreFlowPane.getChildren().add(
 					new SurveyButton(genre.id, genreFlowPane, this, 0, ""));
 		}
 	}
 
+	/**
+	 * Populate containers with suggested artists in the survey page
+	 * @param artists suggested artists to be displayed
+	 */
 	public void populateArtist(ArrayList<Artist> artists) {
 		for (Artist artist : artists) {
 			if (!uniqueArtistsID.contains(artist.getArtistID())) {
@@ -133,6 +148,10 @@ public class SurveyController implements Initializable {
 		}
 	}
 
+	/**
+	 * Populate containers with suggested tracks in the survey page
+	 * @param tracks suggested tracks to be displayed
+	 */
 	public void populateTrack(ArrayList<Track> tracks) {
 		for (Track track : tracks) {
 			if (!uniqueTracksID.contains(track.getTrackID())) {
@@ -144,19 +163,31 @@ public class SurveyController implements Initializable {
 		}
 	}
 
+	/**
+	 * Set track questions to be visible
+	 */
 	public void showArtistQuestionLabel() {
 		artistQuestionLabel.setOpacity(1);
-
 	}
 
+	/**
+	 * Set track questions to be visible
+	 */
 	public void showTrackQuestionLabel() {
 		trackQuestionLabel.setOpacity(1);
 	}
 
+	/**
+     * Set OK button to be visible
+	 */
 	public void showOkButton() {
 		okButton.setVisible(true);
 	}
 
+	/**
+	 * Sets the stage of the app
+	 * @param stage stage to be set
+	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}

@@ -19,9 +19,6 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-//TODO:
-//Next, prev, shuffle functionality
-
 /**
  * Controller to player.fxml
  */
@@ -83,8 +80,7 @@ public class PlayerController implements Initializable {
 
     /**
      * Set current track to be the new track
-     *
-     * @param track
+     * @param track the track to be set as current track
      */
     public void setCurrentTrack(Track track) {
         this.isPlaying = false;
@@ -97,19 +93,16 @@ public class PlayerController implements Initializable {
         //config media player in background thread
         Task task = new Task() {
             @Override
-            protected Object call() throws Exception {
+            protected Object call() {
                 mediaPlayer = new MediaPlayer(currentTrack.getMedia());
 
                 //when Media obj in mediaPlayer is ready
-                mediaPlayer.setOnReady(new Runnable() {
-                    @Override
-                    public void run() {
-                        songSlider.setMax(mediaPlayer.getTotalDuration().toSeconds());
-                        startDurationLabel.setText("0:00");
-                        endDurationLabel.setText(formatTime((int) mediaPlayer.getTotalDuration().toSeconds()));
-                        initMediaPlayerProperty();
-                        playButton.fire();
-                    }
+                mediaPlayer.setOnReady(() -> {
+                    songSlider.setMax(mediaPlayer.getTotalDuration().toSeconds());
+                    startDurationLabel.setText("0:00");
+                    endDurationLabel.setText(formatTime((int) mediaPlayer.getTotalDuration().toSeconds()));
+                    initMediaPlayerProperty();
+                    playButton.fire();
                 });
                 return null;
             }
@@ -122,7 +115,7 @@ public class PlayerController implements Initializable {
      * <p>
      * Updates Now Playing pane with current information (on bottom right corner of the app)
      */
-    public void setNowPlayingPane() {
+    private void setNowPlayingPane() {
         songCoverImageView.setImage(currentTrack.getImage());
         songNameLabel.setText(currentTrack.getTrackName());
         artistNameLabel.setText(currentTrack.getArtistsNames());
@@ -131,7 +124,7 @@ public class PlayerController implements Initializable {
     /**
      * Set Now Playing Pane to loading
      */
-    public void setNowPlayingPaneToLoading() {
+    private void setNowPlayingPaneToLoading() {
         songCoverImageView.setImage(Icons.MUSICAL_NOTE);
         songNameLabel.setText("Loading track...");
         artistNameLabel.setText("Please wait");
@@ -193,7 +186,7 @@ public class PlayerController implements Initializable {
     /**
      * Sets default songSlider behavior
      */
-    public void initSliderProperty() {
+    private void initSliderProperty() {
         songSlider.setMin(0.0);
         songSlider.setValue(0.0);
         songSlider.setOnMousePressed(event -> mediaPlayer.seek(Duration.seconds(songSlider.getValue())));

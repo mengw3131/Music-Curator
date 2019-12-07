@@ -21,9 +21,9 @@ import java.util.ResourceBundle;
  * Controller to discover.fxml
  */
 public class DiscoverController implements Initializable {
-    MainController mainController;
-    PlayerController playerController;
-    NavbarController navbarController;
+    private MainController mainController;
+    private PlayerController playerController;
+    private NavbarController navbarController;
 
     @FXML
     private ScrollPane discoverScrollPane;

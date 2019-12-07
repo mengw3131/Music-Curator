@@ -98,11 +98,11 @@ public class RecTools {
 		new AlbumRecommender(s.getUserRecs(), newUser);
 	}
 
-	private static int INIT_SIZE = 150;
-	private static int MIN_THRESHOLD = 1;
-	private static ArrayList<Track> trackQueue = new ArrayList<>();
-	private static ArrayList<Album> albumQueue = new ArrayList<>();
-	private static ArrayList<Artist> artistQueue = new ArrayList<>();
+	private static final int INIT_SIZE = 150;
+	private static final int MIN_THRESHOLD = 1;
+	private static final ArrayList<Track> trackQueue = new ArrayList<>();
+	private static final ArrayList<Album> albumQueue = new ArrayList<>();
+	private static final ArrayList<Artist> artistQueue = new ArrayList<>();
 	private static int trackQueueSize = 0;
 	private static int albumQueueSize = 0;
 	private static int artistQueueSize = 0;
@@ -247,13 +247,5 @@ public class RecTools {
 		if (trackQueueSize < MIN_THRESHOLD) {
 			replenishTrack();
 		}
-	}
-
-	/**
-	 * Returns random integer
-	 * @return
-	 */
-	public static int getRandom(){
-		return ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE);
 	}
 }

@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 public class Playlist {
     private String id = UUID.randomUUID().toString().substring(0,8);
-    private ArrayList<Track> tracks = new ArrayList<>();
+    private final ArrayList<Track> tracks = new ArrayList<>();
     private String name;
     private Image image;
 
@@ -98,7 +98,7 @@ public class Playlist {
      * @param tracks ArrayList of Track to be added
      */
     public void addTracks(ArrayList<Track> tracks){
-        tracks.addAll(tracks);
+        this.tracks.addAll(tracks);
     }
 
     /**
@@ -134,6 +134,12 @@ public class Playlist {
     }
 
 
+
+    /**
+     * Compares if this and Object obj is the same Playlist object
+     * @param obj the other object to be compared
+     * @return true if this and other object is equal
+     */
     @Override
     public boolean equals(Object obj) {
         if (! (obj instanceof Playlist)){
@@ -142,6 +148,10 @@ public class Playlist {
         return this.id.equals(((Playlist) obj).id);
     }
 
+    /**
+     * Returns the information about the Playlist
+     * @return String representation of the Playlist
+     */
     @Override
     public String toString() {
         return "Playlist " + getName() + " with id " + id + " of size " + tracks.size();

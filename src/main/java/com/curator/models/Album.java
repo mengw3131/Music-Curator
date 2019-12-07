@@ -17,10 +17,9 @@ public class Album {
 	private ArrayList<Artist> artists;     // the list of artists on the album
 	private String artistsNames;           // the list of artists' name on the album
 	private ArrayList<Image> images;
-
+	private final com.wrapper.spotify.model_objects.specification.Album sAlbum;    //wrapper's object
 	private int ranking = -1;
 
-	private com.wrapper.spotify.model_objects.specification.Album sAlbum;    //wrapper's object
 	/**
 	 * Constructor for com.curator.models.Album object from wrapper's com.curator.models.Album object
 	 * @param sAlbum wrapper's com.curator.models.Album object
@@ -104,15 +103,27 @@ public class Album {
 		return artistsNames;
 	}
 
-	public int getRanking(){ return ranking; }
-
-	public void setRanking(int ranking){ this.ranking = ranking; }
-
-	public boolean isInitialized(){
-		return this.sAlbum != null;
+	/**
+	 * Get the ranking of the Artist
+	 * @return the ranking of the artist
+	 */
+	public int getRanking() {
+		return ranking;
 	}
 
+	/**
+	 * Set the ranking of the artist
+	 * @param ranking the ranking of the artist
+	 */
+	public void setRanking(int ranking) {
+		this.ranking = ranking;
+	}
 
+	/**
+	 * Compares if this and Object obj is the same Album object
+	 * @param obj the other object to be compared
+	 * @return true if this and other object is equal
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (! (obj instanceof Album)){
@@ -122,6 +133,10 @@ public class Album {
 
 	}
 
+	/**
+	 * Returns the information about the Album
+	 * @return String representation of the Album
+	 */
 	@Override
 	public String toString() {
 		return "Album " + getName() + " by " + getArtistsNames() + " with id " + getAlbumID();

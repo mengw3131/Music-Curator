@@ -1,8 +1,5 @@
 import com.curator.controllers.WelcomeController;
-import com.curator.models.Album;
-import com.curator.models.Genre;
 import com.curator.tools.DBTools;
-import com.curator.tools.SpotifyTools;
 import com.curator.tools.YoutubeTools;
 import javafx.application.Application;
 import javafx.concurrent.Task;
@@ -11,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * ===================================================
@@ -30,7 +26,7 @@ public class Main extends Application {
     @java.lang.Override
     public void start(Stage stage) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/welcome.fxml"));
-        Scene scene = null;
+        Scene scene;
         try {
             scene = new Scene(loader.load(), 300, 300);
 
@@ -44,7 +40,7 @@ public class Main extends Application {
 
             Task task = new Task() {
                 @Override
-                protected Object call() throws Exception {
+                protected Object call() {
                     YoutubeTools.initialize();
                     return null;
                 }

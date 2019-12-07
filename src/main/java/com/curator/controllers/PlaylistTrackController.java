@@ -15,6 +15,9 @@ import javafx.scene.layout.VBox;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ *  Controller to the playlist_track_page.fxml
+ */
 public class PlaylistTrackController implements Initializable {
     private PlayerController playerController;
     private MainController mainController;
@@ -68,7 +71,7 @@ public class PlaylistTrackController implements Initializable {
     /**
      * Set UI elements size bindings
      */
-    public void initProperty() {
+    private void initProperty() {
         mainController.mainPane.getChildren().add(topBorderPane);
         topBorderPane.prefHeightProperty().bind(mainController.mainPane.heightProperty());
         topBorderPane.prefWidthProperty().bind(mainController.mainPane.widthProperty());
@@ -98,11 +101,8 @@ public class PlaylistTrackController implements Initializable {
     }
 
     /**
-     * TODO: Implement in UI
-     * <p>
      * Delete track from playlist
-     *
-     * @param track
+     * @param track track to be deleted
      */
     public void delete(Track track) {
         DBTools.removeTrackFromPlaylist(track, playlist);
@@ -114,5 +114,4 @@ public class PlaylistTrackController implements Initializable {
         mainVBox.getChildren().addAll(new TrackListVBox(playlist.getTracks(), mainController,
                 navbarController, playerController).asVBox());
     }
-
 }
