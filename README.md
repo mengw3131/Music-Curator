@@ -15,11 +15,11 @@ Music Curator is a smart music player that picks for you your next favorite trac
 * Store user account and preference on the cloud 
 
 
-See instruction on how to run on Eclipse
+See video instruction on how to run on Eclipse: https://www.youtube.com/watch?v=it5F59KbkPY&feature=youtu.be
 ### Running on Eclipse:
 ##### Cloning Repository
 1. File -> Import... -> Git -> Projects from Git (with smart import) -> Clone URI
-2. Under "Location" fields, set "URI": https://github.com/UPenn-CIT599/final-project-music-com.curator. Set "Host": `github.com`. Set "Repository Path": `/UPenn-CIT599/final-project-music-com.curator`
+2. Under "Location" fields, set "URI": https://github.com/UPenn-CIT599/final-project-music-com.curator. Set "Host": `github.com`. Set "Repository Path": `/UPenn-CIT599/final-project-music-curator.git`
 3. Under "Connection", set "Protocol": `https`. Under "Authentication", fill your github username and password. Click Next.
 4. Select "master" branch. Next, select desired directory or use the default setting. 
 5. Next, cloning begins and click "Finish" once completed.
