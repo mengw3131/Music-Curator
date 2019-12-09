@@ -80,9 +80,11 @@ public class PlayerController implements Initializable {
 
     /**
      * Set current track to be the new track
+     *
      * @param track the track to be set as current track
      */
     public void setCurrentTrack(Track track) {
+
         this.isPlaying = false;
         if (this.currentTrack != null) {
             mediaPlayer.stop();
@@ -137,7 +139,7 @@ public class PlayerController implements Initializable {
     public void changeVolume() {
         volumeSlider.valueProperty().addListener(
                 (observable, oldVal, newVal) -> {
-                    if (mediaPlayer != null){
+                    if (mediaPlayer != null) {
                         mediaPlayer.setVolume(newVal.doubleValue());
                     }
                 }
@@ -204,7 +206,7 @@ public class PlayerController implements Initializable {
     }
 
     /**
-     *  Sets default volumeSlider behavior
+     * Sets default volumeSlider behavior
      */
     private void initMediaPlayerProperty() {
         //make the song slider val to listen to media player progress
