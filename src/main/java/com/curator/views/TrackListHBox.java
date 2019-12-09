@@ -66,13 +66,20 @@ class TrackListHBox {
         hbox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 if (event.getClickCount() == 2) {
-                    playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID()));
+                    System.out.println("Sorry, this feature is still under debugging. Please wait for further update");
+                    event.consume();
+//                    playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID()));
                 }
             }
         });
 
         //if click on play icon, play music
-        playButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID())));
+        playButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            System.out.println("Sorry, this feature is still under debugging. Please wait for further update");
+            event.consume();
+
+//            playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID())));
+        });
 
         //if click on heart icon,
         heartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> DBTools.storeUserPreferenceTracks(track.getTrackID(), true));
