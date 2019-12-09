@@ -38,6 +38,7 @@ Open Eclipse and follow the following instructions
 
 ##### Configuring FFMPEG path
 Once the project is cloned and FFmpeg installed,
+
 11. On the terminal, type  `which ffmpeg` to get the path to ffmpeg
 12. Navigate to src/main/java/Main.java.
 13. At the beginning of `Main.start()` method, make sure `YoutubeTools.setFFMPEGpath("PATH_TO_FFMPEG_FOLDER");` is set to the same folder from running `which ffmpeg`. 
