@@ -15,7 +15,7 @@ Music Curator is a smart music player that picks for you your next favorite trac
 * Store user account and preference on the cloud 
 
 ### Running on Eclipse:
-See video instruction on how to run on Eclipse: https://www.youtube.com/watch?v=it5F59KbkPY&feature=youtu.be
+See video instruction on how to run on Eclipse: https://youtu.be/hzoyh4J6Ov0
 
 ##### Installing FFMPEG
 This app requires FFMPEG to be configured in PATH to play music
