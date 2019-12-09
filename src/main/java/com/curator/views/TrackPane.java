@@ -97,11 +97,11 @@ class TrackPane {
 
             //Called when mouse exits the scrollPane
             playButtonImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                System.out.println("Sorry, this feature is still under debugging. Please wait for further update");
-                event.consume();
-
-//                playerController.setCurrentTrack(track);
+//                System.out.println("Sorry, this feature is still under debugging. Please wait for further update");
 //                event.consume();
+
+                playerController.setCurrentTrack(track);
+                event.consume();
             });
 
             addToPlaylistButtonImageView.setOnMousePressed(event -> {

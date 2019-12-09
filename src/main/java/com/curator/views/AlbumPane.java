@@ -96,13 +96,13 @@ class AlbumPane {
 
             //Called when mouse exits the scrollPane
             playButtonImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                System.out.println("Sorry, this feature is still under debugging. Please wait for further update");
-                event.consume();
-
-//                Album a = SpotifyTools.getAlbum(album.getAlbumID());
-//                Track t = SpotifyTools.getTrack(a.getTracks().get(0).getTrackID());
-//                playerController.setCurrentTrack(t);
+//                System.out.println("Sorry, this feature is still under debugging. Please wait for further update");
 //                event.consume();
+
+                Album a = SpotifyTools.getAlbum(album.getAlbumID());
+                Track t = SpotifyTools.getTrack(a.getTracks().get(0).getTrackID());
+                playerController.setCurrentTrack(t);
+                event.consume();
             });
 
 

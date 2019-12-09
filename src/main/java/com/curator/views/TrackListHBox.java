@@ -75,10 +75,10 @@ class TrackListHBox {
 
         //if click on play icon, play music
         playButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            System.out.println("Sorry, this feature is still under debugging. Please wait for further update");
-            event.consume();
+//            System.out.println("Sorry, this feature is still under debugging. Please wait for further update");
+//            event.consume();
 
-//            playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID())));
+            playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID()));
         });
 
         //if click on heart icon,

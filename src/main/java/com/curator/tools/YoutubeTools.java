@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 public class YoutubeTools {
     private static final int MAX_AUDIO_LENGTH_SECOND = 600;  //10 minutes
     private static final String DEFAULT_OUT_PATH = "src/main/resources/music/";  //10 minutes
+    private static final String FFMPEG_PATH = "/usr/local/bin/";
 
     //Pattern matches /watch?v=[video id], compile once only, for performance
     //Design note: avoid using doc based selector(e.g. JSoup) for matching,
@@ -56,6 +57,7 @@ public class YoutubeTools {
                   '__classpath__', '__pyclasspath__/']
              */
                 i.exec("import sys");
+                i.exec("import subprocess");
                 i.exec("from __future__ import unicode_literals");
 
                 //add to path '/home/username/Documents/MusicCurator/lib/youtube-dl-master'
@@ -64,10 +66,10 @@ public class YoutubeTools {
                 // now can import youtube_dl
                 i.exec("import youtube_dl");
 
-                i.exec("ydl_opts = {" +
-                        "'format':'bestaudio/best', " +
-                        "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
-                );
+//                i.exec("ydl_opts = {" +
+//                        "'format':'bestaudio/best', " +
+//                        "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
+//                );
             }
             System.out.println("Done initializing interpreter");
         } catch (Exception e) {
@@ -143,13 +145,14 @@ public class YoutubeTools {
      */
     public static Media getMediaFileFromYoutubeId(String id, String outputFolder) {
         if (!isMediaFileExists(id, outputFolder)) {
-            //ydl configs. 'outtmpl': sets output dir and filename.
             i.exec("ydl_opts = {" +
                     "'outtmpl':'" + outputFolder + id + ".%(ext)s'," +
-                    "'format':'bestaudio/best', " +
-                    "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
+                    "'format':'bestaudio/best'}"
             );
             i.exec("with youtube_dl.YoutubeDL(ydl_opts) as ydl: ydl.download(['https://www.youtube.com/watch?v=" + id + "'])");
+            String args = String.format("[u'%sffmpeg', u'-y', u'-i', u'file:%s%s.webm', u'-vn', u'-b:a', u'192k', u'file:%s%s.mp3']", FFMPEG_PATH, outputFolder, id, outputFolder, id);
+           
+            i.exec(String.format("subprocess.call(%s)", args));
         }
         return new Media(new File(outputFolder + id + ".mp3").toURI().toString());
     }
