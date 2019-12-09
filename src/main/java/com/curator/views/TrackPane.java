@@ -99,6 +99,7 @@ class TrackPane {
             playButtonImageView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 //                System.out.println("Sorry, this feature is still under debugging. Please wait for further update");
 //                event.consume();
+                System.out.println("clicked");
 
                 playerController.setCurrentTrack(track);
                 event.consume();

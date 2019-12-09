@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 public class YoutubeTools {
     private static final int MAX_AUDIO_LENGTH_SECOND = 600;  //10 minutes
     private static final String DEFAULT_OUT_PATH = "src/main/resources/music/";  //10 minutes
-    private static final String FFMPEG_PATH = "/usr/local/bin/";
+    private static String FFMPEG_PATH = "/usr/local/bin/";
 
     //Pattern matches /watch?v=[video id], compile once only, for performance
     //Design note: avoid using doc based selector(e.g. JSoup) for matching,
@@ -66,8 +66,8 @@ public class YoutubeTools {
                 // now can import youtube_dl
                 i.exec("import youtube_dl");
 
-//                i.exec("ydl_opts = {" +
-//                        "'format':'bestaudio/best', " +
+                i.exec("ydl_opts = {" +
+                        "'format':'bestaudio/best'}");
 //                        "'postprocessors': [{'key' : 'FFmpegExtractAudio', 'preferredcodec' : 'mp3', 'preferredquality' : '192'}]}"
 //                );
             }
@@ -99,6 +99,7 @@ public class YoutubeTools {
      * @return Youtube video ids of the first page
      */
     public static ArrayList<String> getIDsOfBestMatchVideos(String query) {
+
         String url = "https://www.youtube.com/results?search_query=" + query;
         ArrayList<String> results = new ArrayList<>();
         HashMap<String, String> uniqueLinks = new HashMap<>();
@@ -167,15 +168,15 @@ public class YoutubeTools {
      * @return Sound object of the music file
      */
     public static Media getMusicFileFromQuery(String query) {
-
         for (String link : getIDsOfBestMatchVideos(query)) {
-
             //if video is 10 minutes or shorter, proceed, otherwise check the next best match
             if (Integer.valueOf(getVideoMeta(link).get("duration").toString()) <= MAX_AUDIO_LENGTH_SECOND) {
+
                 return getMediaFileFromYoutubeId(link);
             }
             System.out.println(link + " is too long! Checking next best");
         }
+
         return getMediaFileFromYoutubeId(getIDsOfBestMatchVideos(query).get(0));
     }
 
@@ -218,5 +219,13 @@ public class YoutubeTools {
      */
     public static boolean isMediaFileExists(String id, String folderPath) {
         return new File(folderPath + id + ".mp3").exists();
+    }
+
+    /**
+     * Sets the default FFmpeg path
+     * @param ffmpegPath
+     */
+    public static void setFFMPEGpath(String ffmpegPath) {
+        FFMPEG_PATH = ffmpegPath;
     }
 }

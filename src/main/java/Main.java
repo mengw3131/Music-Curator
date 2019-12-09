@@ -25,13 +25,11 @@ public class Main extends Application {
      */
     @java.lang.Override
     public void start(Stage stage) {
-//    	System.out.println("test");
-//    	YoutubeTools.initialize();
-//    	YoutubeTools.getMediaFileFromYoutubeId("MWCUh6tf7PA");
-//    	
-//    	System.exit(0);
-    	
-    	
+    	YoutubeTools.initialize();
+    	//SET DEFAULT FOLDER CONTAINING ffmpeg HERE
+    	YoutubeTools.setFFMPEGpath("/usr/local/bin/");
+
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/welcome.fxml"));
         Scene scene;
         try {

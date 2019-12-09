@@ -66,9 +66,9 @@ class TrackListHBox {
         hbox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 if (event.getClickCount() == 2) {
-                    System.out.println("Sorry, this feature is still under debugging. Please wait for further update");
-                    event.consume();
-//                    playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID()));
+//                    System.out.println("Sorry, this feature is still under debugging. Please wait for further update");
+//                    event.consume();
+                    playerController.setCurrentTrack(SpotifyTools.getTrack(track.getTrackID()));
                 }
             }
         });
