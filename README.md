@@ -31,20 +31,8 @@ See video instruction on how to run on Eclipse: https://www.youtube.com/watch?v=
 ##### Run Task 
 9. On Gradle Tasks bar at the bottom, MusicCurator -> application -> double-click on "run"
 
-#### Gallery
-![alt test](screenshots/welcome.png)
-![alt test](screenshots/survey1.png)
-![alt test](screenshots/survey2.png)
-![alt test](screenshots/survey3.png)
-![alt test](screenshots/home.png)
-![alt test](screenshots/discover.png)
-![alt test](screenshots/artist.png)
-![alt test](screenshots/artist2.png)
-![alt test](screenshots/album.png)
-![alt test](screenshots/my_music.png)
-![alt test](screenshots/playlist_1.png)
-![alt test](screenshots/playlist_track.png)
-
+#### User Guide
+First time user? Please see [User Guide](docs/guides.md).
 
 #### Team 71
 * Isaac Longkutoy ([islong@seas.upenn.edu](mailto:islong@seas.upenn.edu)) 

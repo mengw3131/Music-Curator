@@ -1,0 +1,45 @@
+* MCIT 591 FALL 2019 FINAL PROJECT - Music Curator *
+
+* Project Introduction
+
+  With new songs and albums released every week, there's always a lot of music out there. The Music Curator is to help 
+  you cut through the noise by finding music that suit your tastes based on what you’re already interested in and your 
+  immediate feedback to our recommendations. 
+  
+  To do this, we needed to:
+  
+  1) develop a JavaFX GUI that allows users to interact with the program
+  
+  2) integrate Spotify API to retrieve and manage Spotify data
+  
+  3) integrate YouTube API to preview/download the audio
+  
+  4) create and connect to AWS RDS (Amazon Web Services Relational Database) to store/retrieve user preference information
+  
+  5) build recommendation models to analyze the track/artist/album, allowing it to perform personalized recommendations
+
+* Github link: https://github.com/UPenn-CIT599/final-project-music-curator.git
+
+* Team 71
+
+  Isaac Longkutoy (islong@seas.upenn.edu)
+    
+    # designs and develops GUI
+    # integrates Spotify and YouTube API
+    # writes Junit test cases- SpotifyToolsTest and YouTubeToolsTest
+    # creates README file
+
+  Luke Glover (lcglover@seas.upenn.edu)
+    
+    # develops algorithms that analyzes tracks/artists/albums to understand the fundamental similarities between songs/artists/albums
+    # builds recommendation models that performs personalized recommendations 
+    # writes *com.curator.models classes
+    # writes *com.curator.recommender classes
+    
+  Meng Wang (mw3131@seas.upenn.edu)
+
+    # creates and connects to Amazon Web Services Relational Database
+    # writes DBTools classes to store/retrieve user preference information (including immediate feedback on songs/artists/albums)
+    # writes Junit test cases - DBToolsTest
+    # creates Summary and video presentation
+
