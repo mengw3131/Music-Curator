@@ -174,9 +174,7 @@ public class Track {
 	 * @return Media object of the track.
 	 */
 	public Media getMedia() {
-		System.out.println("getting media");
 		if (media == null) {
-			System.out.println("media is null");
 			setMedia();
 		}
 		return media;
@@ -188,7 +186,6 @@ public class Track {
 	 * @param media the media object of the track
 	 */
 	public void setMedia(Media... media) {
-		System.out.println("setting media");
 		if (media.length == 0) {
 			this.media = YoutubeTools.getMusicFileFromQuery(
 					YoutubeTools.createYoutubeQuery(this.getTrackName(),

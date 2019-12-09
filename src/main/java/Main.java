@@ -25,10 +25,7 @@ public class Main extends Application {
      */
     @java.lang.Override
     public void start(Stage stage) {
-    	YoutubeTools.initialize();
-    	//SET DEFAULT FOLDER CONTAINING ffmpeg HERE
-    	YoutubeTools.setFFMPEGpath("/usr/local/bin/");
-
+        YoutubeTools.setFFMPEGpath("/usr/local/bin/");
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/welcome.fxml"));
         Scene scene;

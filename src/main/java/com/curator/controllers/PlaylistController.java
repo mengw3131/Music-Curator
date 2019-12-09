@@ -175,10 +175,7 @@ public class PlaylistController implements Initializable {
                 //when play button inside pane is clicked
                 playButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                     if (playlist.getTracks().size() != 0) {
-                        System.out.println("Sorry, this feature is still under debugging. Please wait for further update");
-                        event.consume();
-
-//                        playerController.setCurrentTrack(playlist.getTracks().get(0));
+                        playerController.setCurrentTrack(playlist.getTracks().get(0));
                     } else {
                         System.out.println("No tracks found in playlist " + playlist.getName());
                     }
