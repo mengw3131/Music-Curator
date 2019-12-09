@@ -24,6 +24,7 @@ This app requires FFMPEG to be configured in PATH to play music
 
 ##### Cloning Repository
 Open Eclipse and follow the following instructions
+
 3. File -> Import... -> Git -> Projects from Git (with smart import) -> Clone URI
 4. Under "Location" fields, set "URI": https://github.com/UPenn-CIT599/final-project-music-com.curator. Set "Host": `github.com`. Set "Repository Path": `/UPenn-CIT599/final-project-music-curator.git`
 5. Under "Connection", set "Protocol": `https`. Under "Authentication", fill your github username and password. Click Next.
