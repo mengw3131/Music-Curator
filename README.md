@@ -6,7 +6,8 @@ Official Page: https://upenn-cit599.github.io/final-project-music-curator/
 #### Short Description:
 Music Curator is a smart music player that picks for you your next favorite tracks, albums, or artists based on your usage and preference.
 
-#### Features:
+#### Features: 
+(Click here for the video demo: https://www.youtube.com/watch?v=0tlvULzKoE0&feature=youtu.be)
 * Curate special collections of artists, albums, and tracks you might like
 * Search and discover artists, albums, and tracks  
 * Play and download any track and any album by any artist
